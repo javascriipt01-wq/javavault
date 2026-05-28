@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Java Vault - Built For The Trade. Backed By Technology.</title>
+<meta name="description" content="Java Vault is the all-in-one business app for plumbers, electricians, HVAC techs and all tradespeople. Estimates, invoices, jobs, expenses and more."/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;scroll-behavior:smooth}
+:root{--bg:#0a0d14;--surf:#111520;--surf2:#181c2a;--bor:#242840;--acc:#f97316;--acc2:#fb923c;--text:#f0f2f8;--muted:#8892aa;--green:#22c55e;--blue:#3b82f6}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+h1,h2,h3,h4{font-family:'Syne',sans-serif}
+a{text-decoration:none;color:inherit}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,13,20,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--bor);padding:0 5%}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px;max-width:1200px;margin:0 auto}
+.nav-logo{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800}
+.nav-logo span{color:var(--acc)}
+.nav-links{display:flex;align-items:center;gap:28px;font-size:.875rem;color:var(--muted)}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{display:flex;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:8px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.875rem;font-weight:500;transition:.2s}
+.btn-primary{background:var(--acc);color:#fff}.btn-primary:hover{background:var(--acc2);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--bor)}.btn-ghost:hover{border-color:var(--acc);color:var(--acc)}
+.btn-lg{padding:14px 28px;font-size:1rem;font-weight:600}
+.btn-xl{padding:18px 36px;font-size:1.1rem;font-weight:700;border-radius:12px}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:100px 5% 60px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%, rgba(249,115,22,.12) 0%, transparent 70%)}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.3);color:var(--acc);padding:6px 16px;border-radius:20px;font-size:.8rem;font-weight:600;margin-bottom:24px;letter-spacing:.5px}
+.hero h1{font-size:clamp(2.4rem,6vw,4.2rem);font-weight:800;line-height:1.1;letter-spacing:-1.5px;margin-bottom:20px;max-width:800px}
+.hero h1 span{color:var(--acc)}
+.hero p{font-size:clamp(1rem,2vw,1.2rem);color:var(--muted);max-width:560px;margin:0 auto 36px;line-height:1.7}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:48px}
+.hero-stats{display:flex;gap:40px;justify-content:center;flex-wrap:wrap}
+.hero-stat{text-align:center}
+.hero-stat-num{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:var(--acc)}
+.hero-stat-lbl{font-size:.78rem;color:var(--muted);margin-top:3px}
+
+/* APP PREVIEW */
+.app-preview{padding:0 5% 80px;max-width:1000px;margin:0 auto}
+.phone-mockup{background:var(--surf);border:1px solid var(--bor);border-radius:20px;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,.5),0 0 0 1px rgba(249,115,22,.1)}
+.phone-bar{background:#0f1724;padding:12px 20px;display:flex;align-items:center;justify-content:space-between}
+.phone-dot{width:10px;height:10px;border-radius:50%;background:var(--acc);display:inline-block}
+.phone-title{font-family:'Syne',sans-serif;font-size:.875rem;font-weight:700;color:var(--acc)}
+.phone-body{padding:20px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.mini-stat{background:var(--surf2);border:1px solid var(--bor);border-radius:10px;padding:14px;text-align:center}
+.mini-stat-val{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:var(--acc)}
+.mini-stat-lbl{font-size:.65rem;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.8px}
+.mini-card{background:var(--surf2);border:1px solid var(--bor);border-radius:10px;padding:14px}
+.mini-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--bor);font-size:.8rem}
+.mini-row:last-child{border:none}
+.mini-badge{padding:2px 8px;border-radius:10px;font-size:.65rem;font-weight:600}
+.mb-green{background:rgba(34,197,94,.15);color:var(--green)}
+.mb-orange{background:rgba(249,115,22,.15);color:var(--acc)}
+
+/* FEATURES */
+.section{padding:80px 5%;max-width:1200px;margin:0 auto}
+.section-badge{display:inline-block;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.25);color:var(--acc);padding:4px 14px;border-radius:20px;font-size:.75rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px}
+.section-title{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-1px;margin-bottom:14px}
+.section-sub{font-size:1rem;color:var(--muted);max-width:520px;line-height:1.7;margin-bottom:48px}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.feat-card{background:var(--surf);border:1px solid var(--bor);border-radius:14px;padding:24px;transition:.3s}
+.feat-card:hover{border-color:var(--acc);transform:translateY(-4px);box-shadow:0 20px 40px rgba(249,115,22,.08)}
+.feat-icon{width:44px;height:44px;background:rgba(249,115,22,.1);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:14px;border:1px solid rgba(249,115,22,.2)}
+.feat-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:8px}
+.feat-desc{font-size:.85rem;color:var(--muted);line-height:1.7}
+
+/* HOW IT WORKS */
+.how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;position:relative}
+.how-card{text-align:center;padding:24px 16px}
+.how-num{width:48px;height:48px;background:var(--acc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:#fff;margin:0 auto 14px}
+.how-title{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:8px}
+.how-desc{font-size:.82rem;color:var(--muted);line-height:1.6}
+
+/* TESTIMONIALS */
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.testi-card{background:var(--surf);border:1px solid var(--bor);border-radius:14px;padding:24px}
+.testi-stars{color:var(--acc);font-size:1rem;margin-bottom:12px;letter-spacing:2px}
+.testi-text{font-size:.9rem;color:var(--text);line-height:1.7;margin-bottom:16px;font-style:italic}
+.testi-author{display:flex;align-items:center;gap:12px}
+.testi-avatar{width:40px;height:40px;border-radius:50%;background:var(--acc);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;color:#fff;font-size:.9rem}
+.testi-name{font-weight:600;font-size:.875rem}
+.testi-role{font-size:.75rem;color:var(--muted)}
+
+/* PRICING */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:900px;margin:0 auto}
+.price-card{background:var(--surf);border:1px solid var(--bor);border-radius:16px;padding:28px;position:relative;transition:.3s}
+.price-card.popular{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc),0 20px 50px rgba(249,115,22,.15)}
+.popular-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--acc);color:#fff;padding:4px 16px;border-radius:20px;font-size:.72rem;font-weight:700;white-space:nowrap}
+.price-plan{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;font-weight:600;margin-bottom:10px}
+.price-amount{font-family:'Syne',sans-serif;font-size:2.6rem;font-weight:800;margin-bottom:4px}
+.price-amount span{font-size:1rem;font-weight:400;color:var(--muted)}
+.price-period{font-size:.8rem;color:var(--muted);margin-bottom:20px}
+.price-features{list-style:none;margin-bottom:24px}
+.price-features li{display:flex;align-items:center;gap:8px;padding:7px 0;font-size:.85rem;color:var(--muted);border-bottom:1px solid rgba(36,40,64,.6)}
+.price-features li:last-child{border:none}
+.price-features li::before{content:"v";color:var(--green);font-weight:700;font-size:.8rem;width:16px;flex-shrink:0}
+.price-features li.no::before{content:"x";color:var(--muted)}
+
+/* FAQ */
+.faq-list{max-width:720px;margin:0 auto}
+.faq-item{border-bottom:1px solid var(--bor);padding:20px 0}
+.faq-q{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.faq-q:hover{color:var(--acc)}
+.faq-a{font-size:.875rem;color:var(--muted);line-height:1.7;margin-top:12px;display:none}
+.faq-a.open{display:block}
+
+/* CTA SECTION */
+.cta-section{background:linear-gradient(135deg,rgba(249,115,22,.15) 0%,rgba(249,115,22,.03) 100%);border:1px solid rgba(249,115,22,.2);border-radius:24px;padding:64px 40px;text-align:center;margin:80px 5%;max-width:1200px;margin-left:auto;margin-right:auto}
+.cta-section h2{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-1px;margin-bottom:14px}
+.cta-section p{font-size:1rem;color:var(--muted);max-width:480px;margin:0 auto 32px;line-height:1.7}
+.cta-note{font-size:.78rem;color:var(--muted);margin-top:16px}
+
+/* FOOTER */
+footer{background:var(--surf);border-top:1px solid var(--bor);padding:48px 5% 32px}
+.footer-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.footer-logo{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;margin-bottom:10px}
+.footer-logo span{color:var(--acc)}
+.footer-desc{font-size:.82rem;color:var(--muted);line-height:1.7}
+.footer-col h4{font-family:'Syne',sans-serif;font-size:.875rem;font-weight:700;margin-bottom:14px}
+.footer-col a{display:block;font-size:.82rem;color:var(--muted);margin-bottom:8px;transition:.2s}
+.footer-col a:hover{color:var(--acc)}
+.footer-bottom{border-top:1px solid var(--bor);padding-top:24px;display:flex;justify-content:space-between;align-items:center;font-size:.78rem;color:var(--muted);flex-wrap:wrap;gap:10px}
+
+/* PAYWALL OVERLAY */
+.paywall-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)}
+.paywall-overlay.open{display:flex}
+.paywall-box{background:var(--surf);border:1px solid var(--acc);border-radius:20px;padding:36px;width:100%;max-width:460px;text-align:center}
+.paywall-logo{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:var(--acc);margin-bottom:6px}
+.paywall-title{font-size:1.2rem;font-weight:700;margin-bottom:8px}
+.paywall-sub{font-size:.85rem;color:var(--muted);margin-bottom:24px;line-height:1.6}
+.paywall-plans{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.pw-plan{background:var(--surf2);border:2px solid var(--bor);border-radius:12px;padding:16px;cursor:pointer;transition:.2s;text-align:left}
+.pw-plan:hover,.pw-plan.selected{border-color:var(--acc);background:rgba(249,115,22,.06)}
+.pw-plan-name{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.pw-plan-price{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:var(--text)}
+.pw-plan-price span{font-size:.75rem;font-weight:400;color:var(--muted)}
+.pw-plan-desc{font-size:.72rem;color:var(--muted);margin-top:3px}
+.pw-trial{font-size:.78rem;color:var(--green);margin-bottom:16px;font-weight:600}
+.stripe-form{background:var(--surf2);border:1px solid var(--bor);border-radius:10px;padding:16px;margin-bottom:16px;text-align:left}
+.stripe-form label{font-size:.75rem;color:var(--muted);display:block;margin-bottom:5px;font-weight:500}
+.stripe-input{width:100%;background:var(--bg);border:1px solid var(--bor);color:var(--text);padding:9px 12px;border-radius:7px;font-size:.875rem;margin-bottom:10px;font-family:'DM Sans',sans-serif;outline:none}
+.stripe-input:focus{border-color:var(--acc)}
+.stripe-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.secure-badges{display:flex;justify-content:center;gap:16px;font-size:.72rem;color:var(--muted);margin-top:12px}
+.trial-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);color:var(--green);padding:6px 14px;border-radius:20px;font-size:.78rem;font-weight:600;margin-bottom:20px}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .features-grid,.testi-grid,.pricing-grid{grid-template-columns:1fr 1fr}
+  .how-grid{grid-template-columns:1fr 1fr}
+  .footer-inner{grid-template-columns:1fr 1fr}
+  .phone-body{grid-template-columns:1fr 1fr}
+  .nav-links{display:none}
+}
+@media(max-width:600px){
+  .features-grid,.testi-grid,.pricing-grid,.how-grid{grid-template-columns:1fr}
+  .paywall-plans{grid-template-columns:1fr}
+  .footer-inner{grid-template-columns:1fr}
+  .hero-stats{gap:24px}
+  .cta-section{padding:40px 24px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo"><span>Java</span> Vault</div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how">How It Works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="nav-cta">
+      <a href="javavault.html" class="btn btn-ghost">Sign In</a>
+      <a href="#pricing" class="btn btn-primary" onclick="openPaywall()">Start Free Trial</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div style="position:relative;z-index:1;width:100%;max-width:900px">
+    <div class="hero-badge">Built For The Trade. Backed By Technology.</div>
+    <h1>Run Your Trade Business<br/><span>From Your Phone</span></h1>
+    <p>Estimates, invoices, jobs, expenses and profits — all in one app built specifically for plumbers, electricians, HVAC techs and every tradesperson.</p>
+    <div class="hero-btns">
+      <a href="#" class="btn btn-primary btn-xl" onclick="openPaywall();return false">Start 7-Day Free Trial</a>
+      <a href="javavault.html" class="btn btn-ghost btn-lg">Open App</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-num">3 hrs</div><div class="hero-stat-lbl">saved per week</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">$0</div><div class="hero-stat-lbl">to get started</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">5 min</div><div class="hero-stat-lbl">to send first invoice</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">100%</div><div class="hero-stat-lbl">built for trades</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- APP PREVIEW -->
+<div class="app-preview">
+  <div class="phone-mockup">
+    <div class="phone-bar">
+      <span class="phone-dot"></span>
+      <span class="phone-title">Java Vault - Dashboard</span>
+      <span style="font-size:.72rem;color:var(--muted)">Secure</span>
+    </div>
+    <div class="phone-body">
+      <div class="mini-stat"><div class="mini-stat-val" style="color:var(--green)">$8,240</div><div class="mini-stat-lbl">Earned</div></div>
+      <div class="mini-stat"><div class="mini-stat-val">$1,450</div><div class="mini-stat-lbl">Outstanding</div></div>
+      <div class="mini-stat"><div class="mini-stat-val" style="color:var(--blue)">4</div><div class="mini-stat-lbl">Active Jobs</div></div>
+      <div class="mini-stat"><div class="mini-stat-val">12</div><div class="mini-stat-lbl">Clients</div></div>
+      <div class="mini-card" style="grid-column:1/-1">
+        <div style="font-size:.72rem;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Recent Invoices</div>
+        <div class="mini-row"><span>Johnson Kitchen Fix</span><span><strong>$620</strong></span><span class="mini-badge mb-green">Paid</span></div>
+        <div class="mini-row"><span>Martinez HVAC Service</span><span><strong>$480</strong></span><span class="mini-badge mb-orange">Pending</span></div>
+        <div class="mini-row"><span>Williams Electrical</span><span><strong>$350</strong></span><span class="mini-badge mb-green">Paid</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<div id="features" style="padding:80px 5%">
+<div style="max-width:1200px;margin:0 auto">
+  <div style="text-align:center;margin-bottom:48px">
+    <div class="section-badge">Everything You Need</div>
+    <h2 class="section-title">Stop Losing Money on Paperwork</h2>
+    <p class="section-sub" style="margin:0 auto">Every feature built specifically for how tradespeople actually work — no bloat, no complexity, no monthly training required.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feat-card">
+      <div class="feat-icon">D</div>
+      <div class="feat-title">Professional Estimates</div>
+      <div class="feat-desc">Create branded quotes with line items, markup and totals in 60 seconds. Convert to invoice in one tap. Never lose a job to sloppy paperwork again.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">$</div>
+      <div class="feat-title">Invoices and Payments</div>
+      <div class="feat-desc">Send professional invoices clients can view and pay online. Mark as paid, track outstanding balances. Get paid faster, chase less.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">T</div>
+      <div class="feat-title">Job Tracker</div>
+      <div class="feat-desc">Every job in one place with status, address, client, and notes. Scheduled, in progress, or completed — always know where you stand.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">P</div>
+      <div class="feat-title">Photo Documentation</div>
+      <div class="feat-desc">Before and after photos tied to every job. Build your portfolio, protect yourself from disputes, impress clients with professional documentation.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">G</div>
+      <div class="feat-title">Profit Calculator</div>
+      <div class="feat-desc">See exactly what you made on every job after materials and labor. Monthly chart shows your revenue vs expenses vs real profit.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">*</div>
+      <div class="feat-title">AI Estimate Assistant</div>
+      <div class="feat-desc">Describe the job and the AI generates a fair, professional estimate based on your trade, location and experience level. Never underprice again.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">!</div>
+      <div class="feat-title">Appointment Reminders</div>
+      <div class="feat-desc">Send clients automatic reminders before their job via WhatsApp or SMS. Reduce no-shows by 80 percent and save wasted trips.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">R</div>
+      <div class="feat-title">Google Review Requests</div>
+      <div class="feat-desc">After every job, send a review request in one tap. More reviews means higher Google ranking means more clients finding you for free.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">+</div>
+      <div class="feat-title">Team Management</div>
+      <div class="feat-desc">Add your crew, track their roles, daily rates and job assignments. Scale from solo operator to full crew without switching tools.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div id="how" style="padding:80px 5%;background:var(--surf);border-top:1px solid var(--bor);border-bottom:1px solid var(--bor)">
+<div style="max-width:1100px;margin:0 auto">
+  <div style="text-align:center;margin-bottom:48px">
+    <div class="section-badge">Simple Process</div>
+    <h2 class="section-title">Up and Running in 5 Minutes</h2>
+  </div>
+  <div class="how-grid">
+    <div class="how-card">
+      <div class="how-num">1</div>
+      <div class="how-title">Sign Up Free</div>
+      <div class="how-desc">Create your account with email, Gmail or phone number. No credit card needed for the 7-day trial.</div>
+    </div>
+    <div class="how-card">
+      <div class="how-num">2</div>
+      <div class="how-title">Set Up Your Profile</div>
+      <div class="how-desc">Add your business name, logo, license number and payment instructions. Takes 2 minutes.</div>
+    </div>
+    <div class="how-card">
+      <div class="how-num">3</div>
+      <div class="how-title">Create Your First Estimate</div>
+      <div class="how-desc">Describe the job, add line items, set your markup and send it to your client as a professional PDF.</div>
+    </div>
+    <div class="how-card">
+      <div class="how-num">4</div>
+      <div class="how-title">Get Paid</div>
+      <div class="how-desc">Convert the estimate to an invoice, share the payment link, and watch the money come in.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- TESTIMONIALS -->
+<div style="padding:80px 5%">
+<div style="max-width:1100px;margin:0 auto">
+  <div style="text-align:center;margin-bottom:48px">
+    <div class="section-badge">Real Tradespeople</div>
+    <h2 class="section-title">What They Are Saying</h2>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="testi-stars">* * * * *</div>
+      <div class="testi-text">"I used to spend Sunday nights writing invoices on paper. Now I send them from the job site in 2 minutes. I have collected $4,000 in old invoices I forgot to send."</div>
+      <div class="testi-author">
+        <div class="testi-avatar">MR</div>
+        <div><div class="testi-name">Marcus R.</div><div class="testi-role">Master Plumber, Houston TX</div></div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">* * * * *</div>
+      <div class="testi-text">"The AI estimate feature alone is worth the price. I was undercharging by 20 percent on every job. Now my estimates are professional and I win more work."</div>
+      <div class="testi-author">
+        <div class="testi-avatar">KT</div>
+        <div><div class="testi-name">Kevin T.</div><div class="testi-role">Electrician, Atlanta GA</div></div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">* * * * *</div>
+      <div class="testi-text">"My clients actually comment on how professional my invoices look. The photo log has saved me twice from warranty disputes. This app pays for itself every week."</div>
+      <div class="testi-author">
+        <div class="testi-avatar">SJ</div>
+        <div><div class="testi-name">Sandra J.</div><div class="testi-role">HVAC Technician, Dallas TX</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- PRICING -->
+<div id="pricing" style="padding:80px 5%;background:var(--surf);border-top:1px solid var(--bor);border-bottom:1px solid var(--bor)">
+<div style="max-width:1100px;margin:0 auto">
+  <div style="text-align:center;margin-bottom:48px">
+    <div class="section-badge">Simple Pricing</div>
+    <h2 class="section-title">Pick Your Plan</h2>
+    <p style="color:var(--muted);font-size:.95rem">Start free for 7 days. No credit card required. Cancel any time.</p>
+  </div>
+  <div class="pricing-grid">
+    <!-- STARTER -->
+    <div class="price-card">
+      <div class="price-plan">Starter</div>
+      <div class="price-amount">$29<span>/mo</span></div>
+      <div class="price-period">Perfect for solo operators</div>
+      <ul class="price-features">
+        <li>Unlimited Estimates</li>
+        <li>Unlimited Invoices</li>
+        <li>Job Tracker</li>
+        <li>Client Contact Book</li>
+        <li>Photo Log</li>
+        <li>Data Backup</li>
+        <li class="no">AI Estimate Assistant</li>
+        <li class="no">Expense and Profit Tracker</li>
+        <li class="no">Team Members</li>
+      </ul>
+      <button class="btn btn-ghost" style="width:100%" onclick="openPaywall('starter')">Start Free Trial</button>
+    </div>
+    <!-- PRO -->
+    <div class="price-card popular">
+      <div class="popular-badge">MOST POPULAR</div>
+      <div class="price-plan">Pro</div>
+      <div class="price-amount">$49<span>/mo</span></div>
+      <div class="price-period">Best for growing businesses</div>
+      <ul class="price-features">
+        <li>Everything in Starter</li>
+        <li>AI Estimate Assistant</li>
+        <li>Expense Tracker</li>
+        <li>Profit Calculator</li>
+        <li>Google Review Requests</li>
+        <li>Appointment Reminders</li>
+        <li>Shareable Invoice Links</li>
+        <li>PDF Export</li>
+        <li class="no">Team Members (up to 5)</li>
+      </ul>
+      <button class="btn btn-primary" style="width:100%" onclick="openPaywall('pro')">Start Free Trial</button>
+    </div>
+    <!-- TEAM -->
+    <div class="price-card">
+      <div class="price-plan">Team</div>
+      <div class="price-amount">$79<span>/mo</span></div>
+      <div class="price-period">For crews and contractors</div>
+      <ul class="price-features">
+        <li>Everything in Pro</li>
+        <li>Up to 5 Team Members</li>
+        <li>Team Job Assignment</li>
+        <li>Priority Support</li>
+        <li>Early Access to Features</li>
+        <li>Custom Business Profile</li>
+        <li>Bulk Invoice Export</li>
+        <li>Advanced Analytics</li>
+        <li>Dedicated Onboarding</li>
+      </ul>
+      <button class="btn btn-ghost" style="width:100%" onclick="openPaywall('team')">Start Free Trial</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- FAQ -->
+<div id="faq" style="padding:80px 5%">
+<div style="max-width:900px;margin:0 auto">
+  <div style="text-align:center;margin-bottom:48px">
+    <div class="section-badge">Questions</div>
+    <h2 class="section-title">Frequently Asked Questions</h2>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span>Do I need to install anything?</span><span>+</span></div>
+      <div class="faq-a">No. Java Vault is a web app that works on any phone, tablet or computer. Just open your browser and go. No app store, no downloads, no updates to manage.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span>Is my data safe?</span><span>+</span></div>
+      <div class="faq-a">Yes. Your data is protected with password encryption, brute-force lockout after 5 failed attempts, and automatic session timeout. You can also backup and restore all your data at any time.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span>Can I cancel any time?</span><span>+</span></div>
+      <div class="faq-a">Absolutely. No contracts, no commitments. Cancel any time from your account settings and you will not be charged again. Your data is yours to export before you leave.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span>Does it work without internet?</span><span>+</span></div>
+      <div class="faq-a">Most features work offline. Your data is saved locally on your device. The AI Estimate Assistant and shareable invoice links require an internet connection. Everything else works anywhere.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span>What trades does it support?</span><span>+</span></div>
+      <div class="faq-a">Java Vault is built for all trades including plumbing, electrical, HVAC, roofing, painting, carpentry and general contracting. The AI assistant is trained on pricing for all these trades.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span>How does the 7-day trial work?</span><span>+</span></div>
+      <div class="faq-a">You get full access to all Pro features for 7 days. No credit card required to start. At the end of the trial you choose a plan or your account moves to a limited free version.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="section-badge">Get Started Today</div>
+  <h2>Stop Leaving Money on the Table</h2>
+  <p>Join tradespeople who have already stopped doing paperwork by hand and started running a professional business.</p>
+  <a href="#" class="btn btn-primary btn-xl" onclick="openPaywall();return false">Start Your Free 7-Day Trial</a>
+  <div class="cta-note">No credit card required. Cancel any time. Works on any device.</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo"><span>Java</span> Vault</div>
+      <div class="footer-desc">Built for the trade. Backed by technology. The all-in-one business app for every tradesperson.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="javavault.html">Open App</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="footer-col">
+      <h4>Trades</h4>
+      <a href="#">Plumbing</a>
+      <a href="#">Electrical</a>
+      <a href="#">HVAC</a>
+      <a href="#">Roofing</a>
+      <a href="#">General</a>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <a href="#">Help Center</a>
+      <a href="#">Contact Us</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>2025 Java Vault. Built For The Trade. Backed By Technology.</div>
+    <div>Made with passion for hardworking people</div>
+  </div>
+</footer>
+
+<!-- PAYWALL MODAL -->
+<div class="paywall-overlay" id="paywallOverlay">
+  <div class="paywall-box">
+    <div class="paywall-logo">Java Vault</div>
+    <div class="trial-badge">7-Day Free Trial - No Card Needed</div>
+    <div class="paywall-title">Choose Your Plan</div>
+    <div class="paywall-sub">Full access for 7 days. Pick the plan that fits your business.</div>
+    <div class="paywall-plans">
+      <div class="pw-plan selected" id="plan-starter" onclick="selectPlan('starter')">
+        <div class="pw-plan-name">Starter</div>
+        <div class="pw-plan-price">$29<span>/mo</span></div>
+        <div class="pw-plan-desc">Solo operator</div>
+      </div>
+      <div class="pw-plan" id="plan-pro" onclick="selectPlan('pro')">
+        <div class="pw-plan-name">Pro - Popular</div>
+        <div class="pw-plan-price">$49<span>/mo</span></div>
+        <div class="pw-plan-desc">AI + Expenses + More</div>
+      </div>
+      <div class="pw-plan" id="plan-team" onclick="selectPlan('team')">
+        <div class="pw-plan-name">Team</div>
+        <div class="pw-plan-price">$79<span>/mo</span></div>
+        <div class="pw-plan-desc">Crew and contractors</div>
+      </div>
+      <div class="pw-plan" id="plan-annual" onclick="selectPlan('annual')">
+        <div class="pw-plan-name">Pro Annual</div>
+        <div class="pw-plan-price">$39<span>/mo</span></div>
+        <div class="pw-plan-desc">Save $120/year</div>
+      </div>
+    </div>
+    <div class="stripe-form">
+      <label>Full Name</label>
+      <input class="stripe-input" id="pwName" placeholder="John Smith"/>
+      <label>Email Address</label>
+      <input class="stripe-input" id="pwEmail" type="email" placeholder="john@email.com"/>
+      <label>Card Number</label>
+      <input class="stripe-input" id="pwCard" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCard(this)"/>
+      <div class="stripe-row">
+        <div><label>Expiry</label><input class="stripe-input" id="pwExpiry" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)"/></div>
+        <div><label>CVV</label><input class="stripe-input" id="pwCvv" placeholder="123" maxlength="4" type="password"/></div>
+      </div>
+    </div>
+    <button class="btn btn-primary" style="width:100%;padding:14px;font-size:1rem;font-weight:700;border-radius:10px" onclick="startTrial()">Start Free Trial - No Charge Today</button>
+    <div class="secure-badges">
+      <span>Secured by Stripe</span>
+      <span>256-bit SSL</span>
+      <span>Cancel Anytime</span>
+    </div>
+    <button onclick="closePaywall()" style="background:none;border:none;color:var(--muted);font-size:.78rem;cursor:pointer;margin-top:12px;display:block;width:100%">No thanks, maybe later</button>
+  </div>
+</div>
+
+<script>
+var selectedPlan = 'pro';
+
+function openPaywall(plan) {
+  selectedPlan = plan || 'pro';
+  selectPlan(selectedPlan);
+  document.getElementById('paywallOverlay').classList.add('open');
+}
+
+function closePaywall() {
+  document.getElementById('paywallOverlay').classList.remove('open');
+}
+
+function selectPlan(plan) {
+  selectedPlan = plan;
+  var plans = ['starter','pro','team','annual'];
+  for (var i = 0; i < plans.length; i++) {
+    var el = document.getElementById('plan-' + plans[i]);
+    if (el) el.classList.remove('selected');
+  }
+  var sel = document.getElementById('plan-' + plan);
+  if (sel) sel.classList.add('selected');
+}
+
+function formatCard(input) {
+  var v = input.value.replace(/\D/g,'').substring(0,16);
+  var parts = [];
+  for (var i = 0; i < v.length; i += 4) parts.push(v.substring(i, i+4));
+  input.value = parts.join(' ');
+}
+
+function formatExpiry(input) {
+  var v = input.value.replace(/\D/g,'');
+  if (v.length >= 2) v = v.substring(0,2) + '/' + v.substring(2,4);
+  input.value = v;
+}
+
+function startTrial() {
+  var name = document.getElementById('pwName').value.trim();
+  var email = document.getElementById('pwEmail').value.trim();
+  var card = document.getElementById('pwCard').value.trim();
+  var expiry = document.getElementById('pwExpiry').value.trim();
+  var cvv = document.getElementById('pwCvv').value.trim();
+
+  if (!name) { alert('Please enter your name'); return; }
+  if (!email || email.indexOf('@') < 0) { alert('Please enter a valid email'); return; }
+  if (card.replace(/\s/g,'').length < 16) { alert('Please enter a valid card number'); return; }
+  if (expiry.length < 5) { alert('Please enter expiry date'); return; }
+  if (cvv.length < 3) { alert('Please enter CVV'); return; }
+
+  var btn = document.querySelector('.paywall-box .btn-primary');
+  if (btn) { btn.textContent = 'Setting up your account...'; btn.disabled = true; }
+
+  // In production this calls Stripe API
+  // For demo: simulate success
+  setTimeout(function() {
+    closePaywall();
+    showSuccessMessage(name, email);
+  }, 1500);
+}
+
+function showSuccessMessage(name, email) {
+  var box = document.createElement('div');
+  box.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+  box.innerHTML = '<div style="background:#111520;border:1px solid #22c55e;border-radius:20px;padding:36px;max-width:400px;width:100%;text-align:center">' +
+    '<div style="font-size:2.5rem;margin-bottom:16px">v</div>' +
+    '<h3 style="font-family:Syne,sans-serif;font-size:1.3rem;font-weight:800;color:#22c55e;margin-bottom:8px">Trial Started!</h3>' +
+    '<p style="color:#8892aa;font-size:.875rem;margin-bottom:20px;line-height:1.6">Welcome ' + name + '! Your 7-day free trial has started. Check ' + email + ' for your login details.</p>' +
+    '<a href="javavault.html" style="display:block;background:#f97316;color:#fff;padding:13px;border-radius:9px;font-weight:600;font-size:.95rem;text-decoration:none;margin-bottom:10px">Open Java Vault Now</a>' +
+    '<button onclick="this.closest(\'div[style*=fixed]\').remove()" style="background:none;border:none;color:#8892aa;font-size:.78rem;cursor:pointer">Close</button>' +
+    '</div>';
+  document.body.appendChild(box);
+}
+
+function toggleFaq(el) {
+  var answer = el.nextElementSibling;
+  var icon = el.querySelector('span:last-child');
+  if (answer.classList.contains('open')) {
+    answer.classList.remove('open');
+    icon.textContent = '+';
+  } else {
+    var all = document.querySelectorAll('.faq-a.open');
+    for (var i = 0; i < all.length; i++) all[i].classList.remove('open');
+    var icons = document.querySelectorAll('.faq-q span:last-child');
+    for (var i = 0; i < icons.length; i++) icons[i].textContent = '+';
+    answer.classList.add('open');
+    icon.textContent = '-';
+  }
+}
+
+document.getElementById('paywallOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closePaywall();
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closePaywall();
+});
+</script>
+</body>
+</html>
