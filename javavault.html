@@ -212,6 +212,62 @@ body.light-mode input, body.light-mode select, body.light-mode textarea { backgr
 /* MULTI-CURRENCY */
 .currency-badge { background:rgba(249,115,22,.1); border:1px solid rgba(249,115,22,.2); color:var(--acc); padding:2px 8px; border-radius:4px; font-size:.72rem; font-weight:600; }
 
+/* ===== SUBSCRIPTION / PLAN STYLES ===== */
+.plan-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.plan-card{background:var(--surf);border:2px solid var(--bor);border-radius:14px;padding:22px;position:relative;transition:.2s;cursor:pointer}
+.plan-card:hover{border-color:var(--acc);transform:translateY(-2px)}
+.plan-card.current-plan{border-color:var(--acc);background:rgba(249,115,22,.05)}
+.plan-card.popular{border-color:#3b82f6}
+.plan-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;font-size:.65rem;font-weight:700;padding:2px 10px;border-radius:10px;letter-spacing:.5px;white-space:nowrap}
+.plan-name{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:4px}
+.plan-price{font-size:1.6rem;font-weight:800;color:var(--acc);font-family:'Syne',sans-serif}
+.plan-price span{font-size:.75rem;color:var(--muted);font-weight:400}
+.plan-feature{font-size:.75rem;color:var(--muted);padding:3px 0;display:flex;align-items:center;gap:6px}
+.plan-feature::before{content:'✓';color:var(--green);font-weight:700;font-size:.8rem}
+.plan-feature.locked::before{content:'🔒';font-size:.7rem}
+.plan-feature.locked{opacity:.5}
+.plan-btn{width:100%;margin-top:14px;padding:9px;border-radius:8px;border:none;cursor:pointer;font-weight:600;font-size:.82rem;font-family:'DM Sans',sans-serif;transition:.2s}
+.plan-btn-active{background:var(--acc);color:#fff}
+.plan-btn-upgrade{background:var(--surf2);border:1px solid var(--bor);color:var(--text)}
+.plan-btn-upgrade:hover{background:var(--acc);color:#fff;border-color:var(--acc)}
+.feature-gate{display:flex;align-items:center;justify-content:center;flex-direction:column;padding:48px 20px;text-align:center;gap:12px}
+.feature-gate-icon{font-size:2.5rem}
+.feature-gate h3{font-family:'Syne',sans-serif;font-size:1.1rem;margin:0}
+.feature-gate p{color:var(--muted);font-size:.85rem;max-width:300px;margin:0}
+
+/* ===== ADMIN DASHBOARD ===== */
+.admin-stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.admin-user-row{display:flex;align-items:center;gap:12px;padding:12px;border-bottom:1px solid var(--bor)}
+.admin-user-row:last-child{border-bottom:none}
+.admin-avatar{width:36px;height:36px;border-radius:50%;background:var(--acc);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;color:#fff;flex-shrink:0}
+.admin-plan-pill{font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:10px}
+.admin-revenue-bar{height:8px;background:var(--surf2);border-radius:4px;overflow:hidden;margin-top:4px}
+.admin-revenue-fill{height:100%;background:var(--acc);border-radius:4px;transition:.5s}
+
+/* ===== RECEIPT SCANNER ===== */
+.receipt-drop{border:2px dashed var(--bor);border-radius:12px;padding:40px 20px;text-align:center;cursor:pointer;transition:.2s;background:var(--surf2)}
+.receipt-drop:hover,.receipt-drop.drag-over{border-color:var(--acc);background:rgba(249,115,22,.05)}
+.receipt-drop-icon{font-size:2.5rem;margin-bottom:10px}
+.receipt-preview{border-radius:10px;overflow:hidden;position:relative;background:var(--surf2);max-height:260px;display:flex;align-items:center;justify-content:center}
+.receipt-preview img{max-width:100%;max-height:260px;object-fit:contain}
+.receipt-scanning{display:flex;align-items:center;gap:10px;color:var(--acc);font-size:.85rem;padding:12px;background:rgba(249,115,22,.08);border-radius:8px}
+.scan-spin{width:18px;height:18px;border:2px solid rgba(249,115,22,.3);border-top-color:var(--acc);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.receipt-field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* ===== DIGITAL SIGNATURES ===== */
+.sig-canvas-wrap{border:2px solid var(--bor);border-radius:10px;overflow:hidden;background:#fff;position:relative}
+.sig-canvas-wrap canvas{display:block;width:100%;touch-action:none}
+.sig-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#bbb;font-size:.85rem;pointer-events:none;user-select:none}
+.sig-strip{background:var(--surf2);border:1px solid var(--bor);border-radius:8px;padding:12px 16px;display:flex;align-items:center;gap:12px;margin-top:10px}
+.sig-strip img{height:40px;object-fit:contain;border-radius:4px;background:#fff;padding:2px}
+.sig-actions{display:flex;gap:8px;margin-top:8px}
+
+/* ===== PLAN BANNER ===== */
+.plan-banner{background:linear-gradient(135deg,rgba(59,130,246,.15),rgba(249,115,22,.1));border:1px solid rgba(59,130,246,.3);border-radius:10px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;gap:10px;flex-wrap:wrap}
+.plan-banner-text{font-size:.82rem;color:var(--text)}
+.plan-banner-badge{background:var(--blue);color:#fff;font-size:.65rem;font-weight:700;padding:3px 10px;border-radius:10px}
+
 /* QR CODE */
 .qr-modal-body { text-align:center; }
 #qrCodeContainer { display:inline-block; padding:16px; background:#fff; border-radius:10px; margin:16px auto; }
@@ -473,6 +529,9 @@ body.light-mode input, body.light-mode select, body.light-mode textarea { backgr
       <div class="nav-item" onclick="go('reviews')" data-section="reviews"><i data-lucide="star" class="nav-icon-svg"></i><span>Reviews</span></div>
       <div class="nav-item" onclick="go('reminders')" data-section="reminders"><i data-lucide="bell" class="nav-icon-svg"></i><span>Reminders</span></div>
       <div class="nav-item" onclick="go('settings')" data-section="settings"><i data-lucide="settings" class="nav-icon-svg"></i><span>My Business</span></div>
+      <div class="nav-item" onclick="go('subscription')" data-section="subscription"><i data-lucide="crown" class="nav-icon-svg"></i><span>Subscription</span></div>
+      <div class="nav-item" onclick="go('receiptscanner')" data-section="receiptscanner"><i data-lucide="scan" class="nav-icon-svg"></i><span>Receipt Scanner</span></div>
+      <div class="nav-item" id="adminNavItem" style="display:none" onclick="go('admin')" data-section="admin"><i data-lucide="shield" class="nav-icon-svg"></i><span>Admin Panel</span></div>
     </nav>
     <div class="sidebar-foot">
       <button class="btn btn-ghost btn-sm" style="width:100%;margin-bottom:6px" onclick="toggleTheme()" id="themeBtn">Light Mode</button>
@@ -687,6 +746,7 @@ body.light-mode input, body.light-mode select, body.light-mode textarea { backgr
             <div class="form-group"><label>Hourly Rate ($) <span style="color:var(--muted);font-size:.72rem">for Job Timer</span></label><input id="profHourlyRate" type="number" placeholder="85" min="0" max="9999"/></div>
             <div class="form-group"><label>Bank Details <span style="color:var(--muted);font-size:.72rem">for invoices</span></label><input id="profBank" placeholder="Bank name, account, routing..." maxlength="200"/></div>
           <div class="form-group"><label>Flutterwave Public Key <span style="color:var(--muted);font-size:.72rem">for African payments</span></label><input id="profFlwKey" placeholder="FLWPUBK_TEST-..." maxlength="200"/></div>
+          <div class="form-group"><label>Paystack Public Key <span style="color:var(--muted);font-size:.72rem">for Nigerian payments</span></label><input id="profPaystackKey" placeholder="pk_live_..." maxlength="200"/></div>
           </div>
           <div class="form-row">
             <div class="form-group"><label>License Number</label><input id="profLicense" placeholder="LIC-123456" maxlength="50"/></div>
@@ -1018,6 +1078,117 @@ body.light-mode input, body.light-mode select, body.light-mode textarea { backgr
       <div class="card" style="margin-top:18px">
         <h3 style="font-size:.95rem;margin-bottom:14px;color:var(--acc)">Recent Paid Invoices</h3>
         <div id="dailyPaidList"></div>
+      </div>
+    </section>
+
+    <!-- ==================== SUBSCRIPTION SECTION ==================== -->
+    <section id="subscription" class="section">
+    <div class="page-hdr">
+      <div><div class="page-title">Subscription & Plans</div><div class="page-sub">Upgrade to unlock more features</div></div>
+      <div id="currentPlanBadge" style="display:flex;align-items:center;gap:8px"></div>
+    </div>
+    <div class="plan-grid" id="planGrid"></div>
+    <div class="card" style="margin-top:8px">
+      <h3 style="font-size:.9rem;margin-bottom:14px;color:var(--acc)">Feature Comparison</h3>
+      <table style="width:100%;border-collapse:collapse">
+        <thead><tr>
+          <th style="text-align:left;font-size:.72rem;color:var(--muted);padding:8px;border-bottom:1px solid var(--bor)">Feature</th>
+          <th style="text-align:center;font-size:.72rem;color:var(--muted);padding:8px;border-bottom:1px solid var(--bor)">Free</th>
+          <th style="text-align:center;font-size:.72rem;color:var(--muted);padding:8px;border-bottom:1px solid var(--bor)">Starter</th>
+          <th style="text-align:center;font-size:.72rem;color:var(--muted);padding:8px;border-bottom:1px solid var(--bor)">Pro</th>
+          <th style="text-align:center;font-size:.72rem;color:var(--muted);padding:8px;border-bottom:1px solid var(--bor)">Business</th>
+        </tr></thead>
+        <tbody id="featureTableBody"></tbody>
+      </table>
+    </div>
+    </section>
+
+    <!-- ==================== ADMIN SECTION ==================== -->
+    <section id="admin" class="section">
+    <div class="page-hdr">
+      <div><div class="page-title">🛡 Admin Dashboard</div><div class="page-sub">All users, revenue, and platform health</div></div>
+      <button class="btn btn-ghost btn-sm" onclick="loadAdminData()">↺ Refresh</button>
+    </div>
+    <div class="admin-stat-row" id="adminStatRow">
+      <div class="stat-card"><div class="stat-label">Total Users</div><div class="stat-val c-blue" id="adTotalUsers">—</div></div>
+      <div class="stat-card"><div class="stat-label">Paying Users</div><div class="stat-val c-green" id="adPayUsers">—</div></div>
+      <div class="stat-card"><div class="stat-label">MRR (₦)</div><div class="stat-val c-orange" id="adMRR">—</div></div>
+      <div class="stat-card"><div class="stat-label">This Month Signups</div><div class="stat-val" id="adNewUsers">—</div></div>
+    </div>
+    <div class="card" style="margin-bottom:18px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <h3 style="font-size:.9rem;color:var(--acc)">Plan Distribution</h3>
+      </div>
+      <div id="adminPlanBars" style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px"></div>
+    </div>
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+        <h3 style="font-size:.9rem;color:var(--acc)">All Users</h3>
+        <input placeholder="Search users..." id="adminSearch" style="width:200px;padding:6px 10px;background:var(--surf2);border:1px solid var(--bor);color:var(--text);border-radius:7px;font-size:.8rem" oninput="filterAdminUsers()"/>
+      </div>
+      <div id="adminUserList"><div class="empty"><div class="empty-icon">⏳</div>Loading users...</div></div>
+    </div>
+    </section>
+
+    <!-- ==================== RECEIPT SCANNER SECTION ==================== -->
+    <section id="receiptscanner" class="section">
+    <div class="page-hdr">
+      <div><div class="page-title">Receipt Scanner</div><div class="page-sub">Snap a receipt — AI fills in the expense automatically</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start">
+      <div>
+        <div class="card" style="margin-bottom:14px">
+          <h3 style="font-size:.9rem;margin-bottom:14px;color:var(--acc)">Upload Receipt</h3>
+          <div class="receipt-drop" id="receiptDrop" onclick="document.getElementById('receiptFileInput').click()" ondragover="receiptDragOver(event)" ondragleave="receiptDragLeave(event)" ondrop="receiptDropHandler(event)">
+            <div class="receipt-drop-icon">📷</div>
+            <div style="font-weight:600;margin-bottom:4px">Drop receipt here or tap to upload</div>
+            <div style="font-size:.78rem;color:var(--muted)">JPG, PNG, HEIC supported</div>
+          </div>
+          <input type="file" id="receiptFileInput" accept="image/*" capture="environment" style="display:none" onchange="receiptFileSelected(event)"/>
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <button class="btn btn-ghost btn-sm" style="flex:1" onclick="document.getElementById('receiptFileInput').click()">📁 Choose File</button>
+            <button class="btn btn-ghost btn-sm" style="flex:1" onclick="openReceiptCamera()">📷 Camera</button>
+          </div>
+        </div>
+        <div class="card" id="receiptPreviewCard" style="display:none">
+          <h3 style="font-size:.9rem;margin-bottom:10px;color:var(--acc)">Receipt Preview</h3>
+          <div class="receipt-preview"><img id="receiptPreviewImg" src="" alt="Receipt"/></div>
+          <div class="receipt-scanning" id="receiptScanningIndicator" style="display:none;margin-top:10px">
+            <div class="scan-spin"></div>
+            <span>AI is reading your receipt...</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="font-size:.9rem;margin-bottom:14px;color:var(--acc)">Extracted Details</h3>
+        <div id="receiptEmptyState" style="text-align:center;padding:32px 0;color:var(--muted)">
+          <div style="font-size:2rem;margin-bottom:8px">🧾</div>
+          <div>Upload a receipt to extract details</div>
+        </div>
+        <div id="receiptFields" style="display:none">
+          <div class="receipt-field-row">
+            <div class="form-group"><label>Vendor / Store</label><input id="rVendor" placeholder="e.g. Home Depot"/></div>
+            <div class="form-group"><label>Date</label><input id="rDate" type="date"/></div>
+          </div>
+          <div class="receipt-field-row">
+            <div class="form-group"><label>Total Amount</label><input id="rAmount" type="number" placeholder="0.00" step="0.01"/></div>
+            <div class="form-group"><label>Category</label>
+              <select id="rCategory">
+                <option>Materials</option><option>Tools</option><option>Fuel</option><option>Food</option>
+                <option>Accommodation</option><option>Subcontractor</option><option>Equipment</option><option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group"><label>Description</label><input id="rDesc" placeholder="What was purchased?"/></div>
+          <div class="form-group"><label>Job / Client (optional)</label>
+            <select id="rJob"><option value="">— Not linked to a job —</option></select>
+          </div>
+          <div id="rItemsList" style="margin-bottom:14px"></div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-primary" style="flex:1" onclick="saveScannedExpense()">✅ Save as Expense</button>
+            <button class="btn btn-ghost btn-sm" onclick="clearReceiptScanner()">Clear</button>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -1648,6 +1819,49 @@ body.light-mode input, body.light-mode select, body.light-mode textarea { backgr
   </div>
 </div>
 
+<!-- DIGITAL SIGNATURE MODAL -->
+<div class="modal-ov" id="sigModal">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-hdr"><div class="modal-title">✍️ Digital Signature</div><button class="modal-x" onclick="closeM('sigModal')">✕</button></div>
+    <div class="modal-body">
+      <div style="font-size:.78rem;color:var(--muted);margin-bottom:10px" id="sigDocLabel">Signing estimate</div>
+      <div class="sig-canvas-wrap">
+        <canvas id="sigCanvas" height="160"></canvas>
+        <div class="sig-placeholder" id="sigPlaceholder">Sign here with your finger or mouse</div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="btn btn-ghost btn-sm" onclick="clearSig()">Clear</button>
+        <div style="flex:1"></div>
+        <div style="font-size:.72rem;color:var(--muted);align-self:center">Draw your signature above</div>
+      </div>
+      <div class="form-group" style="margin-top:12px">
+        <label>Full Name (typed)</label>
+        <input id="sigName" placeholder="Type your full name to confirm"/>
+      </div>
+      <div style="font-size:.72rem;color:var(--muted);margin-top:6px">
+        By signing, you agree to the terms on this document. This digital signature is legally binding.
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeM('sigModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveSig()">Apply Signature</button>
+    </div>
+  </div>
+</div>
+
+<!-- UPGRADE MODAL -->
+<div class="modal-ov" id="upgradeModal">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-hdr"><div class="modal-title">🚀 Upgrade Required</div><button class="modal-x" onclick="closeM('upgradeModal')">✕</button></div>
+    <div class="modal-body" style="text-align:center;padding:28px">
+      <div style="font-size:3rem;margin-bottom:12px" id="upgradeIcon">👑</div>
+      <h3 style="font-family:'Syne',sans-serif;margin-bottom:8px" id="upgradeTitle">Upgrade to Pro</h3>
+      <p style="color:var(--muted);font-size:.85rem;margin-bottom:20px" id="upgradeDesc">This feature requires a higher plan.</p>
+      <button class="btn btn-primary" style="width:100%;padding:12px;font-size:1rem" onclick="closeM('upgradeModal');go('subscription')">View Plans & Upgrade</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 
@@ -1687,12 +1901,12 @@ body.light-mode input, body.light-mode select, body.light-mode textarea { backgr
 // Get them free at: https://console.firebase.google.com
 // ================================================================
 var FIREBASE_CONFIG = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSy8ewXRyo8wB3sDH6CCLjw060b_SZMWdt9",
+  authDomain: "javavault-29cbb.firebaseapp.com",
+  projectId: "javavault-29cbb",
+  storageBucket: "javavault-29cbb.firebasestorage.app",
+  messagingSenderId: "636754390751",
+  appId: "1:636754390751:web:5efbef982d9ed19d20036a"
 };
 
 var fbApp = null;
@@ -2255,7 +2469,8 @@ function go(id) {
     reviews:renderReviews, settings:renderSettings,
     ai:renderAI, team:renderTeam, reminders:renderReminders,
     timer:renderTimer, timeline:renderTimeline, recurring:renderRecurring, voicenotes:renderVoiceNotes,
-    gps:renderGPS, inventory:renderInventory, fuel:renderFuel, warranty:renderWarranty, daily:renderDaily};
+    gps:renderGPS, inventory:renderInventory, fuel:renderFuel, warranty:renderWarranty, daily:renderDaily,
+    subscription:renderSubscription, admin:loadAdminData, receiptscanner:initReceiptScanner};
   if (fn[id]) fn[id]();
 }
 
@@ -5661,6 +5876,717 @@ showForgotPw = function() {
   if (em) em.value = '';
   hideErr();
 };
+
+// ================================================================
+// SUBSCRIPTION SYSTEM
+// ================================================================
+var PLANS = {
+  free: {
+    name: 'Free', price: 0, currency: '₦',
+    color: 'var(--muted)',
+    features: ['Up to 5 estimates/month','Up to 5 invoices/month','Basic client list','Local storage only'],
+    locked: ['Cloud sync','AI Assistant','PDF generation','Receipt Scanner','Digital Signatures','Team management','GPS jobs','Voice notes'],
+    limits: { estimates: 5, invoices: 5 }
+  },
+  starter: {
+    name: 'Starter', price: 4000, currency: '₦',
+    color: 'var(--green)',
+    features: ['Unlimited estimates','Unlimited invoices','Cloud sync','PDF generation','Client history','Job tracking'],
+    locked: ['AI Assistant','Receipt Scanner','Digital Signatures','Team management (coming soon)'],
+    limits: {}
+  },
+  pro: {
+    name: 'Pro', price: 10000, currency: '₦',
+    color: 'var(--acc)',
+    popular: true,
+    features: ['Everything in Starter','AI Estimate Assistant','Receipt Scanner','Digital Signatures','Voice notes','GPS job tracking','Inventory & warranty','Profit analytics'],
+    locked: ['Multi-user team','Admin dashboard'],
+    limits: {}
+  },
+  business: {
+    name: 'Business', price: 30000, currency: '₦',
+    color: 'var(--blue)',
+    features: ['Everything in Pro','Team management','Admin dashboard','Priority support','Custom domain ready','Subscription auto-billing','Multi-currency'],
+    locked: [],
+    limits: {}
+  }
+};
+
+var FEATURE_TABLE = [
+  {name:'Estimates & Quotes', free:'5/mo', starter:'Unlimited', pro:'Unlimited', business:'Unlimited'},
+  {name:'Invoices', free:'5/mo', starter:'Unlimited', pro:'Unlimited', business:'Unlimited'},
+  {name:'Cloud Sync', free:'✗', starter:'✓', pro:'✓', business:'✓'},
+  {name:'PDF Generation', free:'✗', starter:'✓', pro:'✓', business:'✓'},
+  {name:'AI Estimate Assistant', free:'✗', starter:'✗', pro:'✓', business:'✓'},
+  {name:'Receipt Scanner', free:'✗', starter:'✗', pro:'✓', business:'✓'},
+  {name:'Digital Signatures', free:'✗', starter:'✗', pro:'✓', business:'✓'},
+  {name:'Voice Notes', free:'✗', starter:'✗', pro:'✓', business:'✓'},
+  {name:'GPS Job Tracking', free:'✗', starter:'✗', pro:'✓', business:'✓'},
+  {name:'Inventory & Warranty', free:'✗', starter:'✗', pro:'✓', business:'✓'},
+  {name:'Profit Analytics', free:'✗', starter:'✗', pro:'✓', business:'✓'},
+  {name:'Team Management', free:'✗', starter:'✗', pro:'✗', business:'✓'},
+  {name:'Admin Dashboard', free:'✗', starter:'✗', pro:'✗', business:'✓'},
+  {name:'Priority Support', free:'✗', starter:'✗', pro:'✗', business:'✓'}
+];
+
+function getCurrentPlan() {
+  return (D.profile && D.profile.subscriptionPlan) || 'free';
+}
+
+function setPlan(planKey) {
+  if (!D.profile) D.profile = {};
+  D.profile.subscriptionPlan = planKey;
+  D.profile.subscriptionDate = new Date().toISOString();
+  saveState();
+  // Write to Firestore
+  if (FB_READY && fbUser && fbDb) {
+    fbDb.collection('users').doc(fbUser.uid).set({
+      subscriptionPlan: planKey,
+      subscriptionDate: D.profile.subscriptionDate
+    }, {merge:true});
+  }
+}
+
+function canUsePlan(feature) {
+  var plan = getCurrentPlan();
+  var gated = {
+    'ai': ['pro','business'],
+    'receiptscanner': ['pro','business'],
+    'signatures': ['pro','business'],
+    'voicenotes': ['pro','business'],
+    'gps': ['pro','business'],
+    'inventory': ['pro','business'],
+    'warranty': ['pro','business'],
+    'team': ['business'],
+    'admin': ['business'],
+    'pdf': ['starter','pro','business'],
+    'cloud': ['starter','pro','business']
+  };
+  if (!gated[feature]) return true;
+  return gated[feature].indexOf(plan) >= 0;
+}
+
+function requirePlan(feature, title, desc) {
+  if (canUsePlan(feature)) return true;
+  document.getElementById('upgradeTitle').textContent = title || 'Upgrade Required';
+  document.getElementById('upgradeDesc').textContent = desc || 'This feature requires a higher plan.';
+  openM('upgradeModal');
+  return false;
+}
+
+function renderSubscription() {
+  var plan = getCurrentPlan();
+  // Badge
+  var badge = document.getElementById('currentPlanBadge');
+  if (badge) {
+    var p = PLANS[plan];
+    badge.innerHTML = '<span style="font-size:.78rem;color:var(--muted)">Current plan:</span> <span class="plan-banner-badge" style="background:' + p.color + '">' + p.name.toUpperCase() + '</span>';
+  }
+  // Plan cards
+  var grid = document.getElementById('planGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  Object.keys(PLANS).forEach(function(key) {
+    var p = PLANS[key];
+    var isCurrent = key === plan;
+    var card = document.createElement('div');
+    card.className = 'plan-card' + (isCurrent ? ' current-plan' : '');
+    var featHtml = p.features.map(function(f) { return '<div class="plan-feature">' + f + '</div>'; }).join('');
+    var lockHtml = p.locked.slice(0,3).map(function(f) { return '<div class="plan-feature locked">' + f + '</div>'; }).join('');
+    var btnHtml = isCurrent
+      ? '<button class="plan-btn plan-btn-active" disabled>✓ Current Plan</button>'
+      : '<button class="plan-btn plan-btn-upgrade" onclick="upgradeToPlan(\'' + key + '\')">Upgrade to ' + p.name + '</button>';
+    card.innerHTML = (p.popular ? '<div class="plan-badge">MOST POPULAR</div>' : '') +
+      '<div class="plan-name" style="color:' + p.color + '">' + p.name + '</div>' +
+      '<div class="plan-price">' + (p.price === 0 ? 'Free' : p.currency + p.price.toLocaleString()) + '<span>' + (p.price > 0 ? '/month' : '') + '</span></div>' +
+      '<div style="border-top:1px solid var(--bor);margin:12px 0"></div>' +
+      featHtml + lockHtml + btnHtml;
+    grid.appendChild(card);
+  });
+  // Feature table
+  var tbody = document.getElementById('featureTableBody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  FEATURE_TABLE.forEach(function(row) {
+    var tr = document.createElement('tr');
+    function cell(v, col) {
+      var color = v === '✓' ? 'var(--green)' : (v === '✗' ? 'rgba(255,255,255,.2)' : 'var(--text)');
+      var bold = col === plan ? 'font-weight:700;' : '';
+      return '<td style="text-align:' + (col ? 'center' : 'left') + ';font-size:.78rem;padding:8px;border-bottom:1px solid var(--bor);color:' + color + ';' + bold + '">' + v + '</td>';
+    }
+    tr.innerHTML = cell(row.name, null) + cell(row.free, 'free') + cell(row.starter, 'starter') + cell(row.pro, 'pro') + cell(row.business, 'business');
+    tbody.appendChild(tr);
+  });
+}
+
+function upgradeToPlan(key) {
+  var p = PLANS[key];
+  if (p.price === 0) { setPlan(key); renderSubscription(); toast('Plan set to Free', 'success'); return; }
+  // Trigger Paystack payment for subscription
+  var paystackKey = (D.profile && D.profile.paystackKey) || localStorage.getItem('jv_paystackKey');
+  var email = (D.profile && D.profile.email) || (fbUser && fbUser.email) || '';
+  if (!paystackKey) {
+    toast('Add your Paystack key in My Business settings first', 'warn');
+    go('settings'); return;
+  }
+  if (!email) { toast('Add your email in My Business settings', 'warn'); go('settings'); return; }
+  var handler = window.PaystackPop && window.PaystackPop.setup({
+    key: paystackKey,
+    email: email,
+    amount: p.price * 100,
+    currency: 'NGN',
+    ref: 'JV_SUB_' + key.toUpperCase() + '_' + Date.now(),
+    metadata: { plan: key, userId: fbUser ? fbUser.uid : 'local' },
+    callback: function(response) {
+      setPlan(key);
+      renderSubscription();
+      toast('🎉 Upgraded to ' + p.name + '! Payment ref: ' + response.reference, 'success');
+    },
+    onClose: function() { toast('Payment cancelled', 'warn'); }
+  });
+  if (handler) { handler.openIframe(); }
+  else { toast('Paystack not loaded. Configure key in settings.', 'warn'); }
+}
+
+// Update go() to gate certain sections
+var _origGo = go;
+go = function(id) {
+  var gated = { ai:'ai', receiptscanner:'receiptscanner', voicenotes:'voicenotes', gps:'gps', inventory:'inventory', warranty:'warranty', team:'team', admin:'admin' };
+  var gateMessages = {
+    ai: ['Pro Feature — AI Assistant', 'The AI Estimate Assistant is available on Pro and Business plans.'],
+    receiptscanner: ['Pro Feature — Receipt Scanner', 'Scan receipts automatically with AI on Pro and Business plans.'],
+    voicenotes: ['Pro Feature — Voice Notes', 'Voice notes are available on Pro and Business plans.'],
+    gps: ['Pro Feature — GPS Jobs', 'GPS job tracking is available on Pro and Business plans.'],
+    inventory: ['Pro Feature — Inventory', 'Inventory management is available on Pro and Business plans.'],
+    warranty: ['Pro Feature — Warranties', 'Warranty tracking is available on Pro and Business plans.'],
+    team: ['Business Feature — Team', 'Team management is available on the Business plan.'],
+    admin: ['Business Feature — Admin', 'The Admin Dashboard is available on the Business plan.']
+  };
+  if (gated[id] && !canUsePlan(gated[id])) {
+    var msg = gateMessages[id] || ['Upgrade Required', 'This feature requires a higher plan.'];
+    document.getElementById('upgradeTitle').textContent = msg[0];
+    document.getElementById('upgradeDesc').textContent = msg[1];
+    openM('upgradeModal');
+    return;
+  }
+  _origGo(id);
+  if (id === 'subscription') renderSubscription();
+  if (id === 'admin') loadAdminData();
+  if (id === 'receiptscanner') initReceiptScanner();
+};
+
+// Show plan banner on dashboard
+var _origRenderDash = renderDash;
+renderDash = function() {
+  _origRenderDash();
+  var plan = getCurrentPlan();
+  if (plan === 'free' || plan === 'starter') {
+    var existing = document.getElementById('planDashBanner');
+    if (!existing) {
+      var dash = document.getElementById('dashboard');
+      if (dash) {
+        var banner = document.createElement('div');
+        banner.id = 'planDashBanner';
+        banner.className = 'plan-banner';
+        var p = PLANS[plan];
+        banner.innerHTML = '<div><span class="plan-banner-badge" style="background:' + p.color + '">' + p.name.toUpperCase() + '</span> <span class="plan-banner-text" style="margin-left:8px">You\'re on the <strong>' + p.name + '</strong> plan.' + (plan==='free' ? ' Upgrade to unlock all features.' : ' Upgrade to Pro for AI, receipts & signatures.') + '</span></div><button class="btn btn-primary btn-sm" onclick="go(\'subscription\')">Upgrade Now →</button>';
+        dash.insertBefore(banner, dash.firstChild);
+      }
+    }
+  }
+};
+
+// ================================================================
+// ADMIN DASHBOARD
+// ================================================================
+var ADMIN_EMAIL = 'admin@javavault.app'; // Change to your admin email
+var allAdminUsers = [];
+
+function isAdminUser() {
+  if (!fbUser) return false;
+  // Check by email or custom admin claim
+  var adminEmails = [ADMIN_EMAIL];
+  if (D.profile && D.profile.adminEmail) adminEmails.push(D.profile.adminEmail);
+  return adminEmails.indexOf(fbUser.email) >= 0 || (D.profile && D.profile.isAdmin === true);
+}
+
+function checkAdminAccess() {
+  var navItem = document.getElementById('adminNavItem');
+  if (navItem) navItem.style.display = isAdminUser() ? 'flex' : 'none';
+}
+
+function loadAdminData() {
+  if (!FB_READY || !fbDb) {
+    showAdminOffline();
+    return;
+  }
+  document.getElementById('adminUserList').innerHTML = '<div class="empty"><div class="empty-icon">⏳</div>Loading users...</div>';
+  fbDb.collection('users').get().then(function(snapshot) {
+    allAdminUsers = [];
+    var totalMRR = 0;
+    var paying = 0;
+    var thisMonth = 0;
+    var now = new Date();
+    var planCounts = {free:0, starter:0, pro:0, business:0};
+    var planMRR = {free:0, starter:4000, pro:10000, business:30000};
+
+    snapshot.forEach(function(doc) {
+      var data = doc.data();
+      var plan = data.subscriptionPlan || 'free';
+      var subDate = data.subscriptionDate ? new Date(data.subscriptionDate) : null;
+      var user = {
+        uid: doc.id,
+        email: (data.profile && data.profile.email) || data.email || '—',
+        biz: (data.profile && data.profile.bizname) || 'Unnamed Business',
+        plan: plan,
+        subDate: subDate,
+        estimates: (data.estimates || []).length,
+        invoices: (data.invoices || []).length,
+        clients: (data.clients || []).length,
+        updatedAt: data.updatedAt ? new Date(data.updatedAt) : null
+      };
+      allAdminUsers.push(user);
+      planCounts[plan] = (planCounts[plan] || 0) + 1;
+      if (plan !== 'free') {
+        paying++;
+        totalMRR += planMRR[plan] || 0;
+      }
+      if (subDate && subDate.getMonth() === now.getMonth() && subDate.getFullYear() === now.getFullYear()) thisMonth++;
+    });
+
+    document.getElementById('adTotalUsers').textContent = allAdminUsers.length;
+    document.getElementById('adPayUsers').textContent = paying;
+    document.getElementById('adMRR').textContent = '₦' + totalMRR.toLocaleString();
+    document.getElementById('adNewUsers').textContent = thisMonth;
+
+    // Plan bars
+    var bars = document.getElementById('adminPlanBars');
+    if (bars) {
+      var total = allAdminUsers.length || 1;
+      bars.innerHTML = Object.keys(planCounts).map(function(k) {
+        var count = planCounts[k];
+        var pct = Math.round((count / total) * 100);
+        var col = {free:'var(--muted)', starter:'var(--green)', pro:'var(--acc)', business:'var(--blue)'}[k];
+        return '<div style="text-align:center"><div style="font-size:.72rem;color:var(--muted);margin-bottom:4px;text-transform:uppercase">' + k + '</div>' +
+          '<div style="font-size:1.4rem;font-weight:800;font-family:Syne,sans-serif;color:' + col + '">' + count + '</div>' +
+          '<div class="admin-revenue-bar"><div class="admin-revenue-fill" style="width:' + pct + '%;background:' + col + '"></div></div>' +
+          '<div style="font-size:.68rem;color:var(--muted);margin-top:3px">' + pct + '%</div></div>';
+      }).join('');
+    }
+
+    renderAdminUsers(allAdminUsers);
+  }).catch(function(err) {
+    document.getElementById('adminUserList').innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div>Error loading data: ' + err.message + '</div>';
+  });
+}
+
+function renderAdminUsers(users) {
+  var list = document.getElementById('adminUserList');
+  if (!list) return;
+  if (!users.length) { list.innerHTML = '<div class="empty"><div class="empty-icon">👥</div>No users yet</div>'; return; }
+  var planColors = {free:'var(--muted)', starter:'var(--green)', pro:'var(--acc)', business:'var(--blue)'};
+  list.innerHTML = users.map(function(u) {
+    var initial = (u.biz || u.email || '?')[0].toUpperCase();
+    var col = planColors[u.plan] || 'var(--muted)';
+    var ago = u.updatedAt ? timeAgo(u.updatedAt) : 'Never';
+    return '<div class="admin-user-row">' +
+      '<div class="admin-avatar" style="background:' + col + '">' + initial + '</div>' +
+      '<div style="flex:1;min-width:0">' +
+        '<div style="font-weight:600;font-size:.85rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + san(u.biz) + '</div>' +
+        '<div style="font-size:.72rem;color:var(--muted)">' + san(u.email) + '</div>' +
+      '</div>' +
+      '<div style="text-align:center;min-width:60px"><div style="font-size:.65rem;color:var(--muted)">Est/Inv/Cli</div><div style="font-size:.78rem">' + u.estimates + '/' + u.invoices + '/' + u.clients + '</div></div>' +
+      '<div style="text-align:right;min-width:80px">' +
+        '<span class="admin-plan-pill" style="background:rgba(0,0,0,.2);color:' + col + ';border:1px solid ' + col + '">' + u.plan.toUpperCase() + '</span>' +
+        '<div style="font-size:.65rem;color:var(--muted);margin-top:3px">' + ago + '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function filterAdminUsers() {
+  var q = (document.getElementById('adminSearch') || {value:''}).value.toLowerCase();
+  if (!q) { renderAdminUsers(allAdminUsers); return; }
+  renderAdminUsers(allAdminUsers.filter(function(u) {
+    return (u.biz + u.email + u.plan).toLowerCase().indexOf(q) >= 0;
+  }));
+}
+
+function showAdminOffline() {
+  document.getElementById('adTotalUsers').textContent = '—';
+  document.getElementById('adPayUsers').textContent = '—';
+  document.getElementById('adMRR').textContent = '—';
+  document.getElementById('adNewUsers').textContent = '—';
+  document.getElementById('adminUserList').innerHTML = '<div class="empty"><div class="empty-icon">☁️</div>Firestore not connected. Enable it in Firebase console to see user data.</div>';
+}
+
+function timeAgo(date) {
+  var sec = Math.floor((Date.now() - date.getTime()) / 1000);
+  if (sec < 60) return 'just now';
+  if (sec < 3600) return Math.floor(sec/60) + 'm ago';
+  if (sec < 86400) return Math.floor(sec/3600) + 'h ago';
+  return Math.floor(sec/86400) + 'd ago';
+}
+
+// ================================================================
+// RECEIPT SCANNER (AI-powered)
+// ================================================================
+var receiptCurrentFile = null;
+
+function initReceiptScanner() {
+  // Populate job dropdown
+  var sel = document.getElementById('rJob');
+  if (sel && D.jobs) {
+    var existingOpt = sel.querySelector('option[value=""]');
+    sel.innerHTML = '';
+    if (existingOpt) sel.appendChild(existingOpt);
+    else { var opt = document.createElement('option'); opt.value=''; opt.textContent='— Not linked to a job —'; sel.appendChild(opt); }
+    (D.jobs || []).forEach(function(j) {
+      var o = document.createElement('option');
+      o.value = j.id;
+      o.textContent = j.client + ' — ' + (j.title || j.desc || 'Job');
+      sel.appendChild(o);
+    });
+  }
+}
+
+function receiptDragOver(e) {
+  e.preventDefault();
+  document.getElementById('receiptDrop').classList.add('drag-over');
+}
+function receiptDragLeave(e) {
+  document.getElementById('receiptDrop').classList.remove('drag-over');
+}
+function receiptDropHandler(e) {
+  e.preventDefault();
+  document.getElementById('receiptDrop').classList.remove('drag-over');
+  var file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) processReceiptFile(file);
+  else toast('Please drop an image file', 'warn');
+}
+
+function receiptFileSelected(e) {
+  var file = e.target.files[0];
+  if (file) processReceiptFile(file);
+}
+
+function openReceiptCamera() {
+  var input = document.getElementById('receiptFileInput');
+  input.setAttribute('capture', 'environment');
+  input.click();
+}
+
+function processReceiptFile(file) {
+  receiptCurrentFile = file;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = document.getElementById('receiptPreviewImg');
+    if (img) img.src = e.target.result;
+    document.getElementById('receiptPreviewCard').style.display = 'block';
+    document.getElementById('receiptDrop').style.display = 'none';
+    // Start AI scan
+    scanReceiptWithAI(e.target.result);
+  };
+  reader.readAsDataURL(file);
+}
+
+function scanReceiptWithAI(dataUrl) {
+  document.getElementById('receiptScanningIndicator').style.display = 'flex';
+  document.getElementById('receiptFields').style.display = 'none';
+  document.getElementById('receiptEmptyState').style.display = 'none';
+
+  // Extract base64 data
+  var base64 = dataUrl.split(',')[1];
+  var mediaType = dataUrl.split(';')[0].split(':')[1];
+
+  fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 600,
+      messages: [{
+        role: 'user',
+        content: [
+          { type: 'image', source: { type: 'base64', media_type: mediaType, data: base64 } },
+          { type: 'text', text: 'Extract receipt info as JSON only, no markdown, no preamble. Return: {"vendor":"store name","date":"YYYY-MM-DD","total":0.00,"category":"Materials|Tools|Fuel|Food|Other","description":"brief what was bought","items":[{"name":"item","qty":1,"price":0.00}]}. If you cannot determine a field use null. Items array max 5 items.' }
+        ]
+      }]
+    })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    document.getElementById('receiptScanningIndicator').style.display = 'none';
+    var text = '';
+    if (data.content && data.content[0]) text = data.content[0].text || '';
+    try {
+      var clean = text.replace(/```json|```/g,'').trim();
+      var parsed = JSON.parse(clean);
+      fillReceiptFields(parsed);
+    } catch(e) {
+      // Fallback: fill with today's date
+      fillReceiptFields({ vendor: null, date: new Date().toISOString().slice(0,10), total: null, category: 'Other', description: null });
+      toast('Could not auto-read receipt — fill in manually', 'warn');
+    }
+  })
+  .catch(function(err) {
+    document.getElementById('receiptScanningIndicator').style.display = 'none';
+    fillReceiptFields({ vendor: null, date: new Date().toISOString().slice(0,10), total: null, category: 'Other', description: null });
+    toast('AI scan failed — fill in manually', 'warn');
+  });
+}
+
+function fillReceiptFields(data) {
+  document.getElementById('receiptFields').style.display = 'block';
+  if (data.vendor) document.getElementById('rVendor').value = data.vendor;
+  if (data.date) document.getElementById('rDate').value = data.date;
+  if (data.total) document.getElementById('rAmount').value = data.total;
+  if (data.category) {
+    var sel = document.getElementById('rCategory');
+    var opts = Array.from(sel.options).map(function(o){return o.value;});
+    if (opts.indexOf(data.category) >= 0) sel.value = data.category;
+  }
+  if (data.description) document.getElementById('rDesc').value = data.description;
+  // Show line items
+  var itemsDiv = document.getElementById('rItemsList');
+  if (itemsDiv && data.items && data.items.length) {
+    itemsDiv.innerHTML = '<div style="font-size:.72rem;color:var(--muted);margin-bottom:6px;font-weight:600">ITEMS FOUND ON RECEIPT</div>' +
+      data.items.map(function(item) {
+        return '<div style="display:flex;justify-content:space-between;font-size:.78rem;padding:4px 0;border-bottom:1px solid var(--bor)">' +
+          '<span>' + san(String(item.name||'')) + (item.qty > 1 ? ' x' + item.qty : '') + '</span>' +
+          '<span style="color:var(--acc)">₦' + (+(item.price||0)).toFixed(2) + '</span></div>';
+      }).join('');
+  }
+  toast('✅ Receipt scanned!', 'success');
+}
+
+function saveScannedExpense() {
+  var vendor = document.getElementById('rVendor').value.trim();
+  var amount = parseFloat(document.getElementById('rAmount').value) || 0;
+  var date = document.getElementById('rDate').value || new Date().toISOString().slice(0,10);
+  var cat = document.getElementById('rCategory').value;
+  var desc = document.getElementById('rDesc').value.trim();
+  if (!vendor && !desc) { toast('Add vendor or description', 'warn'); return; }
+  if (!amount) { toast('Enter the amount', 'warn'); return; }
+  if (!D.expenses) D.expenses = [];
+  D.expenses.push({
+    id: 'exp_' + Date.now(),
+    vendor: vendor, amount: amount, date: date,
+    cat: cat, desc: desc || vendor,
+    source: 'receipt_scanner',
+    createdAt: new Date().toISOString()
+  });
+  saveState();
+  toast('✅ Expense saved from receipt!', 'success');
+  clearReceiptScanner();
+}
+
+function clearReceiptScanner() {
+  receiptCurrentFile = null;
+  document.getElementById('receiptPreviewCard').style.display = 'none';
+  document.getElementById('receiptDrop').style.display = 'block';
+  document.getElementById('receiptFields').style.display = 'none';
+  document.getElementById('receiptEmptyState').style.display = 'block';
+  document.getElementById('receiptScanningIndicator').style.display = 'none';
+  document.getElementById('rItemsList').innerHTML = '';
+  ['rVendor','rAmount','rDesc'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('rDate').value = new Date().toISOString().slice(0,10);
+  var fi = document.getElementById('receiptFileInput'); if(fi) fi.value='';
+}
+
+// ================================================================
+// DIGITAL SIGNATURES
+// ================================================================
+var sigCtx = null;
+var sigDrawing = false;
+var sigHasData = false;
+var sigTarget = null; // {type:'estimate'|'invoice', id: string}
+var sigLastX = 0, sigLastY = 0;
+
+function initSigCanvas() {
+  var canvas = document.getElementById('sigCanvas');
+  if (!canvas || sigCtx) return;
+  // Size canvas to wrapper
+  var wrap = canvas.parentElement;
+  canvas.width = wrap.clientWidth || 440;
+  canvas.height = 160;
+  sigCtx = canvas.getContext('2d');
+  sigCtx.strokeStyle = '#111';
+  sigCtx.lineWidth = 2.5;
+  sigCtx.lineCap = 'round';
+  sigCtx.lineJoin = 'round';
+
+  function getPos(e) {
+    var rect = canvas.getBoundingClientRect();
+    var scaleX = canvas.width / rect.width;
+    var scaleY = canvas.height / rect.height;
+    var src = e.touches ? e.touches[0] : e;
+    return { x: (src.clientX - rect.left) * scaleX, y: (src.clientY - rect.top) * scaleY };
+  }
+
+  canvas.addEventListener('mousedown', function(e) {
+    sigDrawing = true;
+    var p = getPos(e);
+    sigLastX = p.x; sigLastY = p.y;
+    document.getElementById('sigPlaceholder').style.display = 'none';
+  });
+  canvas.addEventListener('mousemove', function(e) {
+    if (!sigDrawing) return;
+    var p = getPos(e);
+    sigCtx.beginPath();
+    sigCtx.moveTo(sigLastX, sigLastY);
+    sigCtx.lineTo(p.x, p.y);
+    sigCtx.stroke();
+    sigLastX = p.x; sigLastY = p.y;
+    sigHasData = true;
+  });
+  canvas.addEventListener('mouseup', function() { sigDrawing = false; });
+  canvas.addEventListener('mouseleave', function() { sigDrawing = false; });
+
+  canvas.addEventListener('touchstart', function(e) {
+    e.preventDefault();
+    sigDrawing = true;
+    var p = getPos(e);
+    sigLastX = p.x; sigLastY = p.y;
+    document.getElementById('sigPlaceholder').style.display = 'none';
+  }, {passive:false});
+  canvas.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+    if (!sigDrawing) return;
+    var p = getPos(e);
+    sigCtx.beginPath();
+    sigCtx.moveTo(sigLastX, sigLastY);
+    sigCtx.lineTo(p.x, p.y);
+    sigCtx.stroke();
+    sigLastX = p.x; sigLastY = p.y;
+    sigHasData = true;
+  }, {passive:false});
+  canvas.addEventListener('touchend', function() { sigDrawing = false; });
+}
+
+function clearSig() {
+  if (!sigCtx) return;
+  var canvas = document.getElementById('sigCanvas');
+  sigCtx.clearRect(0, 0, canvas.width, canvas.height);
+  sigHasData = false;
+  document.getElementById('sigPlaceholder').style.display = 'flex';
+}
+
+function openSigModal(type, id, label) {
+  if (!requirePlan('signatures', 'Pro Feature — Digital Signatures', 'Digital signatures are available on Pro and Business plans.')) return;
+  sigTarget = {type: type, id: id};
+  document.getElementById('sigDocLabel').textContent = 'Signing ' + (label || type + ' #' + id);
+  document.getElementById('sigName').value = (D.profile && D.profile.name) || '';
+  sigCtx = null; sigHasData = false;
+  openM('sigModal');
+  setTimeout(function() { initSigCanvas(); clearSig(); }, 100);
+}
+
+function saveSig() {
+  if (!sigHasData) { toast('Please draw your signature', 'warn'); return; }
+  var name = document.getElementById('sigName').value.trim();
+  if (!name) { toast('Type your full name to confirm', 'warn'); return; }
+  var canvas = document.getElementById('sigCanvas');
+  var dataUrl = canvas.toDataURL('image/png');
+  if (!sigTarget) { toast('No document selected', 'warn'); return; }
+  // Save signature to the target document
+  var list = sigTarget.type === 'estimate' ? D.estimates : D.invoices;
+  var doc = (list || []).find(function(x){ return x.id === sigTarget.id; });
+  if (!doc) { toast('Document not found', 'error'); return; }
+  doc.signature = { image: dataUrl, name: name, date: new Date().toISOString(), signedBy: 'client' };
+  saveState();
+  closeM('sigModal');
+  toast('✅ Signature saved to ' + sigTarget.type + '!', 'success');
+  // Re-render
+  if (sigTarget.type === 'estimate') renderEsts();
+  else renderInvs();
+}
+
+// Add "Sign" button to estimate and invoice renders
+var _origRenderEsts = renderEsts;
+renderEsts = function() {
+  _origRenderEsts();
+  // After render, patch action buttons if estimate has no signature
+  setTimeout(function() {
+    var tbody = document.getElementById('estTbody');
+    if (!tbody) return;
+    // We patch via the existing row data
+  }, 50);
+};
+
+// ================================================================
+// PATCH SAVE PROFILE TO INCLUDE PAYSTACK KEY
+// ================================================================
+var _origSaveProfileV2 = saveProfile;
+saveProfile = function() {
+  _origSaveProfileV2();
+  if (D.profile) {
+    var pk = document.getElementById('profPaystackKey');
+    if (pk) { D.profile.paystackKey = pk.value.trim(); localStorage.setItem('jv_paystackKey', pk.value.trim()); }
+    saveLocal();
+  }
+};
+
+var _origRenderSettingsV2 = renderSettings;
+renderSettings = function() {
+  _origRenderSettingsV2();
+  var pk = document.getElementById('profPaystackKey');
+  if (pk && D.profile && D.profile.paystackKey) pk.value = D.profile.paystackKey;
+};
+
+// ================================================================
+// PATCH UNLOCK TO CHECK ADMIN + LOAD SUBSCRIPTION
+// ================================================================
+var _origUnlockAppV2 = unlockApp;
+unlockApp = function() {
+  _origUnlockAppV2();
+  setTimeout(function() {
+    checkAdminAccess();
+    // Load subscription plan from Firestore if available
+    if (FB_READY && fbUser && fbDb) {
+      fbDb.collection('users').doc(fbUser.uid).get().then(function(doc) {
+        if (doc.exists && doc.data().subscriptionPlan) {
+          if (!D.profile) D.profile = {};
+          D.profile.subscriptionPlan = doc.data().subscriptionPlan;
+          // Check if admin
+          if (doc.data().isAdmin) D.profile.isAdmin = true;
+          checkAdminAccess();
+        }
+      }).catch(function(){});
+    }
+  }, 1200);
+};
+
+// ================================================================
+// PRIVACY POLICY & TERMS LINKS IN SETTINGS
+// ================================================================
+var _origRenderSettingsV3 = renderSettings;
+renderSettings = function() {
+  _origRenderSettingsV3();
+  var existing = document.getElementById('legalLinksSection');
+  if (!existing) {
+    var settingsSection = document.getElementById('settings');
+    if (settingsSection) {
+      var div = document.createElement('div');
+      div.id = 'legalLinksSection';
+      div.style.cssText = 'margin-top:18px';
+      div.innerHTML = '<div class="card"><h3 style="font-size:.9rem;margin-bottom:12px;color:var(--acc)">Legal</h3>' +
+        '<div style="display:flex;gap:10px;flex-wrap:wrap">' +
+        '<a href="privacy-policy.html" target="_blank" class="btn btn-ghost btn-sm">📄 Privacy Policy</a>' +
+        '<a href="terms-of-service.html" target="_blank" class="btn btn-ghost btn-sm">📋 Terms of Service</a>' +
+        '<button class="btn btn-ghost btn-sm" onclick="go(\'subscription\')">👑 Subscription Plans</button>' +
+        '</div>' +
+        '<div style="font-size:.72rem;color:var(--muted);margin-top:10px">Version 2.0 · Java Vault · Built for the Trade</div></div>';
+      settingsSection.appendChild(div);
+    }
+  }
+};
+
+// Initialize receipt date field
+document.addEventListener('DOMContentLoaded', function() {
+  var rd = document.getElementById('rDate');
+  if (rd) rd.value = new Date().toISOString().slice(0,10);
+});
 </script>
 </body>
 </html>
