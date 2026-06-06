@@ -7525,7 +7525,7 @@ renderSettings = function() {
         '<div style="display:flex;gap:10px;flex-wrap:wrap">' +
         '<a href="privacy-policy.html" target="_blank" class="btn btn-ghost btn-sm">📄 Privacy Policy</a>' +
         '<a href="terms-of-service.html" target="_blank" class="btn btn-ghost btn-sm">📋 Terms of Service</a>' +
-        '<button class="btn btn-ghost btn-sm" onclick="go('subscription')">👑 Subscription Plans</button>' +
+        '<button class="btn btn-ghost btn-sm" onclick="go(\'subscription\')">👑 Subscription Plans</button>' +
         '</div><div style="font-size:.72rem;color:var(--muted);margin-top:10px">Version 5.0 · Java Vault · Built for the Trade · © 2025</div>' +
         '<div style="font-size:.68rem;color:var(--muted);margin-top:6px;line-height:1.6">By using Java Vault you agree to our Terms of Service and Privacy Policy. AI-generated content may contain errors — always review before use.</div></div>';
       settingsSection.appendChild(div);
@@ -7542,7 +7542,7 @@ renderSettings = function() {
       div2.innerHTML = '<h3 style="font-size:.9rem;margin-bottom:12px;color:var(--acc)">🔔 Notifications</h3>' +
         '<p style="font-size:.82rem;color:var(--muted);margin-bottom:12px">Get reminders for overdue invoices and upcoming jobs</p>' +
         '<button class="btn btn-primary btn-sm" onclick="requestNotifPermission()">Enable Push Notifications</button>' +
-        (typeof Notification !== "undefined" && Notification.permission === "granted" ? "<span style="margin-left:10px;color:var(--green);font-size:.78rem">✓ Enabled</span>" : "");
+        (typeof Notification !== "undefined" && Notification.permission === "granted" ? '<span style="margin-left:10px;color:var(--green);font-size:.78rem">✓ Enabled</span>' : "");
       settingsSection2.appendChild(div2);
     }
   }
@@ -7900,74 +7900,79 @@ function checkPortalMode() {
 
 function buildPortalPage(type, doc, biz, id) {
   if (!doc) {
-    return '<div style="font-family:DM Sans,sans-serif;background:#0f1117;min-height:100vh;display:flex;align-items:center;justify-content:center;color:#fff">' +
-      '<div style="text-align:center"><div style="font-size:3rem">🔍</div><h2>Document not found</h2><p style="color:#8892aa">This link may have expired or the document doesn\'t exist.</p></div></div>';
+    return '<div style="font-family:sans-serif;background:#0f1117;min-height:100vh;display:flex;align-items:center;justify-content:center;color:#fff"><div style="text-align:center"><div style="font-size:3rem">404</div><h2>Document not found</h2></div></div>';
   }
-
   var isPaid = doc.status === 'paid';
   var total = doc.total || 0;
   var num = doc.num || id.slice(-6).toUpperCase();
   var bizName = doc.bizname || biz;
+  var paystackKey = 'pk_test_411f02e2db0065859307f396aeca6a5b22a91ff3';
 
-  return '<!DOCTYPE html><html><head><meta charset="UTF-8"/>' +
-    '<meta name="viewport" content="width=device-width,initial-scale=1"/>' +
-    '<title>' + (type==='invoice'?'Invoice':'Estimate') + ' #' + num + ' — ' + bizName + '</title>' +
-    '<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>' +
-    '<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:"DM Sans",sans-serif;background:#0f1117;color:#f0f2f8;min-height:100vh}' +
-    '.ph{background:#0f1724;border-bottom:1px solid #2a2f45;padding:16px 24px;display:flex;align-items:center;justify-content:space-between}' +
-    '.pl{font-family:"Syne",sans-serif;font-size:1.3rem;font-weight:800}.pl span{color:#f97316}' +
-    '.pc{max-width:580px;margin:40px auto;padding:0 16px}' +
-    '.card{background:#181c27;border:1px solid #2a2f45;border-radius:16px;overflow:hidden;margin-bottom:20px}' +
-    '.card-hdr{background:linear-gradient(135deg,#f97316,#ea580c);padding:28px;color:#fff}' +
-    '.card-hdr h1{font-family:"Syne",sans-serif;font-size:1.5rem;font-weight:800;margin-bottom:4px}' +
-    '.card-hdr p{font-size:.85rem;opacity:.85}' +
-    '.card-body{padding:24px}' +
-    '.row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #2a2f45}' +
+  // Use template literal stored in variable to avoid quote nesting
+  var portalData = JSON.stringify({id:id,total:total,num:num,biz:bizName});
+  var payScript = [
+    'var _pd=' + portalData + ';',
+    'function openPortalPay(){',
+    'var k="' + paystackKey + '";',
+    'if(!window.PaystackPop){alert("Payment loading, please wait...");return;}',
+    'var em=prompt("Enter your email for payment receipt:");',
+    'if(!em)return;',
+    'var h=PaystackPop.setup({',
+    'key:k,email:em,',
+    'amount:' + (total*100) + ',',
+    'currency:"NGN",',
+    'ref:"JV_PAY_' + num + '_"+Date.now(),',
+    'callback:function(r){',
+    'document.getElementById("paybtn").style.display="none";',
+    'document.getElementById("payresult").innerHTML="<div style=\"padding:14px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);border-radius:8px;color:#22c55e;font-weight:700;margin-top:14px;text-align:center\">Payment Successful! Ref: "+r.reference+"</div>";',
+    '},',
+    'onClose:function(){}',
+    '});h.openIframe();',
+    '}'
+  ].join('\n');
+
+  var html = '<!DOCTYPE html><html><head>' +
+    '<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>' +
+    '<title>' + (type==='invoice'?'Invoice':'Estimate') + ' #' + num + '</title>' +
+    '<link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=DM+Sans&display=swap" rel="stylesheet"/>' +
+    '<style>*{box-sizing:border-box;margin:0;padding:0}' +
+    'body{font-family:"DM Sans",sans-serif;background:#0f1117;color:#f0f2f8;min-height:100vh}' +
+    '.hdr{background:#0f1724;border-bottom:1px solid #2a2f45;padding:16px 24px;display:flex;align-items:center;justify-content:space-between}' +
+    '.logo{font-family:"Syne",sans-serif;font-size:1.3rem;font-weight:800;color:#fff}' +
+    '.logo span{color:#f97316}' +
+    '.wrap{max-width:560px;margin:32px auto;padding:0 16px}' +
+    '.card{background:#181c27;border:1px solid #2a2f45;border-radius:16px;overflow:hidden;margin-bottom:16px}' +
+    '.card-top{background:linear-gradient(135deg,#f97316,#ea580c);padding:24px;color:#fff}' +
+    '.card-top h1{font-family:"Syne",sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:4px}' +
+    '.card-body{padding:20px}' +
+    '.row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #2a2f45;font-size:.88rem}' +
     '.row:last-child{border-bottom:none}' +
-    '.rl{font-size:.75rem;color:#8892aa;text-transform:uppercase;letter-spacing:.5px}' +
-    '.rv{font-weight:600;font-size:.9rem;color:#f0f2f8}' +
-    '.rv.big{font-size:1.4rem;font-family:"Syne",sans-serif;color:#f97316}' +
-    '.pay-btn{width:100%;padding:16px;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;border:none;border-radius:10px;font-family:"Syne",sans-serif;font-size:1rem;font-weight:700;cursor:pointer;margin-top:8px;transition:.2s}' +
-    '.pay-btn:hover{opacity:.9;transform:translateY(-1px)}' +
-    '.paid-badge{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#22c55e;padding:14px;border-radius:10px;text-align:center;font-weight:700;font-size:1rem;margin-top:8px}' +
-    '.secure{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:14px;font-size:.72rem;color:#4a5568}' +
+    '.label{color:#8892aa}' +
+    '.val{font-weight:600}' +
+    '.big{font-size:1.4rem;font-family:"Syne",sans-serif;color:#f97316}' +
+    '.pay-btn{width:100%;padding:15px;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;border:none;border-radius:10px;font-family:"Syne",sans-serif;font-size:1rem;font-weight:700;cursor:pointer;margin-top:12px}' +
+    '.secure{text-align:center;font-size:.72rem;color:#4a5568;margin-top:10px}' +
     '</style></head><body>' +
-    '<div class="ph"><div class="pl"><span>Java</span>Vault</div><div style="font-size:.78rem;color:#8892aa">Powered by Java Vault</div></div>' +
-    '<div class="pc">' +
+    '<div class="hdr"><div class="logo"><span>Java</span>Vault</div><div style="font-size:.75rem;color:#8892aa">Powered by Java Vault</div></div>' +
+    '<div class="wrap">' +
     '<div class="card">' +
-    '<div class="card-hdr"><h1>' + (type==='invoice'?'Invoice':'Estimate') + ' #' + num + '</h1><p>From ' + san(bizName) + '</p></div>' +
+    '<div class="card-top"><h1>' + (type==='invoice'?'Invoice':'Estimate') + ' #' + san(num) + '</h1><p style="opacity:.85">From ' + san(bizName) + '</p></div>' +
     '<div class="card-body">' +
-    '<div class="row"><div class="rl">Client</div><div class="rv">' + san(doc.client||'—') + '</div></div>' +
-    '<div class="row"><div class="rl">Description</div><div class="rv">' + san(doc.desc||doc.title||'—') + '</div></div>' +
-    '<div class="row"><div class="rl">' + (type==='invoice'?'Due Date':'Valid Until') + '</div><div class="rv">' + san(doc.due||doc.expiry||'On receipt') + '</div></div>' +
-    '<div class="row"><div class="rl">Status</div><div class="rv" style="color:' + (isPaid?'#22c55e':'#f59e0b') + '">' + (isPaid?'✓ Paid':'⏳ Pending') + '</div></div>' +
-    '<div class="row"><div class="rl">Amount</div><div class="rv big">₦' + Number(total).toLocaleString() + '</div></div>' +
+    '<div class="row"><span class="label">Client</span><span class="val">' + san(doc.client||'—') + '</span></div>' +
+    '<div class="row"><span class="label">Description</span><span class="val">' + san(doc.desc||doc.title||'—') + '</span></div>' +
+    '<div class="row"><span class="label">' + (type==='invoice'?'Due':'Valid Until') + '</span><span class="val">' + san(doc.due||doc.expiry||'On receipt') + '</span></div>' +
+    '<div class="row"><span class="label">Status</span><span class="val" style="color:' + (isPaid?'#22c55e':'#f59e0b') + '">' + (isPaid?'Paid':'Pending') + '</span></div>' +
+    '<div class="row"><span class="label">Amount</span><span class="val big">₦' + Number(total).toLocaleString() + '</span></div>' +
     (isPaid
-      ? '<div class="paid-badge">✅ This invoice has been paid. Thank you!</div>'
-      : '<button class="pay-btn" onclick="openPortalPay()">💳 Pay Now — ₦' + Number(total).toLocaleString() + '</button>') +
+      ? '<div style="padding:12px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);border-radius:8px;text-align:center;color:#22c55e;font-weight:700;margin-top:12px">✅ This invoice has been paid</div>'
+      : '<button class="pay-btn" id="paybtn" onclick="openPortalPay()">Pay Now — ₦' + Number(total).toLocaleString() + '</button>') +
+    '<div id="payresult"></div>' +
     '<div class="secure">🔒 Secure payment powered by Paystack</div>' +
-    '</div></div>' +
-    (doc.items && doc.items.length ? '<div class="card"><div class="card-body">' +
-      '<div style="font-weight:700;margin-bottom:12px;font-family:Syne,sans-serif">Line Items</div>' +
-      doc.items.map(function(item){
-        return '<div class="row"><div class="rl">' + san(item.desc||item.name||'Item') + (item.qty>1?' x'+item.qty:'') + '</div><div class="rv">₦' + Number((item.rate||item.price||0)*(item.qty||1)).toLocaleString() + '</div></div>';
-      }).join('') +
-      '</div></div>' : '') +
-    '</div>' +
-    '<script>var _portalDoc=' + JSON.stringify({id:id,total:total,client:doc.client,num:num,biz:bizName}) + ';' +
-    'function openPortalPay(){' +
-    'var key=localStorage.getItem("jv_paystackKey")||"pk_test_411f02e2db0065859307f396aeca6a5b22a91ff3";' +
-    'if(window.PaystackPop){' +
-    'var h=PaystackPop.setup({key:key,email:prompt("Enter your email for receipt:")||"client@example.com",' +
-    'amount:' + (total*100) + ',currency:"NGN",' +
-    'ref:"JV_PAY_' + num + '_"+Date.now(),' +
-    'callback:function(r){document.querySelector(".pay-btn").style.display="none";' +
-    'document.querySelector(".card-body").insertAdjacentHTML("beforeend","<div class=\\"paid-badge\\">✅ Payment successful! Ref: "+r.reference+"</div>");},' +
-    'onClose:function(){}});h.openIframe();}' +
-    'else{alert("Payment loading... Please try again in a moment.");}' +
-    '}</script>' +
-    '<script src="https://js.paystack.co/v1/inline.js"></script>' +
+    '</div></div></div>' +
+    '<script>' + payScript + '<\/script>' +
+    '<script src="https://js.paystack.co/v1/inline.js"><\/script>' +
     '</body></html>';
+  return html;
 }
 
 // ================================================================
