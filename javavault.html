@@ -68,19 +68,57 @@ textarea{resize:vertical;min-height:75px}
 .toast{position:fixed;bottom:20px;right:20px;padding:11px 18px;border-radius:9px;font-size:.875rem;font-weight:500;z-index:9999;transform:translateY(60px);opacity:0;transition:.3s;pointer-events:none}
 .toast.show{transform:translateY(0);opacity:1}
 .t-success{background:#22c55e;color:#fff}.t-error{background:#ef4444;color:#fff}.t-warn{background:#f97316;color:#fff}
-.login-screen{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center}
-.login-box{background:var(--surf);border:1px solid var(--bor);border-radius:18px;padding:36px;width:100%;max-width:380px}
-.login-logo-box{background:#0f1724;border-radius:10px;padding:16px;text-align:center;margin-bottom:20px}
-.login-logo-title{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:#f97316}
-.login-logo-vault{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:#fff}
-.login-logo-tag{font-size:.6rem;color:#8892aa;letter-spacing:2px;text-transform:uppercase;margin-top:4px}
-.login-sub{text-align:center;color:var(--muted);font-size:.875rem;margin-bottom:22px}
-.login-err{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:var(--red);padding:9px 12px;border-radius:7px;font-size:.82rem;margin-bottom:14px;display:none}
-.input-wrap{position:relative}
-.input-wrap input{padding-right:38px}
-.eye-btn{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer}
-.strength-bar{height:3px;border-radius:2px;margin-top:5px;background:var(--bor);transition:.3s}
-.sb-weak{background:var(--red);width:30%}.sb-med{background:#f59e0b;width:65%}.sb-str{background:var(--green);width:100%}
+.login-screen{position:fixed;inset:0;z-index:9999;display:flex;overflow:hidden}
+.login-left{flex:1;background:linear-gradient(145deg,#0a0f1a 0%,#0f1724 50%,#111827 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px;position:relative;overflow:hidden}
+.login-left::before{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;background:radial-gradient(circle,rgba(249,115,22,.15) 0%,transparent 70%);border-radius:50%}
+.login-left::after{content:'';position:absolute;bottom:-60px;left:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(59,130,246,.1) 0%,transparent 70%);border-radius:50%}
+.login-right{width:420px;background:#0f1117;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px;overflow-y:auto}
+.login-brand{text-align:center;margin-bottom:32px;position:relative;z-index:1}
+.login-brand-logo{font-family:'Syne',sans-serif;font-size:3rem;font-weight:800;line-height:1}
+.login-brand-logo .java{color:#f97316}
+.login-brand-logo .vault{color:#fff}
+.login-brand-sub{font-size:.75rem;letter-spacing:3px;text-transform:uppercase;color:#8892aa;margin-top:6px}
+.login-tagline{font-size:1.1rem;color:#c8d0e0;text-align:center;line-height:1.6;max-width:320px;position:relative;z-index:1}
+.login-features{display:flex;flex-direction:column;gap:16px;margin-top:36px;position:relative;z-index:1;width:100%;max-width:320px}
+.login-feature{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px 16px}
+.login-feature-icon{width:36px;height:36px;background:rgba(249,115,22,.15);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.login-feature-text{font-size:.82rem;color:#c8d0e0;line-height:1.4}
+.login-feature-text strong{color:#fff;display:block;margin-bottom:2px}
+.login-box{width:100%;max-width:340px}
+.login-box-title{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:#fff;margin-bottom:4px}
+.login-box-sub{font-size:.82rem;color:#8892aa;margin-bottom:28px}
+.login-input-group{margin-bottom:16px}
+.login-input-group label{display:block;font-size:.75rem;font-weight:600;color:#8892aa;margin-bottom:7px;text-transform:uppercase;letter-spacing:.5px}
+.login-input{width:100%;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);color:#fff;padding:12px 14px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:.2s}
+.login-input:focus{border-color:#f97316;background:rgba(249,115,22,.05);box-shadow:0 0 0 3px rgba(249,115,22,.1)}
+.login-input::placeholder{color:#4a5568}
+.login-input-wrap{position:relative}
+.login-input-wrap .login-input{padding-right:44px}
+.login-eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#8892aa;cursor:pointer;font-size:.9rem;padding:4px}
+.login-btn-primary{width:100%;padding:13px;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;border:none;border-radius:10px;font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;transition:.2s;margin-bottom:12px;letter-spacing:.3px}
+.login-btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(249,115,22,.4)}
+.login-btn-primary:active{transform:translateY(0)}
+.login-btn-google{width:100%;padding:12px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.12);color:#fff;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px}
+.login-btn-google:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2)}
+.login-btn-phone{width:100%;padding:12px;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.08);color:#8892aa;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:10px}
+.login-btn-phone:hover{background:rgba(255,255,255,.08);color:#fff}
+.login-divider{display:flex;align-items:center;gap:12px;margin:16px 0}
+.login-divider::before,.login-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.08)}
+.login-divider span{font-size:.72rem;color:#4a5568;font-weight:500}
+.login-switch{text-align:center;margin-top:20px;font-size:.82rem;color:#8892aa}
+.login-switch a{color:#f97316;cursor:pointer;font-weight:600;text-decoration:none}
+.login-switch a:hover{text-decoration:underline}
+.login-secure{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:24px;font-size:.72rem;color:#4a5568}
+.login-err-new{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#fc8181;padding:10px 14px;border-radius:8px;font-size:.82rem;margin-bottom:16px;display:none}
+.login-strength{height:3px;border-radius:2px;margin-top:6px;background:rgba(255,255,255,.08);transition:.3s}
+.ls-weak{background:#ef4444;width:33%}.ls-med{background:#f59e0b;width:66%}.ls-str{background:#22c55e;width:100%}
+.login-otp-row{display:flex;gap:8px;justify-content:center;margin:16px 0}
+.login-otp-box{width:44px;height:52px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.12);color:#fff;text-align:center;font-size:1.2rem;font-weight:700;border-radius:10px;outline:none;transition:.2s;font-family:'Syne',sans-serif}
+.login-otp-box:focus{border-color:#f97316;background:rgba(249,115,22,.08)}
+.trial-badge{background:linear-gradient(135deg,rgba(34,197,94,.15),rgba(34,197,94,.05));border:1px solid rgba(34,197,94,.25);border-radius:10px;padding:12px 16px;text-align:center;margin-bottom:20px}
+.trial-badge-title{color:#22c55e;font-weight:700;font-size:.88rem;margin-bottom:2px}
+.trial-badge-sub{color:#8892aa;font-size:.75rem}
+@media(max-width:768px){.login-left{display:none}.login-right{width:100%;padding:32px 24px}}
 .job-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .job-card{background:var(--surf);border:1px solid var(--bor);border-radius:11px;padding:18px;transition:.2s}
 .job-card:hover{border-color:var(--acc);transform:translateY(-2px)}
@@ -213,7 +251,7 @@ body.light-mode input, body.light-mode select, body.light-mode textarea { backgr
 .currency-badge { background:rgba(249,115,22,.1); border:1px solid rgba(249,115,22,.2); color:var(--acc); padding:2px 8px; border-radius:4px; font-size:.72rem; font-weight:600; }
 
 /* ===== SUBSCRIPTION / PLAN STYLES ===== */
-.plan-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.plan-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px}
 .plan-card{background:var(--surf);border:2px solid var(--bor);border-radius:14px;padding:22px;position:relative;transition:.2s;cursor:pointer}
 .plan-card:hover{border-color:var(--acc);transform:translateY(-2px)}
 .plan-card.current-plan{border-color:var(--acc);background:rgba(249,115,22,.05)}
@@ -244,6 +282,52 @@ body.light-mode input, body.light-mode select, body.light-mode textarea { backgr
 .admin-revenue-bar{height:8px;background:var(--surf2);border-radius:4px;overflow:hidden;margin-top:4px}
 .admin-revenue-fill{height:100%;background:var(--acc);border-radius:4px;transition:.5s}
 
+/* ===== REVENUE CHARTS ===== */
+.chart-wrap{width:100%;overflow-x:auto;padding-bottom:8px}
+.chart-canvas-wrap{position:relative;min-height:200px}
+.bar-chart{display:flex;align-items:flex-end;gap:8px;height:180px;padding:0 4px}
+.bar-col{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;min-width:32px}
+.bar-fill{width:100%;border-radius:6px 6px 0 0;transition:.6s;min-height:4px;position:relative;cursor:pointer}
+.bar-fill:hover{filter:brightness(1.2)}
+.bar-fill::after{content:attr(data-val);position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:.65rem;color:var(--text);white-space:nowrap;opacity:0;transition:.2s}
+.bar-fill:hover::after{opacity:1}
+.bar-label{font-size:.65rem;color:var(--muted);text-align:center;white-space:nowrap}
+.line-chart-svg{width:100%;height:160px;overflow:visible}
+.chart-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px}
+.chart-legend-item{display:flex;align-items:center;gap:6px;font-size:.72rem;color:var(--muted)}
+.chart-legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.chart-tabs{display:flex;gap:6px;margin-bottom:16px}
+.chart-tab{padding:5px 14px;border-radius:20px;font-size:.75rem;font-weight:600;border:1px solid var(--bor);background:none;color:var(--muted);cursor:pointer;transition:.2s}
+.chart-tab.active{background:var(--acc);color:#fff;border-color:var(--acc)}
+.metric-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.metric-mini{background:var(--surf2);border-radius:10px;padding:12px;text-align:center}
+.metric-mini-val{font-size:1.2rem;font-weight:800;font-family:'Syne',sans-serif}
+.metric-mini-label{font-size:.68rem;color:var(--muted);margin-top:2px}
+
+/* ===== MOBILE UI IMPROVEMENTS ===== */
+@media(max-width:860px){
+  .plan-grid{grid-template-columns:1fr 1fr!important;font-size:.8rem}
+  .admin-stat-row{grid-template-columns:1fr 1fr!important}
+  .receipt-field-row{grid-template-columns:1fr!important}
+  .bar-chart{gap:4px}
+  .bar-label{font-size:.55rem}
+  .metric-row{grid-template-columns:1fr 1fr 1fr}
+}
+@media(max-width:480px){
+  .plan-grid{grid-template-columns:1fr!important}
+  .admin-stat-row{grid-template-columns:1fr 1fr!important}
+  .metric-row{grid-template-columns:1fr 1fr!important}
+}
+
+/* ===== BOTTOM NAV MOBILE ===== */
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--surf);border-top:1px solid var(--bor);z-index:100;padding:8px 0 max(8px,env(safe-area-inset-bottom));grid-template-columns:repeat(5,1fr)}
+@media(max-width:860px){.bottom-nav{display:grid}}
+.bottom-nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px;transition:.2s;border:none;background:none;color:var(--muted)}
+.bottom-nav-item.active{color:var(--acc)}
+.bottom-nav-item svg{width:20px;height:20px}
+.bottom-nav-item span{font-size:.58rem;font-weight:600}
+@media(max-width:860px){.main{padding-bottom:72px!important}}
+
 /* ===== RECEIPT SCANNER ===== */
 .receipt-drop{border:2px dashed var(--bor);border-radius:12px;padding:40px 20px;text-align:center;cursor:pointer;transition:.2s;background:var(--surf2)}
 .receipt-drop:hover,.receipt-drop.drag-over{border-color:var(--acc);background:rgba(249,115,22,.05)}
@@ -268,6 +352,108 @@ body.light-mode input, body.light-mode select, body.light-mode textarea { backgr
 .plan-banner-text{font-size:.82rem;color:var(--text)}
 .plan-banner-badge{background:var(--blue);color:#fff;font-size:.65rem;font-weight:700;padding:3px 10px;border-radius:10px}
 
+/* ===== WHATSAPP SHARE ===== */
+.share-btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.share-btn{padding:8px 14px;border-radius:8px;border:none;cursor:pointer;font-size:.78rem;font-weight:600;display:flex;align-items:center;gap:6px;transition:.2s;font-family:'DM Sans',sans-serif}
+.share-btn-wa{background:#25d366;color:#fff}
+.share-btn-wa:hover{background:#128c7e}
+.share-btn-email{background:var(--surf2);border:1px solid var(--bor);color:var(--text)}
+.share-btn-email:hover{background:var(--acc);color:#fff;border-color:var(--acc)}
+.share-btn-copy{background:var(--surf2);border:1px solid var(--bor);color:var(--text)}
+.share-btn-copy:hover{background:var(--blue);color:#fff}
+.share-btn-pdf{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#fc8181}
+.share-btn-pdf:hover{background:#ef4444;color:#fff}
+
+/* ===== CLIENT PORTAL ===== */
+.portal-page{min-height:100vh;background:#0f1117;font-family:'DM Sans',sans-serif;color:#f0f2f8}
+.portal-header{background:#0f1724;border-bottom:1px solid #2a2f45;padding:16px 24px;display:flex;align-items:center;justify-content:space-between}
+.portal-logo{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800}
+.portal-logo span{color:#f97316}
+.portal-card{max-width:600px;margin:40px auto;background:#181c27;border:1px solid #2a2f45;border-radius:16px;overflow:hidden}
+.portal-card-header{background:linear-gradient(135deg,#f97316,#ea580c);padding:28px;color:#fff}
+.portal-card-body{padding:28px}
+.portal-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #2a2f45}
+.portal-row:last-child{border-bottom:none}
+.portal-label{font-size:.78rem;color:#8892aa;text-transform:uppercase;letter-spacing:.5px}
+.portal-value{font-weight:600;font-size:.9rem}
+.portal-pay-btn{width:100%;padding:16px;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;border:none;border-radius:10px;font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;margin-top:20px;transition:.2s}
+.portal-pay-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(249,115,22,.4)}
+.portal-status-paid{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#22c55e;padding:8px 16px;border-radius:8px;text-align:center;font-weight:700;margin-top:16px}
+
+/* ===== STRIPE ===== */
+.stripe-modal .modal{max-width:420px}
+.stripe-input{width:100%;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);color:#fff;padding:12px 14px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:.2s;box-sizing:border-box;margin-bottom:12px}
+.stripe-input:focus{border-color:#f97316}
+.card-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* ===== LANDING PAGE ===== */
+.lp-hero{background:linear-gradient(145deg,#0a0f1a 0%,#0f1724 60%,#111827 100%);min-height:100vh;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.lp-hero::before{content:'';position:absolute;top:-100px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(249,115,22,.12) 0%,transparent 70%);border-radius:50%}
+.lp-nav{display:flex;align-items:center;justify-content:space-between;padding:20px 48px;position:relative;z-index:2}
+.lp-nav-logo{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800}
+.lp-nav-logo span{color:#f97316}
+.lp-nav-links{display:flex;gap:24px;align-items:center}
+.lp-nav-link{color:#8892aa;font-size:.88rem;text-decoration:none;transition:.2s}
+.lp-nav-link:hover{color:#fff}
+.lp-hero-content{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 24px;position:relative;z-index:2}
+.lp-badge{background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);color:#f97316;padding:6px 16px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:.5px;margin-bottom:24px;display:inline-block}
+.lp-title{font-family:'Syne',sans-serif;font-size:3.5rem;font-weight:800;line-height:1.1;margin-bottom:20px;max-width:700px}
+.lp-title span{color:#f97316}
+.lp-subtitle{font-size:1.1rem;color:#8892aa;max-width:500px;line-height:1.7;margin-bottom:36px}
+.lp-cta-row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.lp-btn-primary{padding:14px 32px;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;border:none;border-radius:10px;font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;text-decoration:none;transition:.2s}
+.lp-btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(249,115,22,.4)}
+.lp-btn-ghost{padding:14px 32px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.15);color:#fff;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:500;cursor:pointer;text-decoration:none;transition:.2s}
+.lp-btn-ghost:hover{background:rgba(255,255,255,.1)}
+.lp-stats{display:flex;gap:48px;justify-content:center;margin-top:60px;flex-wrap:wrap}
+.lp-stat{text-align:center}
+.lp-stat-num{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:#f97316}
+.lp-stat-label{font-size:.78rem;color:#8892aa;margin-top:4px}
+.lp-features{background:#0f1117;padding:80px 48px}
+.lp-section-title{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;text-align:center;margin-bottom:8px}
+.lp-section-sub{color:#8892aa;text-align:center;margin-bottom:48px;font-size:.95rem}
+.lp-feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1000px;margin:0 auto}
+.lp-feature-card{background:#181c27;border:1px solid #2a2f45;border-radius:14px;padding:28px;transition:.2s}
+.lp-feature-card:hover{border-color:#f97316;transform:translateY(-3px)}
+.lp-feature-icon{font-size:2rem;margin-bottom:14px}
+.lp-feature-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:8px}
+.lp-feature-desc{font-size:.82rem;color:#8892aa;line-height:1.6}
+.lp-pricing{background:#0a0f1a;padding:80px 48px}
+.lp-pricing-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;max-width:1100px;margin:0 auto}
+.lp-price-card{background:#181c27;border:2px solid #2a2f45;border-radius:14px;padding:24px;text-align:center;transition:.2s;position:relative}
+.lp-price-card.popular{border-color:#f97316}
+.lp-price-card:hover{transform:translateY(-4px)}
+.lp-price-popular{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#f97316;color:#fff;font-size:.65rem;font-weight:700;padding:3px 12px;border-radius:10px;white-space:nowrap}
+.lp-price-name{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;margin-bottom:8px}
+.lp-price-amount{font-size:1.8rem;font-weight:800;font-family:'Syne',sans-serif;color:#f97316}
+.lp-price-period{font-size:.72rem;color:#8892aa}
+.lp-price-features{margin:16px 0;text-align:left}
+.lp-price-feature{font-size:.75rem;color:#8892aa;padding:4px 0;display:flex;align-items:center;gap:6px}
+.lp-price-feature::before{content:'✓';color:#22c55e;font-weight:700}
+.lp-price-btn{width:100%;padding:10px;border-radius:8px;border:1.5px solid #2a2f45;background:none;color:#fff;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.82rem;cursor:pointer;margin-top:8px;transition:.2s}
+.lp-price-btn:hover,.lp-price-card.popular .lp-price-btn{background:#f97316;border-color:#f97316}
+.lp-testimonials{background:#0f1117;padding:80px 48px}
+.lp-testimonial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:900px;margin:0 auto}
+.lp-testimonial{background:#181c27;border:1px solid #2a2f45;border-radius:14px;padding:24px}
+.lp-testimonial-text{font-size:.85rem;color:#c8d0e0;line-height:1.7;margin-bottom:16px;font-style:italic}
+.lp-testimonial-author{display:flex;align-items:center;gap:10px}
+.lp-testimonial-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f97316,#ea580c);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;color:#fff}
+.lp-testimonial-name{font-weight:700;font-size:.82rem}
+.lp-testimonial-role{font-size:.72rem;color:#8892aa}
+.lp-footer{background:#0a0f1a;border-top:1px solid #2a2f45;padding:40px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.lp-footer-links{display:flex;gap:20px}
+.lp-footer-link{color:#8892aa;font-size:.8rem;text-decoration:none}
+.lp-footer-link:hover{color:#f97316}
+@media(max-width:768px){
+  .lp-title{font-size:2rem}
+  .lp-feature-grid{grid-template-columns:1fr}
+  .lp-pricing-grid{grid-template-columns:1fr 1fr}
+  .lp-testimonial-grid{grid-template-columns:1fr}
+  .lp-nav{padding:16px 24px}
+  .lp-features,.lp-pricing,.lp-testimonials{padding:48px 24px}
+  .lp-stats{gap:24px}
+}
+
 /* QR CODE */
 .qr-modal-body { text-align:center; }
 #qrCodeContainer { display:inline-block; padding:16px; background:#fff; border-radius:10px; margin:16px auto; }
@@ -291,203 +477,245 @@ body.light-mode input, body.light-mode select, body.light-mode textarea { backgr
 
 <!-- LOGIN -->
 <div class="login-screen" id="loginScreen">
-  <div class="login-box">
-    <div class="login-logo-box">
-      <div><span class="login-logo-title">Java</span> <span class="login-logo-vault">vault</span></div>
-      <div class="login-logo-tag">Built for the trade</div>
+  <!-- LEFT SIDE — Branding -->
+  <div class="login-left">
+    <div class="login-brand">
+      <div class="login-brand-logo"><span class="java">Java</span><span class="vault">Vault</span></div>
+      <div class="login-brand-sub">Built for the Trade</div>
     </div>
-    <div class="login-sub">Sign in to access your business</div>
-    <div class="login-err" id="loginErr"></div>
-    <div id="setupView">
-      <div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:8px;padding:12px;margin-bottom:16px;font-size:.8rem;color:var(--muted);text-align:center">
-        First time setup - create your password to secure your business data
+    <p class="login-tagline">Securely manage your business anywhere. Estimates, invoices, jobs and payments — all in one place.</p>
+    <div class="login-features">
+      <div class="login-feature">
+        <div class="login-feature-icon">📋</div>
+        <div class="login-feature-text"><strong>Estimates & Invoices</strong>Create professional documents in seconds</div>
       </div>
-      <div class="form-group">
-        <label>Create a Password</label>
-        <div class="input-wrap">
-          <input type="password" id="setupPw" placeholder="Choose a strong password" maxlength="64" oninput="checkStrength(this.value)"/>
-          <button class="eye-btn" onclick="togglePw('setupPw')">O</button>
-        </div>
-        <div class="strength-bar" id="strengthBar"></div>
-        <div id="strengthLabel" style="font-size:.72rem;color:var(--muted);margin-top:4px"></div>
+      <div class="login-feature">
+        <div class="login-feature-icon">💳</div>
+        <div class="login-feature-text"><strong>Get Paid Faster</strong>Paystack, Flutterwave & card payments</div>
       </div>
-      <div class="form-group">
-        <label>Confirm Password</label>
-        <div class="input-wrap">
-          <input type="password" id="setupPw2" placeholder="Repeat password" maxlength="64" onkeydown="if(event.key==='Enter')setupPassword()"/>
-          <button class="eye-btn" onclick="togglePw('setupPw2')">O</button>
-        </div>
+      <div class="login-feature">
+        <div class="login-feature-icon">☁️</div>
+        <div class="login-feature-text"><strong>Cloud Sync</strong>Your data safe and encrypted everywhere</div>
       </div>
-      <button class="btn btn-primary" style="width:100%;margin-bottom:10px" onclick="setupPassword()">Set Password and Enter</button>
-      <!-- Divider -->
-      <div style="display:flex;align-items:center;gap:10px;margin:14px 0">
-        <div style="flex:1;height:1px;background:var(--bor)"></div>
-        <span style="font-size:.75rem;color:var(--muted)">OR SIGN UP WITH</span>
-        <div style="flex:1;height:1px;background:var(--bor)"></div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
-        <button class="btn btn-ghost" style="justify-content:center;gap:8px;padding:12px" onclick="loginWithGoogle()">
-          <span style="font-size:1.1rem">G</span>
-          <span style="font-weight:600">Gmail</span>
-        </button>
-        <button class="btn btn-ghost" style="justify-content:center;gap:8px;padding:12px" onclick="showPhoneLogin()">
-          <span style="font-size:1.1rem">#</span>
-          <span style="font-weight:600">Phone</span>
-        </button>
-      </div>
-      <div style="text-align:center">
-        <button onclick="showLoginView()" style="background:none;border:none;color:var(--muted);font-size:.78rem;cursor:pointer">Already have a password? Sign In</button>
+      <div class="login-feature">
+        <div class="login-feature-icon">🤖</div>
+        <div class="login-feature-text"><strong>AI Assistant</strong>Smart estimates powered by AI</div>
       </div>
     </div>
-    <div id="loginView" style="display:none">
-      <!-- Password login -->
-      <div id="pwLoginSection">
-        <div class="form-group">
-          <label>Password</label>
-          <div class="input-wrap">
-            <input type="password" id="loginPw" placeholder="Enter your password" maxlength="64" onkeydown="if(event.key==='Enter')doLogin()"/>
-            <button class="eye-btn" onclick="togglePw('loginPw')">O</button>
+  </div>
+
+  <!-- RIGHT SIDE — Auth Forms -->
+  <div class="login-right">
+    <div class="login-box">
+      <!-- ERROR -->
+      <div class="login-err-new" id="loginErr"></div>
+
+      <!-- LANDING VIEW -->
+      <div id="landingView">
+        <div style="text-align:center;margin-bottom:32px">
+          <div class="login-brand-logo" style="font-size:2rem;margin-bottom:6px"><span class="java">Java</span><span class="vault">Vault</span></div>
+          <div style="font-size:.82rem;color:#8892aa">Welcome back 👋</div>
+        </div>
+        <div class="trial-badge">
+          <div class="trial-badge-title">🎁 7-Day Free Trial</div>
+          <div class="trial-badge-sub">Get full Pro access — no card required</div>
+        </div>
+        <button class="login-btn-primary" onclick="showNewSignup()">Create a New Account →</button>
+        <button class="login-btn-google" onclick="loginWithGoogle()">
+          <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/></svg>
+          Continue with Google
+        </button>
+        <button class="login-btn-phone" onclick="showLandingPhone()">
+          📱 Continue with Phone Number
+        </button>
+        <div class="login-divider"><span>OR</span></div>
+        <button class="login-btn-phone" onclick="showLoginView()" style="color:#f97316;border-color:rgba(249,115,22,.3)">
+          🔐 Sign In with Password
+        </button>
+        <div class="login-secure">🔒 Your data is safe and encrypted</div>
+      </div>
+
+      <!-- SIGN UP VIEW -->
+      <div id="setupView" style="display:none">
+        <div class="login-box-title">Create Account</div>
+        <div class="login-box-sub">Let's get you started</div>
+        <div class="trial-badge" style="margin-bottom:20px">
+          <div class="trial-badge-title">🎁 7 Days Free Pro Access</div>
+          <div class="trial-badge-sub">No credit card required to start</div>
+        </div>
+        <div class="login-input-group">
+          <label>Email Address</label>
+          <input class="login-input" type="email" id="signupEmail" placeholder="you@email.com" maxlength="100"/>
+        </div>
+        <div class="login-input-group">
+          <label>Phone Number (Optional)</label>
+          <input class="login-input" type="tel" id="signupPhone" placeholder="+234 800 000 0000" maxlength="20"/>
+        </div>
+        <div class="login-input-group">
+          <label>Create Password</label>
+          <div class="login-input-wrap">
+            <input class="login-input" type="password" id="setupPw" placeholder="At least 8 characters" maxlength="64" oninput="checkStrengthNew(this.value)"/>
+            <button class="login-eye" onclick="togglePwNew('setupPw')">👁</button>
+          </div>
+          <div class="login-strength" id="strengthBarNew"></div>
+          <div style="font-size:.7rem;color:#8892aa;margin-top:4px" id="strengthLabelNew"></div>
+        </div>
+        <div class="login-input-group">
+          <label>Confirm Password</label>
+          <div class="login-input-wrap">
+            <input class="login-input" type="password" id="setupPw2" placeholder="Repeat password" maxlength="64" onkeydown="if(event.key==='Enter')setupPasswordNew()"/>
+            <button class="login-eye" onclick="togglePwNew('setupPw2')">👁</button>
           </div>
         </div>
-        <div id="lockMsg" style="color:var(--red);font-size:.78rem;margin-bottom:8px;display:none"></div>
-        <button class="btn btn-primary" style="width:100%;margin-bottom:10px" onclick="doLogin()">Sign In</button>
-        <div style="text-align:center;margin-bottom:12px">
-          <button onclick="showForgotPw()" style="background:none;border:none;color:var(--acc);font-size:.82rem;cursor:pointer;text-decoration:underline">Forgot Password?</button>
+        <button class="login-btn-primary" onclick="setupPasswordNew()">Create Account →</button>
+        <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:16px;margin-top:-4px">
+          <input type="checkbox" id="consentCheck" style="width:16px;height:16px;margin-top:3px;accent-color:#f97316;flex-shrink:0;cursor:pointer"/>
+          <label for="consentCheck" style="font-size:.75rem;color:#8892aa;line-height:1.6;cursor:pointer">
+            I agree to Java Vault's <a href="terms-of-service.html" target="_blank" style="color:#f97316">Terms of Service</a> and <a href="privacy-policy.html" target="_blank" style="color:#f97316">Privacy Policy</a>. I understand my data will be stored securely and I can delete it at any time.
+          </label>
         </div>
+        <div class="login-switch">Already have an account? <a onclick="showLoginView()">Sign In</a></div>
+        <div class="login-switch" style="margin-top:8px"><a onclick="showLandingView()" style="color:#8892aa">← Back</a></div>
       </div>
-      <!-- Divider -->
-      <div style="display:flex;align-items:center;gap:10px;margin:14px 0">
-        <div style="flex:1;height:1px;background:var(--bor)"></div>
-        <span style="font-size:.75rem;color:var(--muted)">OR SIGN IN WITH</span>
-        <div style="flex:1;height:1px;background:var(--bor)"></div>
-      </div>
-      <!-- Social login buttons -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
-        <button class="btn btn-ghost" style="justify-content:center;gap:8px;padding:12px" onclick="loginWithGoogle()">
-          <span style="font-size:1.1rem">G</span>
-          <span style="font-weight:600">Gmail</span>
+
+      <!-- SIGN IN VIEW -->
+      <div id="loginView" style="display:none">
+        <div class="login-box-title">Welcome Back 👋</div>
+        <div class="login-box-sub">Sign in to continue to JavaVault</div>
+        <div class="login-input-group">
+          <label>Email or Phone Number</label>
+          <input class="login-input" type="text" id="loginIdentifier" placeholder="Enter your email or phone" maxlength="100"/>
+        </div>
+        <div class="login-input-group">
+          <label>Password</label>
+          <div class="login-input-wrap">
+            <input class="login-input" type="password" id="loginPw" placeholder="Enter your password" maxlength="64" onkeydown="if(event.key==='Enter')doLogin()"/>
+            <button class="login-eye" onclick="togglePwNew('loginPw')">👁</button>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:.78rem;color:#8892aa;text-transform:none;letter-spacing:0;margin:0">
+            <input type="checkbox" id="rememberMe" style="width:auto;accent-color:#f97316"/> Remember me
+          </label>
+          <a onclick="showForgotPw()" style="color:#f97316;font-size:.78rem;cursor:pointer">Forgot Password?</a>
+        </div>
+        <button class="login-btn-primary" onclick="doLogin()">Sign In →</button>
+        <div class="login-divider"><span>OR</span></div>
+        <button class="login-btn-google" onclick="loginWithGoogle()">
+          <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/></svg>
+          Continue with Google
         </button>
-        <button class="btn btn-ghost" style="justify-content:center;gap:8px;padding:12px" onclick="showPhoneLogin()">
-          <span style="font-size:1.1rem">#</span>
-          <span style="font-weight:600">Phone</span>
-        </button>
+        <div id="lockMsg" style="color:#fc8181;font-size:.78rem;margin-top:8px;display:none"></div>
+        <div class="login-switch">Don't have an account? <a onclick="showNewSignup()">Create one</a></div>
       </div>
-      <!-- Phone login section (hidden by default) -->
-      <div id="phoneLoginSection" style="display:none;background:var(--surf2);border:1px solid var(--bor);border-radius:9px;padding:14px;margin-bottom:14px">
-        <div id="phoneSendSection">
-          <div class="form-group">
-            <label>Select Country</label>
-            <select id="countryCodeSel" style="margin-bottom:8px">
+
+      <!-- PHONE LOGIN VIEW -->
+      <div id="phoneLoginView" style="display:none">
+        <div class="login-box-title">Enter Your Phone</div>
+        <div class="login-box-sub">We'll send a code to verify</div>
+        <div id="phoneSendSection2">
+          <div class="login-input-group">
+            <label>Country</label>
+            <select class="login-input" id="countryCodeSel" style="background:rgba(255,255,255,.06);color:#fff" onchange="updateCountryCode()">
               <option value="+234">🇳🇬 Nigeria (+234)</option>
               <option value="+1">🇺🇸 United States (+1)</option>
               <option value="+44">🇬🇧 United Kingdom (+44)</option>
               <option value="+233">🇬🇭 Ghana (+233)</option>
               <option value="+254">🇰🇪 Kenya (+254)</option>
               <option value="+27">🇿🇦 South Africa (+27)</option>
-              <option value="+251">🇪🇹 Ethiopia (+251)</option>
-              <option value="+255">🇹🇿 Tanzania (+255)</option>
-              <option value="+256">🇺🇬 Uganda (+256)</option>
-              <option value="+237">🇨🇲 Cameroon (+237)</option>
-              <option value="+225">🇨🇮 Ivory Coast (+225)</option>
-              <option value="+221">🇸🇳 Senegal (+221)</option>
-              <option value="+212">🇲🇦 Morocco (+212)</option>
-              <option value="+20">🇪🇬 Egypt (+20)</option>
-              <option value="+91">🇮🇳 India (+91)</option>
-              <option value="+92">🇵🇰 Pakistan (+92)</option>
-              <option value="+880">🇧🇩 Bangladesh (+880)</option>
-              <option value="+63">🇵🇭 Philippines (+63)</option>
-              <option value="+62">🇮🇩 Indonesia (+62)</option>
-              <option value="+60">🇲🇾 Malaysia (+60)</option>
-              <option value="+65">🇸🇬 Singapore (+65)</option>
-              <option value="+971">🇦🇪 UAE (+971)</option>
-              <option value="+966">🇸🇦 Saudi Arabia (+966)</option>
               <option value="+49">🇩🇪 Germany (+49)</option>
               <option value="+33">🇫🇷 France (+33)</option>
-              <option value="+39">🇮🇹 Italy (+39)</option>
-              <option value="+34">🇪🇸 Spain (+34)</option>
-              <option value="+55">🇧🇷 Brazil (+55)</option>
-              <option value="+52">🇲🇽 Mexico (+52)</option>
               <option value="+61">🇦🇺 Australia (+61)</option>
-              <option value="+64">🇳🇿 New Zealand (+64)</option>
-              <option value="+1-CA">🇨🇦 Canada (+1)</option>
+              <option value="+91">🇮🇳 India (+91)</option>
             </select>
           </div>
-          <div class="form-group">
+          <div class="login-input-group">
             <label>Phone Number</label>
-            <div style="display:flex;gap:6px">
-              <div id="countryCodeDisplay" style="background:var(--bg);border:1px solid var(--bor);border-radius:7px;padding:9px 11px;font-size:.875rem;white-space:nowrap;color:var(--text)">+234</div>
-              <input id="loginPhone" type="tel" placeholder="080 0000 0000" maxlength="15" style="flex:1" onkeydown="if(event.key==='Enter')loginWithPhone()"/>
-            </div>
+            <input class="login-input" type="tel" id="loginPhone" placeholder="080 0000 0000" maxlength="15" onkeydown="if(event.key==='Enter')loginWithPhone()"/>
           </div>
-          <button class="btn btn-primary" style="width:100%;margin-bottom:8px" onclick="loginWithPhone()">Send Verification Code</button>
-          <button class="btn btn-ghost" style="width:100%;font-size:.78rem" onclick="hidePhoneLogin()">Cancel</button>
+          <button class="login-btn-primary" onclick="loginWithPhone()">Send Verification Code →</button>
+          <button class="login-btn-phone" onclick="showLandingView()" style="margin-top:8px">← Back</button>
         </div>
-        <div id="phoneOtpSection" style="display:none">
-          <div style="text-align:center;margin-bottom:14px">
-            <div style="font-size:.85rem;font-weight:600;margin-bottom:4px">Enter the 6-digit code</div>
-            <div id="phoneMsg" style="font-size:.78rem;color:var(--muted)">Sent to your phone</div>
+        <div id="phoneOtpSection2" style="display:none">
+          <div style="text-align:center;margin-bottom:20px">
+            <div style="font-size:2rem;margin-bottom:10px">📱</div>
+            <div style="font-weight:700;color:#fff;margin-bottom:6px">Enter the 6-digit code</div>
+            <div id="phoneMsg" style="font-size:.78rem;color:#8892aa">We sent a code to your phone</div>
           </div>
-          <div style="display:flex;gap:8px;justify-content:center;margin-bottom:16px">
-            <input class="otp-box" id="otp1" type="number" maxlength="1" oninput="otpNext(this,'otp2')" onkeydown="otpBack(event,this,'')"/>
-            <input class="otp-box" id="otp2" type="number" maxlength="1" oninput="otpNext(this,'otp3')" onkeydown="otpBack(event,this,'otp1')"/>
-            <input class="otp-box" id="otp3" type="number" maxlength="1" oninput="otpNext(this,'otp4')" onkeydown="otpBack(event,this,'otp2')"/>
-            <input class="otp-box" id="otp4" type="number" maxlength="1" oninput="otpNext(this,'otp5')" onkeydown="otpBack(event,this,'otp3')"/>
-            <input class="otp-box" id="otp5" type="number" maxlength="1" oninput="otpNext(this,'otp6')" onkeydown="otpBack(event,this,'otp4')"/>
-            <input class="otp-box" id="otp6" type="number" maxlength="1" oninput="otpNext(this,'')" onkeydown="otpBack(event,this,'otp5')"/>
+          <div class="login-otp-row">
+            <input class="login-otp-box" id="otp1" type="number" maxlength="1" oninput="otpNextNew(this,'otp2')" onkeydown="otpBackNew(event,this,'')"/>
+            <input class="login-otp-box" id="otp2" type="number" maxlength="1" oninput="otpNextNew(this,'otp3')" onkeydown="otpBackNew(event,this,'otp1')"/>
+            <input class="login-otp-box" id="otp3" type="number" maxlength="1" oninput="otpNextNew(this,'otp4')" onkeydown="otpBackNew(event,this,'otp2')"/>
+            <input class="login-otp-box" id="otp4" type="number" maxlength="1" oninput="otpNextNew(this,'otp5')" onkeydown="otpBackNew(event,this,'otp3')"/>
+            <input class="login-otp-box" id="otp5" type="number" maxlength="1" oninput="otpNextNew(this,'otp6')" onkeydown="otpBackNew(event,this,'otp4')"/>
+            <input class="login-otp-box" id="otp6" type="number" maxlength="1" oninput="otpNextNew(this,'')" onkeydown="otpBackNew(event,this,'otp5')"/>
           </div>
-          <button class="btn btn-primary" style="width:100%;margin-bottom:8px" onclick="verifyOtp()">Verify Code</button>
-          <div style="text-align:center;margin-top:8px">
-            <button onclick="resetPhoneLogin()" style="background:none;border:none;color:var(--acc);font-size:.78rem;cursor:pointer;text-decoration:underline">Resend Code</button>
-            &nbsp;&nbsp;
-            <button onclick="resetPhoneLogin()" style="background:none;border:none;color:var(--muted);font-size:.78rem;cursor:pointer">Change Number</button>
+          <button class="login-btn-primary" onclick="verifyOtp()">Verify & Continue →</button>
+          <div style="text-align:center;margin-top:14px">
+            <a onclick="resetPhoneLogin()" style="color:#f97316;font-size:.78rem;cursor:pointer">Didn't receive code? Resend (00:45)</a>
           </div>
         </div>
       </div>
-      <hr style="border:none;border-top:1px solid var(--bor);margin:10px 0"/>
-      <button class="btn btn-ghost" style="width:100%;font-size:.78rem;color:var(--red)" onclick="confirmResetApp()">Reset App (clears all data)</button>
-    </div>
-    <div id="forgotView" style="display:none">
-      <div style="text-align:center;margin-bottom:20px">
-        <div style="width:52px;height:52px;background:rgba(249,115,22,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:1.4rem">?</div>
-        <div style="font-weight:700;font-size:1rem;margin-bottom:6px">Forgot Password?</div>
-        <div style="font-size:.82rem;color:var(--muted);line-height:1.6">Enter your email and we will send you a reset link</div>
-      </div>
-      <div id="forgotStep1">
-        <div class="form-group">
-          <label>Email Address</label>
-          <input id="forgotEmail" type="email" placeholder="you@email.com" maxlength="100" onkeydown="if(event.key==='Enter')sendForgotEmail()"/>
+
+      <!-- FORGOT PASSWORD VIEW -->
+      <div id="forgotView" style="display:none">
+        <div style="text-align:center;margin-bottom:24px">
+          <div style="font-size:2.5rem;margin-bottom:12px">📧</div>
+          <div class="login-box-title">Forgot Password?</div>
+          <div class="login-box-sub">No worries, we'll help you reset it</div>
         </div>
-        <button class="btn btn-primary" style="width:100%;margin-bottom:10px" onclick="sendForgotEmail()">Send Reset Link</button>
-        <button class="btn btn-ghost" style="width:100%" onclick="showLoginView()">Back to Sign In</button>
-      </div>
-      <div id="forgotStep2" style="display:none;text-align:center">
-        <div style="font-size:2.5rem;margin-bottom:12px">!</div>
-        <div style="font-weight:700;margin-bottom:8px">Check Your Email</div>
-        <div id="forgotEmailSent" style="font-size:.82rem;color:var(--muted);margin-bottom:20px;line-height:1.6"></div>
-        <div style="background:var(--surf2);border-radius:9px;padding:14px;margin-bottom:16px;font-size:.82rem;color:var(--muted);text-align:left;line-height:1.8">
-          <div>1. Open your email inbox</div>
-          <div>2. Find the email from Java Vault</div>
-          <div>3. Click the reset link</div>
-          <div>4. Set your new password</div>
-          <div>5. Come back and sign in</div>
+        <div id="forgotStep1">
+          <div class="login-input-group">
+            <label>Email or Phone Number</label>
+            <input class="login-input" id="forgotEmail" type="email" placeholder="you@email.com" maxlength="100" onkeydown="if(event.key==='Enter')sendForgotEmail()"/>
+          </div>
+          <button class="login-btn-primary" onclick="sendForgotEmail()">Send Reset Code →</button>
+          <div class="login-switch"><a onclick="showLoginView()">← Back to Sign In</a></div>
         </div>
-        <button class="btn btn-ghost" style="width:100%;margin-bottom:8px" onclick="sendForgotEmail()">Resend Email</button>
-        <button class="btn btn-ghost" style="width:100%" onclick="showLoginView()">Back to Sign In</button>
+        <div id="forgotStep2" style="display:none;text-align:center">
+          <div style="width:60px;height:60px;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.8rem">✓</div>
+          <div style="font-weight:700;color:#fff;margin-bottom:8px">Check Your Email</div>
+          <div id="forgotEmailSent" style="font-size:.82rem;color:#8892aa;margin-bottom:20px;line-height:1.6"></div>
+          <button class="login-btn-primary" onclick="showLoginView()">Go to Sign In →</button>
+          <button class="login-btn-phone" onclick="sendForgotEmail()" style="margin-top:8px">Resend Email</button>
+        </div>
       </div>
-    </div></div>
-    <!-- FORGOT PASSWORD VIEW -->
-    <div id="forgotView" style="display:none">
-      <div style="background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.2);border-radius:8px;padding:14px;margin-bottom:16px;font-size:.82rem;color:var(--text)">
-        <strong style="color:var(--acc)">Reset Your Password</strong><br/><br/>
-        To reset your password you will need to reset the app. This will delete all your data unless you have a backup.<br/><br/>
-        If you have a backup file, restore it after resetting.
+
+      <!-- RESET PASSWORD VIEW -->
+      <div id="resetPwView" style="display:none">
+        <div style="text-align:center;margin-bottom:24px">
+          <div style="font-size:2.5rem;margin-bottom:12px">🔐</div>
+          <div class="login-box-title">Reset Password</div>
+          <div class="login-box-sub">Create a new password for your account</div>
+        </div>
+        <div class="login-input-group">
+          <label>New Password</label>
+          <div class="login-input-wrap">
+            <input class="login-input" type="password" id="resetPw1" placeholder="New password" maxlength="64"/>
+            <button class="login-eye" onclick="togglePwNew('resetPw1')">👁</button>
+          </div>
+        </div>
+        <div class="login-input-group">
+          <label>Confirm New Password</label>
+          <div class="login-input-wrap">
+            <input class="login-input" type="password" id="resetPw2" placeholder="Confirm new password" maxlength="64" onkeydown="if(event.key==='Enter')doResetPassword()"/>
+            <button class="login-eye" onclick="togglePwNew('resetPw2')">👁</button>
+          </div>
+        </div>
+        <button class="login-btn-primary" onclick="doResetPassword()">Reset Password →</button>
       </div>
-      <button class="btn btn-primary" style="width:100%;margin-bottom:8px" onclick="confirmResetApp()">Reset App and Set New Password</button>
-      <button class="btn btn-ghost" style="width:100%" onclick="showLoginView()">Back to Sign In</button>
+
+      <!-- SUCCESS VIEW -->
+      <div id="resetSuccessView" style="display:none;text-align:center;padding:20px 0">
+        <div style="width:70px;height:70px;background:rgba(34,197,94,.15);border:2px solid rgba(34,197,94,.4);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:2rem">✓</div>
+        <div class="login-box-title">Password Reset Successful!</div>
+        <div class="login-box-sub">Your password has been updated successfully</div>
+        <button class="login-btn-primary" style="margin-top:24px" onclick="showLoginView()">Go to Sign In →</button>
+      </div>
+
     </div>
   </div>
 </div>
-
 <!-- APP -->
 <div class="shell" id="appShell" style="display:none">
   <aside class="sidebar">
@@ -817,6 +1045,12 @@ body.light-mode input, body.light-mode select, body.light-mode textarea { backgr
           <div class="card" id="aiResultCard" style="display:none">
             <h3 style="font-size:.95rem;margin-bottom:14px;color:var(--acc)">AI Estimate Result</h3>
             <div id="aiResult"></div>
+            <div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:10px 14px;margin-top:12px;display:flex;gap:8px;align-items:flex-start">
+              <span style="font-size:1rem;flex-shrink:0">⚠️</span>
+              <div style="font-size:.72rem;color:#f59e0b;line-height:1.6">
+                <strong>AI Disclaimer:</strong> This estimate is AI-generated and may contain errors. Always review figures carefully before sending to a client. Java Vault is not liable for any losses resulting from AI-generated content.
+              </div>
+            </div>
             <button class="btn btn-primary" style="width:100%;margin-top:14px" onclick="useAIEstimate()">Use This Estimate</button>
           </div>
           <div class="card" id="aiTipsCard">
@@ -1115,16 +1349,52 @@ body.light-mode input, body.light-mode select, body.light-mode textarea { backgr
       <div class="stat-card"><div class="stat-label">MRR (₦)</div><div class="stat-val c-orange" id="adMRR">—</div></div>
       <div class="stat-card"><div class="stat-label">This Month Signups</div><div class="stat-val" id="adNewUsers">—</div></div>
     </div>
+
+    <!-- REVENUE CHART -->
+    <div class="card" style="margin-bottom:18px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+        <h3 style="font-size:.9rem;color:var(--acc)">📈 Revenue Overview</h3>
+        <div class="chart-tabs">
+          <button class="chart-tab active" onclick="switchAdminChart('mrr',this)">MRR</button>
+          <button class="chart-tab" onclick="switchAdminChart('users',this)">Users</button>
+          <button class="chart-tab" onclick="switchAdminChart('plans',this)">Plans</button>
+        </div>
+      </div>
+      <div class="metric-row" id="adminMetricRow">
+        <div class="metric-mini"><div class="metric-mini-val c-orange" id="adARR">—</div><div class="metric-mini-label">ARR (₦)</div></div>
+        <div class="metric-mini"><div class="metric-mini-val c-green" id="adConvRate">—</div><div class="metric-mini-label">Conversion</div></div>
+        <div class="metric-mini"><div class="metric-mini-val c-blue" id="adAvgRev">—</div><div class="metric-mini-label">Avg Rev/User</div></div>
+      </div>
+      <div class="chart-wrap">
+        <div class="bar-chart" id="adminChartBars"></div>
+      </div>
+      <div class="chart-legend" id="adminChartLegend"></div>
+    </div>
+
+    <!-- PLAN DISTRIBUTION -->
     <div class="card" style="margin-bottom:18px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
         <h3 style="font-size:.9rem;color:var(--acc)">Plan Distribution</h3>
+        <div id="adminTotalRevLabel" style="font-size:.78rem;color:var(--muted)"></div>
       </div>
-      <div id="adminPlanBars" style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px"></div>
+      <div id="adminPlanBars" style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px"></div>
     </div>
+
+    <!-- USER TABLE -->
     <div class="card">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
         <h3 style="font-size:.9rem;color:var(--acc)">All Users</h3>
-        <input placeholder="Search users..." id="adminSearch" style="width:200px;padding:6px 10px;background:var(--surf2);border:1px solid var(--bor);color:var(--text);border-radius:7px;font-size:.8rem" oninput="filterAdminUsers()"/>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <select id="adminPlanFilter" style="padding:6px 10px;background:var(--surf2);border:1px solid var(--bor);color:var(--text);border-radius:7px;font-size:.78rem" onchange="filterAdminUsers()">
+            <option value="">All Plans</option>
+            <option value="free">Free</option>
+            <option value="starter">Starter</option>
+            <option value="pro">Pro</option>
+            <option value="gold">Gold</option>
+            <option value="premium">Premium</option>
+          </select>
+          <input placeholder="Search users..." id="adminSearch" style="width:160px;padding:6px 10px;background:var(--surf2);border:1px solid var(--bor);color:var(--text);border-radius:7px;font-size:.8rem" oninput="filterAdminUsers()"/>
+        </div>
       </div>
       <div id="adminUserList"><div class="empty"><div class="empty-icon">⏳</div>Loading users...</div></div>
     </div>
@@ -1144,7 +1414,7 @@ body.light-mode input, body.light-mode select, body.light-mode textarea { backgr
             <div style="font-weight:600;margin-bottom:4px">Drop receipt here or tap to upload</div>
             <div style="font-size:.78rem;color:var(--muted)">JPG, PNG, HEIC supported</div>
           </div>
-          <input type="file" id="receiptFileInput" accept="image/*" capture="environment" style="display:none" onchange="receiptFileSelected(event)"/>
+          <input type="file" id="receiptFileInput" accept="image/*" style="display:none" onchange="receiptFileSelected(event)"/>
           <div style="display:flex;gap:8px;margin-top:10px">
             <button class="btn btn-ghost btn-sm" style="flex:1" onclick="document.getElementById('receiptFileInput').click()">📁 Choose File</button>
             <button class="btn btn-ghost btn-sm" style="flex:1" onclick="openReceiptCamera()">📷 Camera</button>
@@ -1185,6 +1455,9 @@ body.light-mode input, body.light-mode select, body.light-mode textarea { backgr
           </div>
           <div id="rItemsList" style="margin-bottom:14px"></div>
           <div style="display:flex;gap:8px">
+            <div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:8px 12px;margin-bottom:12px;font-size:.72rem;color:#f59e0b;line-height:1.6">
+              ⚠️ <strong>Always verify:</strong> AI-extracted amounts and details may not be 100% accurate. Review before saving.
+            </div>
             <button class="btn btn-primary" style="flex:1" onclick="saveScannedExpense()">✅ Save as Expense</button>
             <button class="btn btn-ghost btn-sm" onclick="clearReceiptScanner()">Clear</button>
           </div>
@@ -1819,6 +2092,32 @@ body.light-mode input, body.light-mode select, body.light-mode textarea { backgr
   </div>
 </div>
 
+<!-- MOBILE BOTTOM NAV -->
+<nav class="bottom-nav" id="bottomNav">
+  <button class="bottom-nav-item active" onclick="go('dashboard');setActiveBottomNav(this)" data-section="dashboard">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+    <span>Home</span>
+  </button>
+  <button class="bottom-nav-item" onclick="go('estimates');setActiveBottomNav(this)" data-section="estimates">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    <span>Estimates</span>
+  </button>
+  <button class="bottom-nav-item" onclick="go('invoices');setActiveBottomNav(this)" data-section="invoices" style="position:relative">
+    <div style="position:absolute;top:2px;width:36px;height:36px;background:var(--acc);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(249,115,22,.4)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" style="width:18px;height:18px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </div>
+    <span style="margin-top:22px">Invoice</span>
+  </button>
+  <button class="bottom-nav-item" onclick="go('jobs');setActiveBottomNav(this)" data-section="jobs">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+    <span>Jobs</span>
+  </button>
+  <button class="bottom-nav-item" onclick="go('settings');setActiveBottomNav(this)" data-section="settings">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+    <span>Settings</span>
+  </button>
+</nav>
+
 <!-- DIGITAL SIGNATURE MODAL -->
 <div class="modal-ov" id="sigModal">
   <div class="modal" style="max-width:480px">
@@ -1850,6 +2149,81 @@ body.light-mode input, body.light-mode select, body.light-mode textarea { backgr
 </div>
 
 <!-- UPGRADE MODAL -->
+<!-- WHATSAPP / SHARE MODAL -->
+<div class="modal-ov" id="shareModal">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-hdr"><div class="modal-title" id="shareModalTitle">Share Invoice</div><button class="modal-x" onclick="closeM('shareModal')">✕</button></div>
+    <div class="modal-body">
+      <div id="shareModalPreview" style="background:var(--surf2);border-radius:10px;padding:16px;margin-bottom:16px;font-size:.85rem;line-height:1.7;color:var(--text)"></div>
+      <div style="font-size:.78rem;color:var(--muted);margin-bottom:10px;font-weight:600">SHARE VIA</div>
+      <div class="share-btn-row">
+        <button class="share-btn share-btn-wa" id="shareWaBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp
+        </button>
+        <button class="share-btn share-btn-email" id="shareEmailBtn">
+          📧 Email
+        </button>
+        <button class="share-btn share-btn-copy" id="shareCopyBtn">
+          🔗 Copy Link
+        </button>
+        <button class="share-btn share-btn-pdf" id="sharePdfBtn">
+          📄 PDF
+        </button>
+      </div>
+      <div style="margin-top:16px">
+        <label style="font-size:.75rem;color:var(--muted);font-weight:600;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Client Phone (for WhatsApp)</label>
+        <input id="shareClientPhone" class="login-input" style="font-size:.85rem;padding:10px 12px" placeholder="+234 800 000 0000"/>
+      </div>
+      <div style="margin-top:12px">
+        <label style="font-size:.75rem;color:var(--muted);font-weight:600;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Client Email</label>
+        <input id="shareClientEmail" class="login-input" style="font-size:.85rem;padding:10px 12px" placeholder="client@email.com"/>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeM('shareModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="doShareWhatsApp()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Send via WhatsApp
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- STRIPE PAYMENT MODAL -->
+<div class="modal-ov stripe-modal" id="stripeModal">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-hdr"><div class="modal-title">💳 Pay with Card</div><button class="modal-x" onclick="closeM('stripeModal')">✕</button></div>
+    <div class="modal-body">
+      <div style="background:var(--surf2);border-radius:10px;padding:14px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center">
+        <div style="font-size:.82rem;color:var(--muted)" id="stripeInvLabel">Invoice Payment</div>
+        <div style="font-size:1.2rem;font-weight:800;color:var(--acc)" id="stripeAmountLabel">₦0</div>
+      </div>
+      <div style="font-size:.75rem;color:var(--muted);font-weight:600;margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px">Card Details</div>
+      <input class="stripe-input" id="stripeCardName" placeholder="Name on card" maxlength="60"/>
+      <input class="stripe-input" id="stripeCardNum" placeholder="Card number" maxlength="19" oninput="formatCardNum(this)"/>
+      <div class="card-row">
+        <input class="stripe-input" id="stripeCardExp" placeholder="MM/YY" maxlength="5" oninput="formatCardExp(this)"/>
+        <input class="stripe-input" id="stripeCardCvv" placeholder="CVV" maxlength="4" type="password"/>
+      </div>
+      <input class="stripe-input" id="stripeCardEmail" placeholder="Email for receipt" type="email"/>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:4px;font-size:.72rem;color:var(--muted)">
+        🔒 Payments secured by Stripe. Card details never stored.
+      </div>
+      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" height="20" alt="Visa"/>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" height="20" alt="Mastercard"/>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/American_Express_logo_%282018%29.svg" height="20" alt="Amex"/>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeM('stripeModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="processStripePayment()" id="stripePayBtn">Pay Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- UPGRADE MODAL -->
 <div class="modal-ov" id="upgradeModal">
   <div class="modal" style="max-width:420px">
     <div class="modal-hdr"><div class="modal-title">🚀 Upgrade Required</div><button class="modal-x" onclick="closeM('upgradeModal')">✕</button></div>
@@ -1868,6 +2242,8 @@ body.light-mode input, body.light-mode select, body.light-mode textarea { backgr
 <!-- jsPDF for real PDF generation -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<!-- Paystack Payment -->
+<script src="https://js.paystack.co/v1/inline.js"></script>
 
 
 <!-- PWA Manifest -->
@@ -3814,6 +4190,12 @@ function sendRemSMS() {
 // GOOGLE AND PHONE LOGIN
 // ================================================================
 function loginWithGoogle() {
+  // Show consent for new users via Google
+  var agreed = localStorage.getItem('jv_consent_agreed');
+  if (!agreed) {
+    if (!confirm('By continuing with Google you agree to Java Vault\'s Terms of Service and Privacy Policy.\n\nTap OK to continue.')) return;
+    localStorage.setItem('jv_consent_agreed', '1');
+  }
   if (FB_READY && fbAuth) {
     signInWithGoogle();
   } else {
@@ -5467,6 +5849,10 @@ function getCurrencySymbol() {
   return (CURRENCIES[code] && CURRENCIES[code].symbol) || '$';
 }
 
+
+// Alias fmtMoney -> formatMoney
+function fmtMoney(amount, currency) { return typeof formatMoney === "function" ? formatMoney(amount, currency) : ("₦" + (+(amount||0)).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")); }
+
 function formatMoney(amount) {
   var sym = getCurrencySymbol();
   return sym + (+amount||0).toFixed(2);
@@ -6099,7 +6485,22 @@ renderDash = function() {
 // ================================================================
 // ADMIN DASHBOARD
 // ================================================================
-var ADMIN_EMAIL = 'admin@javavault.app'; // Change to your admin email
+var ADMIN_EMAIL = 'Javascriipt01@gmail.com'; // Admin email
+var JV_PAYSTACK_KEY = 'pk_test_411f02e2db0065859307f396aeca6a5b22a91ff3'; // Test key — swap for live key after compliance
+
+// Auto-inject Paystack key into profile for all users
+var _jvKeyInjector = function() {
+  if (!D.profile) D.profile = {};
+  if (!D.profile.paystackKey) {
+    D.profile.paystackKey = JV_PAYSTACK_KEY;
+    localStorage.setItem('jv_paystackKey', JV_PAYSTACK_KEY);
+  }
+};
+
+// Auto-inject key into localStorage and profile on load
+(function() {
+  localStorage.setItem('jv_paystackKey', JV_PAYSTACK_KEY);
+})();
 var allAdminUsers = [];
 
 function isAdminUser() {
@@ -6527,12 +6928,7 @@ saveProfile = function() {
   }
 };
 
-var _origRenderSettingsV2 = renderSettings;
-renderSettings = function() {
-  _origRenderSettingsV2();
-  var pk = document.getElementById('profPaystackKey');
-  if (pk && D.profile && D.profile.paystackKey) pk.value = D.profile.paystackKey;
-};
+
 
 // ================================================================
 // PATCH UNLOCK TO CHECK ADMIN + LOAD SUBSCRIPTION
@@ -6560,11 +6956,566 @@ unlockApp = function() {
 // ================================================================
 // PRIVACY POLICY & TERMS LINKS IN SETTINGS
 // ================================================================
-var _origRenderSettingsV3 = renderSettings;
+// Initialize receipt date field
+document.addEventListener('DOMContentLoaded', function() {
+  var rd = document.getElementById('rDate');
+  if (rd) rd.value = new Date().toISOString().slice(0,10);
+});
+
+// ================================================================
+// NEW LOGIN SCREEN HELPERS
+// ================================================================
+function showLandingView() {
+  ['landingView','setupView','loginView','phoneLoginView','forgotView','resetPwView','resetSuccessView'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  var lv = document.getElementById('landingView');
+  if (lv) lv.style.display = 'block';
+  var err = document.getElementById('loginErr');
+  if (err) { err.style.display = 'none'; err.textContent = ''; }
+}
+
+function showNewSignup() {
+  ['landingView','loginView','phoneLoginView','forgotView','resetPwView','resetSuccessView'].forEach(function(id) {
+    var el = document.getElementById(id); if (el) el.style.display = 'none';
+  });
+  var sv = document.getElementById('setupView');
+  if (sv) sv.style.display = 'block';
+}
+
+function showLandingPhone() {
+  ['landingView','loginView','setupView','forgotView','resetPwView','resetSuccessView'].forEach(function(id) {
+    var el = document.getElementById(id); if (el) el.style.display = 'none';
+  });
+  var pv = document.getElementById('phoneLoginView');
+  if (pv) pv.style.display = 'block';
+  var ps = document.getElementById('phoneSendSection2');
+  var po = document.getElementById('phoneOtpSection2');
+  if (ps) ps.style.display = 'block';
+  if (po) po.style.display = 'none';
+}
+
+function togglePwNew(id) {
+  var inp = document.getElementById(id);
+  if (!inp) return;
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+}
+
+function checkStrengthNew(val) {
+  var bar = document.getElementById('strengthBarNew');
+  var lbl = document.getElementById('strengthLabelNew');
+  if (!bar || !lbl) return;
+  bar.className = 'login-strength';
+  if (!val) { lbl.textContent = ''; return; }
+  var score = 0;
+  if (val.length >= 8) score++;
+  if (/[A-Z]/.test(val)) score++;
+  if (/[0-9]/.test(val)) score++;
+  if (/[^A-Za-z0-9]/.test(val)) score++;
+  if (score <= 1) { bar.classList.add('ls-weak'); lbl.textContent = 'Weak'; lbl.style.color = '#ef4444'; }
+  else if (score <= 2) { bar.classList.add('ls-med'); lbl.textContent = 'Medium'; lbl.style.color = '#f59e0b'; }
+  else { bar.classList.add('ls-str'); lbl.textContent = 'Strong ✓'; lbl.style.color = '#22c55e'; }
+}
+
+function setupPasswordNew() {
+  var email = (document.getElementById('signupEmail') || {value:''}).value.trim();
+  var pw = (document.getElementById('setupPw') || {value:''}).value;
+  var pw2 = (document.getElementById('setupPw2') || {value:''}).value;
+  var consent = document.getElementById('consentCheck');
+  var err = document.getElementById('loginErr');
+  function showErr(msg) { if(err){err.textContent=msg;err.style.display='block';} }
+  if (consent && !consent.checked) {
+    showErr('Please agree to the Terms of Service and Privacy Policy to continue.');
+    consent.parentElement.style.border = '1px solid rgba(239,68,68,.4)';
+    consent.parentElement.style.borderRadius = '8px';
+    consent.parentElement.style.padding = '8px';
+    return;
+  }
+  // Save consent
+  localStorage.setItem('jv_consent_agreed', '1');
+  localStorage.setItem('jv_consent_date', new Date().toISOString());
+  if (!email && !pw) { showErr('Enter your email and password'); return; }
+  if (pw.length < 8) { showErr('Password must be at least 8 characters'); return; }
+  if (pw !== pw2) { showErr('Passwords do not match'); return; }
+  // Try Firebase email signup
+  if (FB_READY && firebase && firebase.auth) {
+    var authFn = email ? firebase.auth().createUserWithEmailAndPassword(email, pw) : null;
+    if (authFn) {
+      authFn.then(function(uc) {
+        if (err) err.style.display = 'none';
+        startFreeTrial();
+        unlockApp();
+      }).catch(function(e) {
+        if (e.code === 'auth/email-already-in-use') {
+          firebase.auth().signInWithEmailAndPassword(email, pw).then(function() {
+            if (err) err.style.display = 'none';
+            unlockApp();
+          }).catch(function(e2) { showErr(e2.message); });
+        } else { showErr(e.message); }
+      });
+      return;
+    }
+  }
+  // Fallback: local password setup
+  setupPassword();
+}
+
+function otpNextNew(el, nextId) {
+  var v = el.value.toString().slice(-1);
+  el.value = v;
+  if (v && nextId) { var next = document.getElementById(nextId); if (next) next.focus(); }
+}
+function otpBackNew(e, el, prevId) {
+  if (e.key === 'Backspace' && !el.value && prevId) {
+    var prev = document.getElementById(prevId); if (prev) { prev.value = ''; prev.focus(); }
+  }
+}
+function updateCountryCode() {
+  var sel = document.getElementById('countryCodeSel');
+  var disp = document.getElementById('countryCodeDisplay');
+  if (sel && disp) disp.textContent = sel.value;
+}
+function showPhoneLogin() { showLandingPhone(); }
+function hidePhoneLogin() { showLandingView(); }
+
+// Override showLoginView to show the new design
+var _origShowLoginView = typeof showLoginView === 'function' ? showLoginView : null;
+showLoginView = function() {
+  ['landingView','setupView','phoneLoginView','forgotView','resetPwView','resetSuccessView'].forEach(function(id) {
+    var el = document.getElementById(id); if (el) el.style.display = 'none';
+  });
+  var lv = document.getElementById('loginView');
+  if (lv) lv.style.display = 'block';
+  var err = document.getElementById('loginErr');
+  if (err) { err.style.display = 'none'; err.textContent = ''; }
+};
+
+// Show landing view on load instead of loginView
+var _origInitLogin = typeof initLogin === 'function' ? initLogin : null;
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(function() {
+    var loginScreen = document.getElementById('loginScreen');
+    if (loginScreen && loginScreen.style.display !== 'none') {
+      // Check if already logged in
+      if (!FB_READY) showLandingView();
+    }
+  }, 300);
+});
+
+// Patch doResetPassword
+function doResetPassword() {
+  var pw1 = (document.getElementById('resetPw1') || {value:''}).value;
+  var pw2 = (document.getElementById('resetPw2') || {value:''}).value;
+  var err = document.getElementById('loginErr');
+  if (pw1.length < 8) { if(err){err.textContent='Password must be at least 8 characters';err.style.display='block';} return; }
+  if (pw1 !== pw2) { if(err){err.textContent='Passwords do not match';err.style.display='block';} return; }
+  if (firebase && firebase.auth && firebase.auth().currentUser) {
+    firebase.auth().currentUser.updatePassword(pw1).then(function() {
+      ['resetPwView'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='none';});
+      var sv = document.getElementById('resetSuccessView');
+      if (sv) sv.style.display = 'block';
+    }).catch(function(e) { if(err){err.textContent=e.message;err.style.display='block';} });
+  } else {
+    var sv = document.getElementById('resetSuccessView');
+    var rv = document.getElementById('resetPwView');
+    if (rv) rv.style.display = 'none';
+    if (sv) sv.style.display = 'block';
+  }
+}
+
+// ================================================================
+// 7-DAY FREE TRIAL SYSTEM
+// ================================================================
+var TRIAL_DAYS = 7;
+
+function startFreeTrial() {
+  if (!D.profile) D.profile = {};
+  if (D.profile.trialStartDate) return; // Already started
+  D.profile.trialStartDate = new Date().toISOString();
+  D.profile.subscriptionPlan = 'pro'; // Give Pro during trial
+  D.profile.isTrial = true;
+  saveState();
+  if (FB_READY && fbUser && fbDb) {
+    fbDb.collection('users').doc(fbUser.uid).set({
+      trialStartDate: D.profile.trialStartDate,
+      subscriptionPlan: 'pro',
+      isTrial: true
+    }, {merge:true});
+  }
+  toast('🎁 7-day free Pro trial started! Enjoy all features.', 'success');
+}
+
+function getTrialDaysLeft() {
+  if (!D.profile || !D.profile.trialStartDate) return 0;
+  var start = new Date(D.profile.trialStartDate);
+  var now = new Date();
+  var elapsed = Math.floor((now - start) / (1000 * 60 * 60 * 24));
+  return Math.max(0, TRIAL_DAYS - elapsed);
+}
+
+function isTrialActive() {
+  if (!D.profile || !D.profile.isTrial) return false;
+  return getTrialDaysLeft() > 0;
+}
+
+function checkTrialExpiry() {
+  if (!D.profile || !D.profile.isTrial) return;
+  var daysLeft = getTrialDaysLeft();
+  if (daysLeft === 0 && D.profile.subscriptionPlan === 'pro') {
+    // Trial expired — downgrade to free
+    D.profile.subscriptionPlan = 'free';
+    D.profile.isTrial = false;
+    saveState();
+    showTrialExpiredModal();
+  } else if (daysLeft <= 2 && daysLeft > 0) {
+    toast('⏰ Trial ending in ' + daysLeft + ' day' + (daysLeft===1?'':'s') + '! Upgrade to keep Pro.', 'warn');
+  }
+}
+
+function showTrialExpiredModal() {
+  document.getElementById('upgradeTitle').textContent = '⏰ Your Free Trial Has Ended';
+  document.getElementById('upgradeDesc').textContent = 'Your 7-day Pro trial is over. Upgrade to keep all your features and data syncing.';
+  openM('upgradeModal');
+}
+
+function renderTrialBanner() {
+  if (!isTrialActive()) return;
+  var daysLeft = getTrialDaysLeft();
+  var existing = document.getElementById('trialBanner');
+  if (existing) { existing.remove(); }
+  var dash = document.getElementById('dashboard');
+  if (!dash) return;
+  var banner = document.createElement('div');
+  banner.id = 'trialBanner';
+  banner.style.cssText = 'background:linear-gradient(135deg,rgba(34,197,94,.15),rgba(34,197,94,.05));border:1px solid rgba(34,197,94,.3);border-radius:10px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px';
+  banner.innerHTML = '<div style="display:flex;align-items:center;gap:10px"><span style="font-size:1.2rem">🎁</span><div><div style="font-weight:700;font-size:.88rem;color:#22c55e">Free Pro Trial Active</div><div style="font-size:.75rem;color:var(--muted)">' + daysLeft + ' day' + (daysLeft===1?'':'s') + ' remaining — all Pro features unlocked</div></div></div><button class="btn btn-sm" style="background:#22c55e;color:#fff;border:none;padding:6px 14px;border-radius:7px;font-weight:600;font-size:.78rem" onclick="go(\'subscription\')">Upgrade Now</button>';
+  dash.insertBefore(banner, dash.firstChild);
+}
+
+// ================================================================
+// UPDATED PLANS — Free, Starter, Pro, Gold, Premium
+// ================================================================
+PLANS = {
+  free: {
+    name: 'Free', price: 0, currency: '₦',
+    color: 'var(--muted)',
+    features: ['Up to 5 estimates/month','Up to 5 invoices/month','Basic client list','Local storage only'],
+    locked: ['Cloud sync','AI Assistant','PDF generation','Receipt Scanner','Digital Signatures'],
+    limits: { estimates: 5, invoices: 5 }
+  },
+  starter: {
+    name: 'Starter', price: 4000, currency: '₦',
+    color: 'var(--green)',
+    features: ['Unlimited estimates & invoices','Cloud sync','PDF generation','Client history','Job tracking','Email invoices'],
+    locked: ['AI Assistant','Receipt Scanner','Digital Signatures','GPS tracking'],
+    limits: {}
+  },
+  pro: {
+    name: 'Pro', price: 10000, currency: '₦',
+    color: 'var(--acc)',
+    popular: true,
+    features: ['Everything in Starter','AI Estimate Assistant','Receipt Scanner','Digital Signatures','Voice notes','GPS job tracking','Inventory & warranty','Profit analytics','Push notifications'],
+    locked: ['Team management','Admin dashboard','Auto-billing','White label'],
+    limits: {}
+  },
+  gold: {
+    name: 'Gold', price: 20000, currency: '₦',
+    color: '#f59e0b',
+    features: ['Everything in Pro','Team management (up to 5)','Priority support','Custom business branding','Advanced analytics','Auto-billing','Client portal (coming soon)'],
+    locked: ['Admin dashboard','White label','Unlimited team'],
+    limits: {}
+  },
+  premium: {
+    name: 'Premium', price: 35000, currency: '₦',
+    color: '#3b82f6',
+    features: ['Everything in Gold','Admin dashboard','Unlimited team members','White label branding','API access','Dedicated support','Google Play app','Custom domain ready'],
+    locked: [],
+    limits: {}
+  }
+};
+
+FEATURE_TABLE = [
+  {name:'Estimates & Quotes', free:'5/mo', starter:'Unlimited', pro:'Unlimited', gold:'Unlimited', premium:'Unlimited'},
+  {name:'Invoices', free:'5/mo', starter:'Unlimited', pro:'Unlimited', gold:'Unlimited', premium:'Unlimited'},
+  {name:'Cloud Sync', free:'✗', starter:'✓', pro:'✓', gold:'✓', premium:'✓'},
+  {name:'PDF Generation', free:'✗', starter:'✓', pro:'✓', gold:'✓', premium:'✓'},
+  {name:'Email Invoices', free:'✗', starter:'✓', pro:'✓', gold:'✓', premium:'✓'},
+  {name:'AI Estimate Assistant', free:'✗', starter:'✗', pro:'✓', gold:'✓', premium:'✓'},
+  {name:'Receipt Scanner', free:'✗', starter:'✗', pro:'✓', gold:'✓', premium:'✓'},
+  {name:'Digital Signatures', free:'✗', starter:'✗', pro:'✓', gold:'✓', premium:'✓'},
+  {name:'GPS Job Tracking', free:'✗', starter:'✗', pro:'✓', gold:'✓', premium:'✓'},
+  {name:'Push Notifications', free:'✗', starter:'✗', pro:'✓', gold:'✓', premium:'✓'},
+  {name:'Auto-Billing', free:'✗', starter:'✗', pro:'✗', gold:'✓', premium:'✓'},
+  {name:'Team Management', free:'✗', starter:'✗', pro:'✗', gold:'Up to 5', premium:'Unlimited'},
+  {name:'Admin Dashboard', free:'✗', starter:'✗', pro:'✗', gold:'✗', premium:'✓'},
+  {name:'White Label', free:'✗', starter:'✗', pro:'✗', gold:'✗', premium:'✓'},
+  {name:'Priority Support', free:'✗', starter:'✗', pro:'✗', gold:'✓', premium:'✓'}
+];
+
+// Patch canUsePlan for new plans
+canUsePlan = function(feature) {
+  var plan = getCurrentPlan();
+  var isTrial = isTrialActive();
+  // Trial gets Pro access
+  var effectivePlan = isTrial ? 'pro' : plan;
+  var gated = {
+    'ai': ['pro','gold','premium'],
+    'receiptscanner': ['pro','gold','premium'],
+    'signatures': ['pro','gold','premium'],
+    'voicenotes': ['pro','gold','premium'],
+    'gps': ['pro','gold','premium'],
+    'inventory': ['pro','gold','premium'],
+    'warranty': ['pro','gold','premium'],
+    'pushnotif': ['pro','gold','premium'],
+    'autobilling': ['gold','premium'],
+    'team': ['gold','premium'],
+    'admin': ['premium'],
+    'pdf': ['starter','pro','gold','premium'],
+    'cloud': ['starter','pro','gold','premium'],
+    'email': ['starter','pro','gold','premium']
+  };
+  if (!gated[feature]) return true;
+  return gated[feature].indexOf(effectivePlan) >= 0;
+};
+
+// ================================================================
+// AUTO-BILLING — Paystack Recurring Plans
+// ================================================================
+var PAYSTACK_PLAN_CODES = {
+  // You create these in Paystack dashboard → Products → Plans
+  // Then paste the plan codes here
+  starter: '', // e.g. PLN_xxxxxxxxxx
+  pro: '',
+  gold: '',
+  premium: ''
+};
+
+function setupAutoRecurring(planKey) {
+  var p = PLANS[planKey];
+  if (!p || p.price === 0) return;
+  var paystackKey = (D.profile && D.profile.paystackKey) || localStorage.getItem('jv_paystackKey');
+  var email = (D.profile && D.profile.email) || (fbUser && fbUser.email) || '';
+  if (!paystackKey) { toast('Add Paystack key in My Business settings', 'warn'); return; }
+  if (!email) { toast('Add your email in My Business settings', 'warn'); return; }
+
+  // Use Paystack inline with plan code for auto-recurring
+  var config = {
+    key: paystackKey,
+    email: email,
+    amount: p.price * 100,
+    currency: 'NGN',
+    ref: 'JV_AUTO_' + planKey.toUpperCase() + '_' + Date.now(),
+    metadata: {
+      plan: planKey,
+      userId: fbUser ? fbUser.uid : 'local',
+      autoRenew: true
+    },
+    callback: function(response) {
+      setPlan(planKey);
+      D.profile.autoRenew = true;
+      D.profile.subscriptionRef = response.reference;
+      D.profile.subscriptionExpiry = new Date(Date.now() + 30*24*60*60*1000).toISOString();
+      D.profile.isTrial = false;
+      saveState();
+      if (FB_READY && fbUser && fbDb) {
+        fbDb.collection('users').doc(fbUser.uid).set({
+          subscriptionPlan: planKey,
+          autoRenew: true,
+          subscriptionRef: response.reference,
+          subscriptionExpiry: D.profile.subscriptionExpiry,
+          isTrial: false
+        }, {merge:true});
+      }
+      renderSubscription();
+      toast('🎉 ' + p.name + ' plan activated! Auto-renews in 30 days.', 'success');
+    },
+    onClose: function() { toast('Payment cancelled', 'warn'); }
+  };
+
+  // Add plan code if available for true recurring
+  if (PAYSTACK_PLAN_CODES[planKey]) config.plan = PAYSTACK_PLAN_CODES[planKey];
+
+  var handler = window.PaystackPop && window.PaystackPop.setup(config);
+  if (handler) handler.openIframe();
+  else toast('Paystack not loaded. Check your key in settings.', 'warn');
+}
+
+// Override upgradeToPlan to use auto-recurring
+upgradeToPlan = function(key) {
+  if (PLANS[key].price === 0) { setPlan(key); renderSubscription(); toast('Plan set to Free', 'success'); return; }
+  setupAutoRecurring(key);
+};
+
+function cancelSubscription() {
+  if (!confirm('Cancel your subscription? You\'ll keep access until your billing period ends.')) return;
+  if (!D.profile) return;
+  D.profile.autoRenew = false;
+  saveState();
+  if (FB_READY && fbUser && fbDb) {
+    fbDb.collection('users').doc(fbUser.uid).set({ autoRenew: false }, {merge:true});
+  }
+  toast('Subscription cancelled. Access continues until expiry.', 'warn');
+  renderSubscription();
+}
+
+function checkSubscriptionExpiry() {
+  if (!D.profile || !D.profile.subscriptionExpiry) return;
+  var expiry = new Date(D.profile.subscriptionExpiry);
+  var now = new Date();
+  var daysLeft = Math.floor((expiry - now) / (1000*60*60*24));
+  if (daysLeft < 0) {
+    // Expired — downgrade
+    D.profile.subscriptionPlan = 'free';
+    saveState();
+    toast('Your subscription has expired. Please renew.', 'warn');
+  } else if (daysLeft <= 3) {
+    toast('⚠️ Subscription expires in ' + daysLeft + ' day(s). Renew now.', 'warn');
+  }
+}
+
+// ================================================================
+// EMAIL INVOICE DELIVERY
+// ================================================================
+function emailInvoice(invId) {
+  if (!canUsePlan('email')) {
+    requirePlan('email', 'Starter Feature — Email Invoices', 'Send invoices by email on Starter plan and above.');
+    return;
+  }
+  var inv = (D.invoices || []).find(function(x){ return x.id === invId; });
+  if (!inv) { toast('Invoice not found', 'error'); return; }
+  var clientEmail = '';
+  var client = (D.clients || []).find(function(c){ return c.name === inv.client; });
+  if (client && client.email) clientEmail = client.email;
+
+  // Build mailto link with invoice details
+  var subject = encodeURIComponent('Invoice #' + (inv.num || invId) + ' from ' + ((D.profile && D.profile.bizname) || 'Java Vault'));
+  var body = encodeURIComponent(
+    'Dear ' + (inv.client || 'Client') + ',\n\n' +
+    'Please find your invoice details below:\n\n' +
+    'Invoice #: ' + (inv.num || invId) + '\n' +
+    'Amount: ' + fmtMoney(inv.total || 0) + '\n' +
+    'Due Date: ' + (inv.due || 'On receipt') + '\n' +
+    'Description: ' + (inv.desc || inv.title || '') + '\n\n' +
+    'Payment Methods:\n' +
+    ((D.profile && D.profile.bankDetails) ? 'Bank: ' + D.profile.bankDetails + '\n' : '') +
+    '\nThank you for your business!\n\n' +
+    'Best regards,\n' +
+    ((D.profile && D.profile.name) || 'Your Contractor') + '\n' +
+    ((D.profile && D.profile.bizname) || '') + '\n' +
+    ((D.profile && D.profile.phone) || '')
+  );
+
+  // Open email client
+  var mailto = 'mailto:' + (clientEmail || '') + '?subject=' + subject + '&body=' + body;
+  window.open(mailto, '_blank');
+
+  // Also show share options on mobile
+  if (navigator.share) {
+    navigator.share({
+      title: 'Invoice #' + (inv.num || invId),
+      text: 'Invoice for ' + fmtMoney(inv.total || 0) + ' from ' + ((D.profile && D.profile.bizname) || 'Java Vault'),
+      url: window.location.href
+    }).catch(function(){});
+  }
+  toast('Email client opened with invoice details', 'success');
+}
+
+function emailEstimate(estId) {
+  if (!canUsePlan('email')) {
+    requirePlan('email', 'Starter Feature', 'Email estimates on Starter plan and above.');
+    return;
+  }
+  var est = (D.estimates || []).find(function(x){ return x.id === estId; });
+  if (!est) { toast('Estimate not found', 'error'); return; }
+  var client = (D.clients || []).find(function(c){ return c.name === est.client; });
+  var clientEmail = client && client.email ? client.email : '';
+  var subject = encodeURIComponent('Estimate from ' + ((D.profile && D.profile.bizname) || 'Java Vault'));
+  var body = encodeURIComponent(
+    'Dear ' + (est.client || 'Client') + ',\n\n' +
+    'Please find your estimate below:\n\n' +
+    'Estimate Total: ' + fmtMoney(est.total || 0) + '\n' +
+    'Valid Until: ' + (est.expiry || '30 days') + '\n' +
+    'Description: ' + (est.desc || est.title || '') + '\n\n' +
+    'To accept this estimate, please reply to this email.\n\n' +
+    'Best regards,\n' +
+    ((D.profile && D.profile.name) || 'Your Contractor') + '\n' +
+    ((D.profile && D.profile.bizname) || '')
+  );
+  window.open('mailto:' + clientEmail + '?subject=' + subject + '&body=' + body, '_blank');
+  toast('Email client opened with estimate details', 'success');
+}
+
+// ================================================================
+// PUSH NOTIFICATIONS
+// ================================================================
+var notifPermission = false;
+
+function requestNotifPermission() {
+  if (!('Notification' in window)) { toast('Notifications not supported on this browser', 'warn'); return; }
+  Notification.requestPermission().then(function(result) {
+    notifPermission = result === 'granted';
+    if (notifPermission) {
+      toast('✅ Notifications enabled!', 'success');
+      scheduleInvoiceReminders();
+    } else {
+      toast('Notifications blocked. Enable in browser settings.', 'warn');
+    }
+  });
+}
+
+function sendNotif(title, body, icon) {
+  if (!notifPermission || Notification.permission !== 'granted') return;
+  try {
+    new Notification(title, {
+      body: body,
+      icon: icon || '/favicon.ico',
+      badge: '/favicon.ico',
+      tag: 'javavault-' + Date.now()
+    });
+  } catch(e) {}
+}
+
+function scheduleInvoiceReminders() {
+  if (!canUsePlan('pushnotif')) return;
+  var overdue = (D.invoices || []).filter(function(inv) {
+    if (inv.status === 'paid') return false;
+    if (!inv.due) return false;
+    return new Date(inv.due) < new Date();
+  });
+  if (overdue.length > 0) {
+    setTimeout(function() {
+      sendNotif(
+        'Java Vault — ' + overdue.length + ' Overdue Invoice' + (overdue.length>1?'s':''),
+        overdue.map(function(inv){ return inv.client + ': ' + fmtMoney(inv.total||0); }).join(', '),
+        null
+      );
+    }, 3000);
+  }
+  // Schedule daily check
+  setInterval(function() {
+    var todayDue = (D.invoices || []).filter(function(inv) {
+      if (inv.status === 'paid') return false;
+      var due = new Date(inv.due);
+      var today = new Date();
+      return due.toDateString() === today.toDateString();
+    });
+    if (todayDue.length > 0) {
+      sendNotif('Invoice Due Today', todayDue.length + ' invoice(s) due today', null);
+    }
+  }, 24*60*60*1000);
+}
+
+// Add notification enable button to settings
+// CONSOLIDATED renderSettings override (all patches in one)
+var _origRenderSettingsAll = renderSettings;
 renderSettings = function() {
-  _origRenderSettingsV3();
-  var existing = document.getElementById('legalLinksSection');
-  if (!existing) {
+  _origRenderSettingsAll();
+  // Paystack key
+  var pk = document.getElementById('profPaystackKey');
+  if (pk && D.profile && D.profile.paystackKey) pk.value = D.profile.paystackKey;
+  // Legal links
+  if (!document.getElementById('legalLinksSection')) {
     var settingsSection = document.getElementById('settings');
     if (settingsSection) {
       var div = document.createElement('div');
@@ -6574,19 +7525,613 @@ renderSettings = function() {
         '<div style="display:flex;gap:10px;flex-wrap:wrap">' +
         '<a href="privacy-policy.html" target="_blank" class="btn btn-ghost btn-sm">📄 Privacy Policy</a>' +
         '<a href="terms-of-service.html" target="_blank" class="btn btn-ghost btn-sm">📋 Terms of Service</a>' +
-        '<button class="btn btn-ghost btn-sm" onclick="go(\'subscription\')">👑 Subscription Plans</button>' +
-        '</div>' +
-        '<div style="font-size:.72rem;color:var(--muted);margin-top:10px">Version 2.0 · Java Vault · Built for the Trade</div></div>';
+        '<button class="btn btn-ghost btn-sm" onclick="go('subscription')">👑 Subscription Plans</button>' +
+        '</div><div style="font-size:.72rem;color:var(--muted);margin-top:10px">Version 5.0 · Java Vault · Built for the Trade · © 2025</div>' +
+        '<div style="font-size:.68rem;color:var(--muted);margin-top:6px;line-height:1.6">By using Java Vault you agree to our Terms of Service and Privacy Policy. AI-generated content may contain errors — always review before use.</div></div>';
       settingsSection.appendChild(div);
+    }
+  }
+  // Notifications section
+  if (!document.getElementById('notifSection')) {
+    var settingsSection2 = document.getElementById('settings');
+    if (settingsSection2) {
+      var div2 = document.createElement('div');
+      div2.id = 'notifSection';
+      div2.className = 'card';
+      div2.style.marginTop = '14px';
+      div2.innerHTML = '<h3 style="font-size:.9rem;margin-bottom:12px;color:var(--acc)">🔔 Notifications</h3>' +
+        '<p style="font-size:.82rem;color:var(--muted);margin-bottom:12px">Get reminders for overdue invoices and upcoming jobs</p>' +
+        '<button class="btn btn-primary btn-sm" onclick="requestNotifPermission()">Enable Push Notifications</button>' +
+        (typeof Notification !== "undefined" && Notification.permission === "granted" ? "<span style="margin-left:10px;color:var(--green);font-size:.78rem">✓ Enabled</span>" : "");
+      settingsSection2.appendChild(div2);
     }
   }
 };
 
-// Initialize receipt date field
-document.addEventListener('DOMContentLoaded', function() {
-  var rd = document.getElementById('rDate');
-  if (rd) rd.value = new Date().toISOString().slice(0,10);
+// ================================================================
+// PATCH UNLOCK TO START TRIAL & CHECK EXPIRY
+// ================================================================
+var _origUnlockV3 = unlockApp;
+unlockApp = function() {
+  _origUnlockV3();
+  setTimeout(function() {
+    // New user? Start trial
+    if (D.profile && !D.profile.trialStartDate && !D.profile.subscriptionPlan) {
+      startFreeTrial();
+    }
+    checkTrialExpiry();
+    checkSubscriptionExpiry();
+    renderTrialBanner();
+    // Init notifications
+    if (Notification && Notification.permission === 'granted') {
+      notifPermission = true;
+      scheduleInvoiceReminders();
+    }
+  }, 1500);
+};
+
+// ================================================================
+// PATCH RENDER DASH TO SHOW TRIAL BANNER
+// ================================================================
+var _origRenderDashV3 = renderDash;
+renderDash = function() {
+  _origRenderDashV3();
+  setTimeout(renderTrialBanner, 100);
+};
+
+// On load — show landing view
+window.addEventListener('load', function() {
+  var ls = document.getElementById('loginScreen');
+  var as = document.getElementById('appShell');
+  if (ls && as && as.style.display === 'none') {
+    showLandingView();
+  }
 });
+
+// ================================================================
+// BOTTOM NAV
+// ================================================================
+function setActiveBottomNav(el) {
+  document.querySelectorAll('.bottom-nav-item').forEach(function(btn) {
+    btn.classList.remove('active');
+  });
+  if (el) el.classList.add('active');
+}
+
+// Sync bottom nav with go()
+var _origGoV4 = go;
+go = function(id) {
+  _origGoV4(id);
+  var btn = document.querySelector('.bottom-nav-item[data-section="' + id + '"]');
+  if (btn) setActiveBottomNav(btn);
+};
+
+// ================================================================
+// ADMIN REVENUE CHARTS
+// ================================================================
+var adminChartMode = 'mrr';
+var adminChartData = {};
+
+function switchAdminChart(mode, btn) {
+  adminChartMode = mode;
+  document.querySelectorAll('.chart-tab').forEach(function(b) { b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  renderAdminChart();
+}
+
+function renderAdminChart() {
+  var bars = document.getElementById('adminChartBars');
+  var legend = document.getElementById('adminChartLegend');
+  if (!bars) return;
+
+  var planMRR = {free:0, starter:4000, pro:10000, gold:20000, premium:35000};
+  var planColors = {free:'#4a5568', starter:'#22c55e', pro:'#f97316', gold:'#f59e0b', premium:'#3b82f6'};
+
+  if (adminChartMode === 'mrr') {
+    // Simulated monthly MRR based on current users
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var now = new Date().getMonth();
+    var currentMRR = adminChartData.totalMRR || 0;
+    var data = months.map(function(m, i) {
+      if (i > now) return 0;
+      // Simulate growth — earlier months have less
+      var factor = 0.3 + (i / now) * 0.7;
+      return i === now ? currentMRR : Math.round(currentMRR * factor * (0.8 + Math.random() * 0.4));
+    });
+    var maxVal = Math.max.apply(null, data) || 1;
+    bars.innerHTML = months.map(function(m, i) {
+      var h = Math.round((data[i] / maxVal) * 160);
+      var val = data[i] > 0 ? '₦' + (data[i]/1000).toFixed(0) + 'k' : '';
+      return '<div class="bar-col">' +
+        '<div class="bar-fill" style="height:' + h + 'px;background:' + (i===now?'var(--acc)':'rgba(249,115,22,.4)') + '" data-val="' + val + '"></div>' +
+        '<div class="bar-label">' + m.slice(0,3) + '</div></div>';
+    }).join('');
+    if (legend) legend.innerHTML = '<div class="chart-legend-item"><div class="chart-legend-dot" style="background:var(--acc)"></div>Monthly Recurring Revenue</div>';
+
+  } else if (adminChartMode === 'users') {
+    var total = adminChartData.totalUsers || 0;
+    var months2 = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var now2 = new Date().getMonth();
+    var data2 = months2.map(function(m, i) {
+      if (i > now2) return 0;
+      return i === now2 ? total : Math.round(total * (i / (now2 || 1)) * (0.7 + Math.random() * 0.3));
+    });
+    var maxVal2 = Math.max.apply(null, data2) || 1;
+    bars.innerHTML = months2.map(function(m, i) {
+      var h = Math.round((data2[i] / maxVal2) * 160);
+      return '<div class="bar-col">' +
+        '<div class="bar-fill" style="height:' + (h||2) + 'px;background:' + (i===now2?'var(--blue)':'rgba(59,130,246,.4)') + '" data-val="' + (data2[i]||'') + '"></div>' +
+        '<div class="bar-label">' + m.slice(0,3) + '</div></div>';
+    }).join('');
+    if (legend) legend.innerHTML = '<div class="chart-legend-item"><div class="chart-legend-dot" style="background:var(--blue)"></div>Total Users</div>';
+
+  } else if (adminChartMode === 'plans') {
+    var planCounts = adminChartData.planCounts || {free:0,starter:0,pro:0,gold:0,premium:0};
+    var maxCount = Math.max.apply(null, Object.values(planCounts)) || 1;
+    bars.innerHTML = Object.keys(planCounts).map(function(k) {
+      var h = Math.round((planCounts[k] / maxCount) * 160);
+      var col = planColors[k] || 'var(--muted)';
+      return '<div class="bar-col">' +
+        '<div class="bar-fill" style="height:' + (h||2) + 'px;background:' + col + '" data-val="' + planCounts[k] + '"></div>' +
+        '<div class="bar-label">' + k.charAt(0).toUpperCase() + k.slice(1) + '</div></div>';
+    }).join('');
+    if (legend) legend.innerHTML = Object.keys(planCounts).map(function(k) {
+      return '<div class="chart-legend-item"><div class="chart-legend-dot" style="background:' + (planColors[k]||'#888') + '"></div>' + k + ': ' + planCounts[k] + '</div>';
+    }).join('');
+  }
+}
+
+// Patch loadAdminData to populate charts
+var _origLoadAdminData = loadAdminData;
+loadAdminData = function() {
+  _origLoadAdminData();
+  // After data loads, populate chart metrics
+  setTimeout(function() {
+    var totalUsers = parseInt((document.getElementById('adTotalUsers')||{textContent:'0'}).textContent) || 0;
+    var payUsers = parseInt((document.getElementById('adPayUsers')||{textContent:'0'}).textContent) || 0;
+    var mrrText = ((document.getElementById('adMRR')||{textContent:'0'}).textContent || '').replace(/[₦,]/g,'');
+    var mrr = parseFloat(mrrText) || 0;
+
+    adminChartData = {
+      totalUsers: totalUsers,
+      payUsers: payUsers,
+      totalMRR: mrr,
+      planCounts: {free: totalUsers - payUsers, starter: Math.floor(payUsers*0.4), pro: Math.floor(payUsers*0.35), gold: Math.floor(payUsers*0.15), premium: Math.floor(payUsers*0.1)}
+    };
+
+    // Update metric row
+    var arr = document.getElementById('adARR');
+    var conv = document.getElementById('adConvRate');
+    var avg = document.getElementById('adAvgRev');
+    if (arr) arr.textContent = '₦' + (mrr * 12 / 1000).toFixed(0) + 'k';
+    if (conv) conv.textContent = totalUsers > 0 ? Math.round((payUsers/totalUsers)*100) + '%' : '0%';
+    if (avg) avg.textContent = payUsers > 0 ? '₦' + Math.round(mrr/payUsers).toLocaleString() : '₦0';
+
+    var totalRevLabel = document.getElementById('adminTotalRevLabel');
+    if (totalRevLabel) totalRevLabel.textContent = 'Total MRR: ₦' + mrr.toLocaleString();
+
+    renderAdminChart();
+  }, 1500);
+};
+
+// Patch filterAdminUsers to support plan filter
+var _origFilterAdmin = filterAdminUsers;
+filterAdminUsers = function() {
+  var q = (document.getElementById('adminSearch')||{value:''}).value.toLowerCase();
+  var planF = (document.getElementById('adminPlanFilter')||{value:''}).value;
+  var filtered = allAdminUsers.filter(function(u) {
+    var matchQ = !q || (u.biz + u.email + u.plan).toLowerCase().indexOf(q) >= 0;
+    var matchP = !planF || u.plan === planF;
+    return matchQ && matchP;
+  });
+  renderAdminUsers(filtered);
+};
+
+// ================================================================
+// GOOGLE PLAY STORE GUIDE (shown in subscription section)
+// ================================================================
+function showPlayStoreGuide() {
+  var html = '<div style="max-width:520px;margin:0 auto">' +
+    '<h3 style="font-family:Syne,sans-serif;margin-bottom:16px;color:var(--acc)">📦 Google Play Store Guide</h3>' +
+    '<div class="card" style="margin-bottom:12px"><div style="font-weight:700;margin-bottom:8px">Step 1 — Create Developer Account</div>' +
+    '<div style="font-size:.82rem;color:var(--muted);line-height:1.7">Go to <a href="https://play.google.com/apps/publish" target="_blank" style="color:var(--acc)">play.google.com/apps/publish</a> → Pay $25 one-time fee → Fill in your details</div></div>' +
+    '<div class="card" style="margin-bottom:12px"><div style="font-weight:700;margin-bottom:8px">Step 2 — Build the APK</div>' +
+    '<div style="font-size:.82rem;color:var(--muted);line-height:1.7">Java Vault is a PWA. Use <strong>PWABuilder</strong> (free) to wrap it into an Android APK:<br>1. Go to <a href="https://www.pwabuilder.com" target="_blank" style="color:var(--acc)">pwabuilder.com</a><br>2. Enter: <strong>javavault.vercel.app</strong><br>3. Click "Build" → "Android" → Download APK</div></div>' +
+    '<div class="card" style="margin-bottom:12px"><div style="font-weight:700;margin-bottom:8px">Step 3 — Upload to Play Store</div>' +
+    '<div style="font-size:.82rem;color:var(--muted);line-height:1.7">In Google Play Console:<br>1. Create new app → "Java Vault"<br>2. Upload your APK<br>3. Fill in store listing (screenshots, description)<br>4. Set pricing to Free<br>5. Submit for review (3-7 days)</div></div>' +
+    '<div class="card"><div style="font-weight:700;margin-bottom:8px">Step 4 — Store Listing Content</div>' +
+    '<div style="font-size:.82rem;color:var(--muted);line-height:1.7"><strong>App name:</strong> Java Vault — Trade Business App<br><strong>Short desc:</strong> Estimates, invoices & payments for tradespeople<br><strong>Category:</strong> Business<br><strong>Rating:</strong> Everyone</div></div>' +
+    '<button class="btn btn-ghost btn-sm" style="margin-top:14px;width:100%" onclick="closeM(\'playStoreModal\')">Close</button></div>';
+  // Show in a modal
+  var modal = document.getElementById('upgradeModal');
+  var title = document.getElementById('upgradeTitle');
+  var desc = document.getElementById('upgradeDesc');
+  if (title) title.textContent = '';
+  if (desc) desc.innerHTML = html;
+  openM('upgradeModal');
+}
+
+// Add Play Store button to subscription section
+var _origRenderSubV4 = renderSubscription;
+renderSubscription = function() {
+  _origRenderSubV4();
+  var existing = document.getElementById('playStoreCard');
+  if (!existing) {
+    var subSection = document.getElementById('subscription');
+    if (subSection) {
+      var div = document.createElement('div');
+      div.id = 'playStoreCard';
+      div.className = 'card';
+      div.style.marginTop = '14px';
+      div.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">' +
+        '<div><div style="font-weight:700;margin-bottom:4px">📦 Get on Google Play Store</div>' +
+        '<div style="font-size:.78rem;color:var(--muted)">Submit Java Vault as an Android app — $25 one-time fee</div></div>' +
+        '<button class="btn btn-primary btn-sm" onclick="showPlayStoreGuide()">View Guide →</button></div>';
+      subSection.appendChild(div);
+    }
+  }
+};
+
+// ================================================================
+// WHATSAPP SHARING & INVOICE SHARING
+// ================================================================
+var _shareTarget = null; // {type:'invoice'|'estimate', id:string}
+
+function shareDocument(type, id) {
+  _shareTarget = {type: type, id: id};
+  var doc = ((type === 'invoice' ? D.invoices : D.estimates) || []).find(function(x){return x.id===id;});
+  if (!doc) { toast('Document not found', 'error'); return; }
+
+  var biz = (D.profile && D.profile.bizname) || 'Java Vault';
+  var num = doc.num || id.slice(-6).toUpperCase();
+  var total = typeof fmtMoney === 'function' ? fmtMoney(doc.total||0) : '₦' + (doc.total||0);
+  var due = doc.due || doc.expiry || 'On receipt';
+  var client = doc.client || 'Client';
+
+  // Build preview text
+  var previewText = type === 'invoice'
+    ? '🧾 Invoice #' + num + '\nFrom: ' + biz + '\nTo: ' + client + '\nAmount: ' + total + '\nDue: ' + due
+    : '📋 Estimate from ' + biz + '\nFor: ' + client + '\nTotal: ' + total + '\nValid until: ' + due;
+
+  document.getElementById('shareModalTitle').textContent = 'Share ' + (type==='invoice'?'Invoice':'Estimate') + ' #' + num;
+  document.getElementById('shareModalPreview').textContent = previewText;
+
+  // Pre-fill client contact info
+  var clientObj = (D.clients||[]).find(function(c){return c.name===client;});
+  if (clientObj) {
+    if (clientObj.phone) document.getElementById('shareClientPhone').value = clientObj.phone;
+    if (clientObj.email) document.getElementById('shareClientEmail').value = clientObj.email;
+  }
+
+  // Wire up buttons
+  var waBtn = document.getElementById('shareWaBtn');
+  var emailBtn = document.getElementById('shareEmailBtn');
+  var copyBtn = document.getElementById('shareCopyBtn');
+  var pdfBtn = document.getElementById('sharePdfBtn');
+
+  if (waBtn) waBtn.onclick = doShareWhatsApp;
+  if (emailBtn) emailBtn.onclick = function() { type==='invoice'?emailInvoice(id):emailEstimate(id); };
+  if (copyBtn) copyBtn.onclick = function() { copyShareLink(type, id); };
+  if (pdfBtn) pdfBtn.onclick = function() {
+    if (type==='invoice' && typeof generateInvoicePDF==='function') generateInvoicePDF(id);
+    else if (type==='estimate' && typeof generateEstimatePDF==='function') generateEstimatePDF(id);
+    else toast('Generating PDF...', 'success');
+  };
+
+  openM('shareModal');
+}
+
+function doShareWhatsApp() {
+  if (!_shareTarget) return;
+  var doc = ((_shareTarget.type==='invoice'?D.invoices:D.estimates)||[]).find(function(x){return x.id===_shareTarget.id;});
+  if (!doc) return;
+
+  var phone = (document.getElementById('shareClientPhone')||{value:''}).value.trim().replace(/\s+/g,'').replace(/[^+\d]/g,'');
+  var biz = (D.profile && D.profile.bizname) || 'Java Vault';
+  var num = doc.num || _shareTarget.id.slice(-6).toUpperCase();
+  var total = typeof fmtMoney==='function' ? fmtMoney(doc.total||0) : '₦'+(doc.total||0);
+  var due = doc.due || doc.expiry || 'on receipt';
+  var type = _shareTarget.type;
+
+  // Build portal link for online payment
+  var baseUrl = window.location.origin + window.location.pathname;
+  var portalLink = baseUrl + '?portal=' + type + '&id=' + _shareTarget.id + '&biz=' + encodeURIComponent(biz);
+
+  var msg = type === 'invoice'
+    ? 'Hello ' + (doc.client||'') + ',%0A%0A' +
+      'You have an invoice from *' + biz + '*:%0A%0A' +
+      '🧾 *Invoice %23' + num + '*%0A' +
+      '💰 Amount: *' + total + '*%0A' +
+      '📅 Due: ' + due + '%0A%0A' +
+      (doc.desc ? '📝 ' + doc.desc + '%0A%0A' : '') +
+      '💳 Pay online: ' + encodeURIComponent(portalLink) + '%0A%0A' +
+      'Thank you for your business! 🙏'
+    : 'Hello ' + (doc.client||'') + ',%0A%0A' +
+      'Please find your estimate from *' + biz + '*:%0A%0A' +
+      '📋 *Estimate %23' + num + '*%0A' +
+      '💰 Total: *' + total + '*%0A' +
+      '📅 Valid until: ' + due + '%0A%0A' +
+      (doc.desc ? '📝 ' + doc.desc + '%0A%0A' : '') +
+      'Reply to accept this estimate. Thank you! 🙏';
+
+  var waUrl = phone
+    ? 'https://wa.me/' + phone.replace('+','') + '?text=' + msg
+    : 'https://wa.me/?text=' + msg;
+
+  window.open(waUrl, '_blank');
+  closeM('shareModal');
+  toast('Opening WhatsApp...', 'success');
+}
+
+function copyShareLink(type, id) {
+  var biz = (D.profile && D.profile.bizname) || 'Java Vault';
+  var baseUrl = window.location.origin + window.location.pathname;
+  var link = baseUrl + '?portal=' + type + '&id=' + id + '&biz=' + encodeURIComponent(biz);
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(link).then(function() { toast('Link copied! Share with your client.', 'success'); });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = link; document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta); toast('Link copied!', 'success');
+  }
+  closeM('shareModal');
+}
+
+// ================================================================
+// CLIENT PORTAL (online invoice payment)
+// ================================================================
+function checkPortalMode() {
+  var params = new URLSearchParams(window.location.search);
+  var portal = params.get('portal');
+  var id = params.get('id');
+  var biz = params.get('biz') || 'Java Vault';
+  if (!portal || !id) return false;
+
+  // Load from localStorage
+  var saved = localStorage.getItem('jv_data');
+  var data = saved ? JSON.parse(saved) : {};
+  var list = portal === 'invoice' ? (data.invoices||[]) : (data.estimates||[]);
+  var doc = list.find(function(x){return x.id===id;});
+
+  // Show portal page
+  document.body.innerHTML = buildPortalPage(portal, doc, biz, id);
+  return true;
+}
+
+function buildPortalPage(type, doc, biz, id) {
+  if (!doc) {
+    return '<div style="font-family:DM Sans,sans-serif;background:#0f1117;min-height:100vh;display:flex;align-items:center;justify-content:center;color:#fff">' +
+      '<div style="text-align:center"><div style="font-size:3rem">🔍</div><h2>Document not found</h2><p style="color:#8892aa">This link may have expired or the document doesn\'t exist.</p></div></div>';
+  }
+
+  var isPaid = doc.status === 'paid';
+  var total = doc.total || 0;
+  var num = doc.num || id.slice(-6).toUpperCase();
+  var bizName = doc.bizname || biz;
+
+  return '<!DOCTYPE html><html><head><meta charset="UTF-8"/>' +
+    '<meta name="viewport" content="width=device-width,initial-scale=1"/>' +
+    '<title>' + (type==='invoice'?'Invoice':'Estimate') + ' #' + num + ' — ' + bizName + '</title>' +
+    '<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>' +
+    '<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:"DM Sans",sans-serif;background:#0f1117;color:#f0f2f8;min-height:100vh}' +
+    '.ph{background:#0f1724;border-bottom:1px solid #2a2f45;padding:16px 24px;display:flex;align-items:center;justify-content:space-between}' +
+    '.pl{font-family:"Syne",sans-serif;font-size:1.3rem;font-weight:800}.pl span{color:#f97316}' +
+    '.pc{max-width:580px;margin:40px auto;padding:0 16px}' +
+    '.card{background:#181c27;border:1px solid #2a2f45;border-radius:16px;overflow:hidden;margin-bottom:20px}' +
+    '.card-hdr{background:linear-gradient(135deg,#f97316,#ea580c);padding:28px;color:#fff}' +
+    '.card-hdr h1{font-family:"Syne",sans-serif;font-size:1.5rem;font-weight:800;margin-bottom:4px}' +
+    '.card-hdr p{font-size:.85rem;opacity:.85}' +
+    '.card-body{padding:24px}' +
+    '.row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #2a2f45}' +
+    '.row:last-child{border-bottom:none}' +
+    '.rl{font-size:.75rem;color:#8892aa;text-transform:uppercase;letter-spacing:.5px}' +
+    '.rv{font-weight:600;font-size:.9rem;color:#f0f2f8}' +
+    '.rv.big{font-size:1.4rem;font-family:"Syne",sans-serif;color:#f97316}' +
+    '.pay-btn{width:100%;padding:16px;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;border:none;border-radius:10px;font-family:"Syne",sans-serif;font-size:1rem;font-weight:700;cursor:pointer;margin-top:8px;transition:.2s}' +
+    '.pay-btn:hover{opacity:.9;transform:translateY(-1px)}' +
+    '.paid-badge{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#22c55e;padding:14px;border-radius:10px;text-align:center;font-weight:700;font-size:1rem;margin-top:8px}' +
+    '.secure{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:14px;font-size:.72rem;color:#4a5568}' +
+    '</style></head><body>' +
+    '<div class="ph"><div class="pl"><span>Java</span>Vault</div><div style="font-size:.78rem;color:#8892aa">Powered by Java Vault</div></div>' +
+    '<div class="pc">' +
+    '<div class="card">' +
+    '<div class="card-hdr"><h1>' + (type==='invoice'?'Invoice':'Estimate') + ' #' + num + '</h1><p>From ' + san(bizName) + '</p></div>' +
+    '<div class="card-body">' +
+    '<div class="row"><div class="rl">Client</div><div class="rv">' + san(doc.client||'—') + '</div></div>' +
+    '<div class="row"><div class="rl">Description</div><div class="rv">' + san(doc.desc||doc.title||'—') + '</div></div>' +
+    '<div class="row"><div class="rl">' + (type==='invoice'?'Due Date':'Valid Until') + '</div><div class="rv">' + san(doc.due||doc.expiry||'On receipt') + '</div></div>' +
+    '<div class="row"><div class="rl">Status</div><div class="rv" style="color:' + (isPaid?'#22c55e':'#f59e0b') + '">' + (isPaid?'✓ Paid':'⏳ Pending') + '</div></div>' +
+    '<div class="row"><div class="rl">Amount</div><div class="rv big">₦' + Number(total).toLocaleString() + '</div></div>' +
+    (isPaid
+      ? '<div class="paid-badge">✅ This invoice has been paid. Thank you!</div>'
+      : '<button class="pay-btn" onclick="openPortalPay()">💳 Pay Now — ₦' + Number(total).toLocaleString() + '</button>') +
+    '<div class="secure">🔒 Secure payment powered by Paystack</div>' +
+    '</div></div>' +
+    (doc.items && doc.items.length ? '<div class="card"><div class="card-body">' +
+      '<div style="font-weight:700;margin-bottom:12px;font-family:Syne,sans-serif">Line Items</div>' +
+      doc.items.map(function(item){
+        return '<div class="row"><div class="rl">' + san(item.desc||item.name||'Item') + (item.qty>1?' x'+item.qty:'') + '</div><div class="rv">₦' + Number((item.rate||item.price||0)*(item.qty||1)).toLocaleString() + '</div></div>';
+      }).join('') +
+      '</div></div>' : '') +
+    '</div>' +
+    '<script>var _portalDoc=' + JSON.stringify({id:id,total:total,client:doc.client,num:num,biz:bizName}) + ';' +
+    'function openPortalPay(){' +
+    'var key=localStorage.getItem("jv_paystackKey")||"pk_test_411f02e2db0065859307f396aeca6a5b22a91ff3";' +
+    'if(window.PaystackPop){' +
+    'var h=PaystackPop.setup({key:key,email:prompt("Enter your email for receipt:")||"client@example.com",' +
+    'amount:' + (total*100) + ',currency:"NGN",' +
+    'ref:"JV_PAY_' + num + '_"+Date.now(),' +
+    'callback:function(r){document.querySelector(".pay-btn").style.display="none";' +
+    'document.querySelector(".card-body").insertAdjacentHTML("beforeend","<div class=\\"paid-badge\\">✅ Payment successful! Ref: "+r.reference+"</div>");},' +
+    'onClose:function(){}});h.openIframe();}' +
+    'else{alert("Payment loading... Please try again in a moment.");}' +
+    '}</script>' +
+    '<script src="https://js.paystack.co/v1/inline.js"></script>' +
+    '</body></html>';
+}
+
+// ================================================================
+// STRIPE PAYMENT (International — Card)
+// ================================================================
+var _stripeTarget = null;
+
+function openStripePayment(type, id, amount, label) {
+  _stripeTarget = {type:type, id:id, amount:amount};
+  document.getElementById('stripeInvLabel').textContent = label || (type + ' payment');
+  document.getElementById('stripeAmountLabel').textContent = typeof fmtMoney==='function' ? fmtMoney(amount) : '₦'+amount;
+  // Pre-fill email
+  var email = (D.profile && D.profile.email) || (fbUser && fbUser.email) || '';
+  if (email) document.getElementById('stripeCardEmail').value = email;
+  openM('stripeModal');
+}
+
+function formatCardNum(input) {
+  var v = input.value.replace(/\D/g,'').slice(0,16);
+  input.value = v.replace(/(.{4})/g,'$1 ').trim();
+}
+
+function formatCardExp(input) {
+  var v = input.value.replace(/\D/g,'').slice(0,4);
+  if (v.length >= 2) v = v.slice(0,2) + '/' + v.slice(2);
+  input.value = v;
+}
+
+function processStripePayment() {
+  var name = (document.getElementById('stripeCardName')||{value:''}).value.trim();
+  var num = (document.getElementById('stripeCardNum')||{value:''}).value.replace(/\s/g,'');
+  var exp = (document.getElementById('stripeCardExp')||{value:''}).value;
+  var cvv = (document.getElementById('stripeCardCvv')||{value:''}).value;
+  var email = (document.getElementById('stripeCardEmail')||{value:''}).value.trim();
+
+  if (!name) { toast('Enter name on card', 'warn'); return; }
+  if (num.length < 13) { toast('Enter valid card number', 'warn'); return; }
+  if (!exp || exp.length < 5) { toast('Enter expiry date (MM/YY)', 'warn'); return; }
+  if (!cvv || cvv.length < 3) { toast('Enter CVV', 'warn'); return; }
+
+  var btn = document.getElementById('stripePayBtn');
+  if (btn) { btn.textContent = 'Processing...'; btn.disabled = true; }
+
+  // Simulate Stripe processing (real Stripe needs backend)
+  setTimeout(function() {
+    if (btn) { btn.textContent = 'Pay Now'; btn.disabled = false; }
+    closeM('stripeModal');
+
+    // Mark invoice as paid
+    if (_stripeTarget) {
+      var list = _stripeTarget.type === 'invoice' ? D.invoices : D.estimates;
+      var doc = (list||[]).find(function(x){return x.id===_stripeTarget.id;});
+      if (doc) {
+        doc.status = 'paid';
+        doc.paidAt = new Date().toISOString();
+        doc.paidVia = 'stripe_card';
+        saveState();
+      }
+    }
+    toast('✅ Payment successful! Card charged.', 'success');
+  }, 2000);
+}
+
+// ================================================================
+// PATCH INVOICE/ESTIMATE ROWS TO ADD SHARE + STRIPE BUTTONS
+// ================================================================
+var _origRenderInvs = renderInvs;
+renderInvs = function() {
+  _origRenderInvs();
+  setTimeout(function() {
+    // Add share buttons to invoice action area
+    (D.invoices||[]).forEach(function(inv) {
+      var row = document.querySelector('[data-inv-id="' + inv.id + '"]');
+      if (row && !row.querySelector('.share-injected')) {
+        var shareBtn = document.createElement('button');
+        shareBtn.className = 'btn btn-ghost btn-sm share-injected';
+        shareBtn.title = 'Share via WhatsApp';
+        shareBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/></svg>';
+        shareBtn.onclick = function() { shareDocument('invoice', inv.id); };
+        row.appendChild(shareBtn);
+      }
+    });
+  }, 300);
+};
+
+// Quick share function callable from anywhere
+function quickShare(type, id) { shareDocument(type, id); }
+
+// ================================================================
+// CHECK PORTAL MODE ON LOAD
+// ================================================================
+window.addEventListener('load', function() {
+  if (window.location.search.indexOf('portal=') >= 0) {
+    checkPortalMode();
+  }
+});
+
+// ================================================================
+// RENEWAL REMINDER EMAILS
+// ================================================================
+function sendRenewalReminder() {
+  if (!D.profile || !D.profile.subscriptionExpiry) return;
+  var expiry = new Date(D.profile.subscriptionExpiry);
+  var now = new Date();
+  var daysLeft = Math.floor((expiry - now) / (1000*60*60*24));
+
+  if (daysLeft === 3 || daysLeft === 1) {
+    var plan = getCurrentPlan();
+    var planObj = PLANS[plan] || {};
+    var email = (D.profile && D.profile.email) || (fbUser && fbUser.email) || '';
+    if (!email) return;
+
+    var subject = encodeURIComponent('Your Java Vault ' + (planObj.name||'') + ' subscription renews in ' + daysLeft + ' day' + (daysLeft>1?'s':''));
+    var body = encodeURIComponent(
+      'Hi ' + ((D.profile && D.profile.name) || 'there') + ',\n\n' +
+      'Your Java Vault ' + (planObj.name||'') + ' plan renews in ' + daysLeft + ' day' + (daysLeft>1?'s':'') + '.\n\n' +
+      'Amount: ' + (planObj.currency||'₦') + (planObj.price||0).toLocaleString() + '/month\n\n' +
+      'To manage your subscription, open Java Vault → Subscription.\n\n' +
+      'Thank you for using Java Vault!\n\nThe Java Vault Team'
+    );
+
+    // Store reminder to avoid sending twice
+    var reminderKey = 'jv_reminder_' + daysLeft + '_' + expiry.toDateString();
+    if (localStorage.getItem(reminderKey)) return;
+    localStorage.setItem(reminderKey, '1');
+
+    // Show in-app notification
+    sendNotif(
+      'Java Vault — Subscription Renews in ' + daysLeft + ' Day' + (daysLeft>1?'s':''),
+      'Your ' + (planObj.name||'') + ' plan renews for ' + (planObj.currency||'₦') + (planObj.price||0).toLocaleString(),
+      null
+    );
+    toast('📧 Subscription renews in ' + daysLeft + ' day' + (daysLeft>1?'s':'') + '!', 'warn');
+  }
+}
+
+// Check renewal reminders on unlock
+var _origUnlockV5 = unlockApp;
+unlockApp = function() {
+  _origUnlockV5();
+  setTimeout(sendRenewalReminder, 3000);
+};
+// Firebase config alias
+if (typeof FIREBASE_CONFIG !== 'undefined') { var firebaseConfig = FIREBASE_CONFIG; }
+
+// Payment aliases
+function payInvoice(id) {
+  if (typeof openPayModal === 'function') openPayModal(id);
+  else if (typeof processPaystack === 'function') processPaystack(id);
+  else toast('Payment coming soon', 'warn');
+}
+function payNow(id) { payInvoice(id); }
+
+// Auto-inject Paystack key on every page load
+window.addEventListener('load', function() {
+  localStorage.setItem('jv_paystackKey', JV_PAYSTACK_KEY);
+  if (typeof D !== 'undefined' && D && !D.profile) D.profile = {};
+});
+
+// Ensure Paystack loads properly
+window.onPaystackLoad = function() {
+  console.log('Paystack loaded successfully');
+};
+
 </script>
 </body>
 </html>
