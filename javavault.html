@@ -709,6 +709,22 @@ td,th{border-color:var(--bor)}
 .pc-cta[disabled]{background:var(--surf2);color:var(--muted);cursor:default}
 .pc-note{font-size:.72rem;color:var(--muted);text-align:center}
 </style>
+<style id="jv-setup">
+#jvSetup{position:fixed;inset:0;z-index:99999;display:none;flex-direction:column;justify-content:center;padding:28px 22px;background:var(--bg,#000);color:var(--tx,#fff);overflow:auto;font-family:Manrope,system-ui,sans-serif}
+#jvSetup.show{display:flex}
+#jvSetup .box{max-width:420px;width:100%;margin:0 auto}
+#jvSetup h1{font:800 1.7rem Sora,system-ui,sans-serif;margin:0 0 6px}
+#jvSetup p{opacity:.65;margin:0 0 22px;font-size:.95rem}
+#jvSetup label{display:block;font-weight:700;font-size:.8rem;margin:16px 0 8px;opacity:.8}
+#jvSetup input{width:100%;box-sizing:border-box;padding:15px;border-radius:14px;border:1px solid rgba(128,128,128,.35);background:rgba(128,128,128,.12);color:inherit;font-size:1rem}
+#jvSetup .chips{display:flex;flex-wrap:wrap;gap:8px}
+#jvSetup .chip{padding:11px 16px;border-radius:999px;border:1px solid rgba(128,128,128,.4);background:transparent;color:inherit;font-weight:600;font-size:.9rem;cursor:pointer}
+#jvSetup .chip.on{background:#fff;color:#000;border-color:#fff}
+body.light-mode #jvSetup .chip.on{background:#000;color:#fff;border-color:#000}
+#jvSetup .go{width:100%;margin-top:26px;padding:17px;border-radius:999px;border:0;background:#fff;color:#000;font:700 1rem Sora,system-ui,sans-serif;cursor:pointer}
+body.light-mode #jvSetup .go{background:#000;color:#fff}
+#jvSetup .skip{display:block;margin:14px auto 0;background:none;border:0;color:inherit;opacity:.55;font-size:.85rem;cursor:pointer}
+</style>
 </head>
 <body>
 
@@ -2522,7 +2538,7 @@ td,th{border-color:var(--bor)}
 // Get them free at: https://console.firebase.google.com
 // ================================================================
 var FIREBASE_CONFIG = {
-  apiKey: "AIzaSy8ewXRyo8wB3sDH6CCLjw060b_SZMWdt9",
+  apiKey: "AIzaSyBewXRyo8wB3sDHGCCLjwO6Qb_SZMWdt9o",
   authDomain: "javavault-29cbb.firebaseapp.com",
   projectId: "javavault-29cbb",
   storageBucket: "javavault-29cbb.firebasestorage.app",
@@ -8493,6 +8509,38 @@ window.onPaystackLoad = function() {
     set(0);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+<div id="jvSetup" role="dialog" aria-label="Set up your profile"><div class="box">
+<h1>Tell us about you</h1><p>This goes on your quotes and invoices. You can change it later in Settings.</p>
+<label for="suName">Your name</label><input id="suName" autocomplete="name" placeholder="e.g. Emeka Okafor">
+<label>What is your job?</label>
+<div class="chips" id="suTrades"></div>
+<input id="suOther" placeholder="Type your job" style="display:none;margin-top:10px">
+<label for="suBiz">Business name (optional)</label><input id="suBiz" placeholder="e.g. Okafor Plumbing Works">
+<button class="go" id="suGo" type="button">Continue</button>
+<button class="skip" id="suSkip" type="button">Skip for now</button>
+</div></div>
+<script>
+(function(){
+  var trades=['Plumbing','Electrical','HVAC','Roofing','Painting','Carpentry','General Contractor','Other'],pick='';
+  function $(i){return document.getElementById(i)}
+  function needs(){try{var p=(D&&D.profile)||{};return !(p.name&&p.trade)&&!localStorage.getItem('jv_setup_done')}catch(e){return false}}
+  function build(){var w=$('suTrades');if(w.children.length)return;
+    trades.forEach(function(t){var b=document.createElement('button');b.type='button';b.className='chip';b.textContent=t;
+      b.onclick=function(){pick=t;[].forEach.call(w.children,function(c){c.classList.toggle('on',c===b)});$('suOther').style.display=t==='Other'?'block':'none'};w.appendChild(b)})}
+  function close(){try{localStorage.setItem('jv_setup_done','1')}catch(e){}$('jvSetup').classList.remove('show')}
+  function show(){if(!needs())return;build();var p=D.profile||{};
+    $('suName').value=p.name||(window.fbUser&&fbUser.displayName)||'';$('jvSetup').classList.add('show')}
+  $('suSkip').onclick=close;
+  $('suGo').onclick=function(){
+    var n=$('suName').value.trim(),t=pick==='Other'?$('suOther').value.trim():pick;
+    if(!n){toast('Please enter your name','warn');return}
+    if(!t){toast('Please choose your job','warn');return}
+    var p=D.profile||{};p.name=n;p.trade=t;
+    var b=$('suBiz').value.trim();if(b)p.bizname=b;else if(!p.bizname)p.bizname=n;
+    D.profile=p;saveState();close();toast('Welcome, '+n.split(' ')[0]+'!','success')};
+  var prev=unlockApp;unlockApp=function(){prev();setTimeout(show,700)};
 })();
 </script>
 </body>
