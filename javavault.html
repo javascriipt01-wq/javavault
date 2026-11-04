@@ -8594,7 +8594,7 @@ window.onPaystackLoad = function() {
     var p=D.profile||{};p.name=n;p.trade=t;
     var b=$('suBiz').value.trim();if(b)p.bizname=b;else if(!p.bizname)p.bizname=n;
     D.profile=p;saveState();close();toast('Welcome, '+n.split(' ')[0]+'!','success')};
-  var prev=unlockApp;unlockApp=function(){prev();setTimeout(show,700)};
+  var prev=unlockApp;unlockApp=function(){prev();var n=0,t=setInterval(function(){n++;var wait=typeof FB_READY!=='undefined'&&FB_READY&&window.fbUser&&!window._cloudSynced;if(!wait||n>20){clearInterval(t);if(!wait)show()}},500)};
 })();
 </script>
 <script>
@@ -8637,6 +8637,39 @@ window.onPaystackLoad = function() {
   var prev=renderDash;renderDash=function(){prev.apply(this,arguments);render()};
   var us=updateStats;updateStats=function(){us.apply(this,arguments);render()};
   var sp=saveProfile;saveProfile=function(){sp.apply(this,arguments);render()};
+})();
+</script>
+<script>
+/* Same Google/email account = same data on every device.
+   Never push local data to the cloud, start a trial, or ask for a name until the
+   account's cloud copy has been loaded first. */
+(function(){
+  window._cloudSynced=false;window._cloudQueue=[];
+  function signedIn(){return typeof FB_READY!=='undefined'&&FB_READY&&window.fbUser&&fbDb}
+  var origTo=syncToCloud;
+  syncToCloud=function(){if(signedIn()&&!window._cloudSynced)return;return origTo.apply(this,arguments)};
+  var origTrial=startFreeTrial;
+  startFreeTrial=function(){if(signedIn()&&!window._cloudSynced){window._cloudQueue.push(origTrial);return}return origTrial.apply(this,arguments)};
+  function done(){window._cloudSynced=true;var q=window._cloudQueue.splice(0);q.forEach(function(f){try{f()}catch(e){}});
+    try{if(D.profile&&D.profile.name&&D.profile.trade)localStorage.setItem('jv_setup_done','1')}catch(e){}}
+  syncFromCloud=function(){
+    if(!signedIn())return;
+    fbDb.collection('users').doc(fbUser.uid).get().then(function(doc){
+      if(doc.exists){var data=doc.data();
+        ['estimates','invoices','jobs','clients','expenses','team','activities'].forEach(function(k){if(Array.isArray(data[k]))D[k]=data[k]});
+        if(data.profile&&typeof data.profile==='object')D.profile=data.profile;
+        ['trialStartDate','subscriptionPlan','isTrial'].forEach(function(k){if(data[k]!==undefined){D.profile=D.profile||{};if(D.profile[k]===undefined)D.profile[k]=data[k]}});
+        saveLocal();updateStats();renderDash();if(window.renderHome)renderHome();showToastSync('Welcome back');
+      }
+      done();
+      if(!doc.exists)origTo();
+    }).catch(function(e){console.warn('Cloud load failed',e&&e.message)});
+  };
+  /* load the cloud copy straight away on login, and retry if offline */
+  var ou=unlockApp;unlockApp=function(){ou.apply(this,arguments);window._cloudSynced=false;setTimeout(syncFromCloud,150)};
+  setInterval(function(){if(signedIn()&&!window._cloudSynced&&document.visibilityState==='visible')syncFromCloud()},8000);
+  /* name screen waits for the cloud copy */
+  var oldShow=window.jvSetupShow;
 })();
 </script>
 </body>
