@@ -725,6 +725,55 @@ body.light-mode #jvSetup .chip.on{background:#000;color:#fff;border-color:#000}
 body.light-mode #jvSetup .go{background:#000;color:#fff}
 #jvSetup .skip{display:block;margin:14px auto 0;background:none;border:0;color:inherit;opacity:.55;font-size:.85rem;cursor:pointer}
 </style>
+<style id="jv-home">
+#dashboard>.page-hdr,#dashboard>.stats-grid,#dashboard>div[style*="grid-template-columns:1.4fr"],#trialBanner,#planDashBanner,#dashboard>#globalSearchBar{display:none!important}
+#jvHome{display:block}
+.hm-top{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.hm-logo{width:46px;height:46px;border-radius:14px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M24 7l14 5v11c0 9-6 15-14 18C16 38 10 32 10 23V12z' fill='none' stroke='%23000' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M17 20l7 11 7-11' fill='none' stroke='%23000' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/72% no-repeat;flex:none}
+#jvHome{padding-bottom:110px}
+.hm-ic svg{width:20px;height:20px}
+.hm-hi{flex:1;min-width:0}.hm-hi b{display:block;font:800 1.25rem Sora,system-ui,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hm-hi span{opacity:.6;font-size:.85rem}
+.hm-ic{width:42px;height:42px;border-radius:50%;border:1px solid rgba(128,128,128,.3);background:rgba(128,128,128,.12);color:inherit;display:grid;place-items:center;cursor:pointer}
+.hm-card{border:1px solid rgba(128,128,128,.25);background:rgba(128,128,128,.1);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-radius:24px;padding:18px;margin-bottom:12px}
+.hm-l{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;opacity:.65;font-weight:700}
+.hm-big{font:800 2rem Sora,system-ui,sans-serif;margin:4px 0 8px}
+.hm-spark{width:100%;height:80px;display:block}
+.hm-tabs{display:inline-flex;gap:2px;padding:4px;border-radius:999px;background:rgba(128,128,128,.15);margin-top:10px}
+.hm-tabs button{border:0;background:none;color:inherit;opacity:.6;padding:8px 16px;border-radius:999px;font-weight:600;cursor:pointer}
+.hm-tabs button.on{background:#fff;color:#000;opacity:1}body.light-mode .hm-tabs button.on{background:#000;color:#fff}
+.hm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.hm-grid .hm-card{margin:0;padding:16px}.hm-v{font:800 1.45rem Sora,system-ui,sans-serif;margin-top:6px}
+.hm-pill{display:inline-block;margin-top:8px;padding:4px 10px;border-radius:999px;border:1px solid currentColor;font-size:.72rem;font-weight:600}
+.hm-q{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:6px 0 20px}
+.hm-q button{border:0;background:none;color:inherit;display:flex;flex-direction:column;align-items:center;gap:8px;font-weight:600;font-size:.8rem;cursor:pointer}
+.hm-q i{width:100%;aspect-ratio:1;border-radius:22px;border:1px solid rgba(128,128,128,.25);background:rgba(128,128,128,.12);display:grid;place-items:center;font-style:normal}
+.hm-q button:first-child i{background:#fff;color:#000}body.light-mode .hm-q button:first-child i{background:#000;color:#fff}
+.hm-h{display:flex;justify-content:space-between;align-items:center;margin:4px 2px 10px}.hm-h b{font:800 1.15rem Sora,system-ui,sans-serif}
+.hm-h a{opacity:.6;font-size:.85rem;cursor:pointer}
+.hm-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(128,128,128,.2)}.hm-row:last-child{border:0}
+.hm-av{width:42px;height:42px;border-radius:50%;background:#fff;color:#000;display:grid;place-items:center;font-weight:800;font-size:.85rem;flex:none}
+.hm-m{flex:1;min-width:0}.hm-m b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hm-m span{opacity:.6;font-size:.8rem}
+.hm-r{text-align:right}.hm-r b{display:block}
+.hm-bd{font-size:.7rem;font-weight:700;padding:3px 9px;border-radius:999px;border:1px solid currentColor;display:inline-block;margin-top:4px}
+.hm-ok{color:#4ade80}.hm-wait{color:#fbbf24}.hm-bad{color:#f87171}
+.hm-empty{text-align:center;opacity:.6;padding:22px 0;font-size:.9rem}
+.hm-trial{font-size:.8rem;padding:10px 14px;border-radius:14px;border:1px solid rgba(74,222,128,.4);color:#4ade80;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.hm-trial button{border:0;border-radius:999px;padding:7px 14px;font-weight:700;background:#fff;color:#000;cursor:pointer}
+#moreMenu{background:#16181d!important;border:1px solid rgba(255,255,255,.14)!important;box-shadow:0 12px 40px rgba(0,0,0,.6)!important;max-height:70vh;overflow-y:auto;z-index:99990!important}
+body.light-mode #moreMenu{background:#fff!important;border-color:rgba(0,0,0,.12)!important}
+#moreMenu .fab-item{position:static!important;width:100%;display:flex!important;align-items:center;gap:10px;background:none;border:0;color:inherit;padding:11px 12px;text-align:left;font-size:.92rem;border-radius:10px;cursor:pointer}
+</style>
+<style id="jv-mobile">
+@media(max-width:760px){
+.section div[style*="grid-template-columns"],.section .grid2,.section .form-row,.section .two-col{grid-template-columns:1fr!important}
+.section .card{min-width:0}.section input,.section select,.section textarea{max-width:100%;box-sizing:border-box}
+.section{overflow-x:hidden}
+.section table{display:block;overflow-x:auto;white-space:nowrap}
+}
+</style>
+<style id="jv-fit">#subscription{width:100%;max-width:100%;overflow-x:hidden;box-sizing:border-box}#subscription>*{min-width:0;max-width:100%;box-sizing:border-box}#subscription #planGrid.pc{display:flex!important;grid-template-columns:none!important;width:100%}.main,#appShell,.content{min-width:0}</style>
+<style id="jv-logo2">.pc-card .lg,.ob-brand i,.wl-brand i{background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M24 7l14 5v11c0 9-6 15-14 18C16 38 10 32 10 23V12z' fill='none' stroke='%23000' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M17 20l7 11 7-11' fill='none' stroke='%23000' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/70% no-repeat!important}</style>
 </head>
 <body>
 
@@ -1055,6 +1104,7 @@ body.light-mode #jvSetup .go{background:#000;color:#fff}
 
     <!-- DASHBOARD -->
     <section id="dashboard" class="section active">
+      <div id="jvHome"></div>
       <!-- GLOBAL SEARCH BAR -->
       <div id="globalSearchBar" style="margin-bottom:16px;display:none">
         <div style="position:relative">
@@ -3137,7 +3187,7 @@ function importData(input) {
 // ================================================================
 // NAVIGATION
 // ================================================================
-function go(id) {
+function goBase(id) {
   var secs = document.querySelectorAll('.section');
   for (var i = 0; i < secs.length; i++) secs[i].classList.remove('active');
   var navs = document.querySelectorAll('.nav-item');
@@ -3398,6 +3448,7 @@ function saveInv() {
     notes: document.getElementById('iNotes').value.trim(),
     date: new Date().toLocaleDateString()
   };
+  inv.ts = Date.now();
   D.invoices.unshift(inv);
   autoClient(client, inv.phone);
   addAct('Invoice ' + inv.id + ' for ' + client, '' + CUR() + total.toFixed(2));
@@ -4707,7 +4758,7 @@ document.addEventListener('click', function(e) {
 });
 
 // Override go() to also update bottom nav
-var _originalGo = go;
+var _originalGo = goBase;
 function go(id) {
   _originalGo(id);
   setBnav(id);
@@ -5481,6 +5532,7 @@ function generateRecurringInv(i) {
     notes: r.notes || '', date: new Date().toLocaleDateString(),
     recurring: true
   };
+  inv.ts = Date.now();
   D.invoices.unshift(inv);
   D.recurring[i].lastGenerated = new Date().toISOString();
   D.recurring[i].nextDue = calcNextDue(new Date().toISOString().slice(0,10), r.freq);
@@ -8541,6 +8593,48 @@ window.onPaystackLoad = function() {
     var b=$('suBiz').value.trim();if(b)p.bizname=b;else if(!p.bizname)p.bizname=n;
     D.profile=p;saveState();close();toast('Welcome, '+n.split(' ')[0]+'!','success')};
   var prev=unlockApp;unlockApp=function(){prev();setTimeout(show,700)};
+})();
+</script>
+<script>
+(function(){
+  var range='month';
+  function esc(x){return (typeof sx==='function')?sx(x):String(x==null?'':x)}
+  function money(n){return (typeof CUR==='function'?CUR():'₦')+Math.round(+n||0).toLocaleString('en-NG')}
+  function tsOf(i){if(i.ts)return i.ts;var t=Date.parse(i.date);return isNaN(t)?Date.now():t}
+  function series(){
+    var paid=(D.invoices||[]).filter(function(i){return i.status==='paid'}),now=Date.now(),day=864e5,n=range==='week'?7:range==='month'?12:12,step=range==='week'?day:range==='month'?day*2.5:day*30,out=[];
+    for(var k=0;k<n;k++)out.push(0);
+    paid.forEach(function(i){var a=Math.floor((now-tsOf(i))/step);if(a>=0&&a<n)out[n-1-a]+=+i.total||0});return out}
+  function spark(v){var mx=Math.max.apply(null,v.concat([1])),w=300,h=70,pts=v.map(function(y,i){return [i*(w/(v.length-1)),h-6-(y/mx)*(h-14)]});
+    var d=pts.map(function(p,i){return(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)}).join(' ');
+    return '<svg class="hm-spark" viewBox="0 0 300 70" preserveAspectRatio="none"><path d="'+d+' L300 70 L0 70Z" fill="currentColor" opacity=".12"/><path d="'+d+'" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>'}
+  function greet(){var h=new Date().getHours();return h<12?'Good morning':h<17?'Good afternoon':'Good evening'}
+  function render(){
+    var root=document.getElementById('jvHome');if(!root||!window.D)return;
+    var p=D.profile||{},nm=(p.name||(window.fbUser&&fbUser.displayName)||'').split(' ')[0],inv=D.invoices||[];
+    var paid=0,unpaid=0,unpaidN=0,od=0,odN=0,now=Date.now();
+    inv.forEach(function(i){var t=+i.total||0;if(i.status==='paid')paid+=t;else{unpaid+=t;unpaidN++;if(i.status==='overdue'||(i.due&&Date.parse(i.due)<now)){od+=t;odN++}}});
+    var jobs=(D.jobs||[]).filter(function(j){return j.status!=='done'&&j.status!=='completed'}).length;
+    var exp=(D.expenses||[]).reduce(function(s,e){return s+(+e.amount||0)},0);
+    var date=new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
+    var trial='';try{if(typeof isTrialActive==='function'&&isTrialActive())trial='<div class="hm-trial"><span>Free Pro trial: '+getTrialDaysLeft()+' days left</span><button onclick="go(\'subscription\')">Upgrade</button></div>'}catch(e){}
+    var rows=inv.slice(0,4).map(function(i){var c=esc(i.client||'Client'),ini=c.replace(/&[^;]+;/g,'').split(/\s+/).map(function(w){return w[0]||''}).join('').slice(0,2).toUpperCase(),st=i.status==='paid'?['Paid','hm-ok']:i.status==='overdue'?['Overdue','hm-bad']:['Unpaid','hm-wait'];
+      return '<div class="hm-row"><div class="hm-av">'+ini+'</div><div class="hm-m"><b>'+c+'</b><span>'+esc(i.desc||'')+' · '+esc(i.id)+'</span></div><div class="hm-r"><b>'+money(i.total)+'</b><span class="hm-bd '+st[1]+'">'+st[0]+'</span></div></div>'}).join('')||'<div class="hm-empty">No invoices yet. Tap Invoice above to create your first one.</div>';
+    root.innerHTML=
+      '<div class="hm-top"><div class="hm-logo"></div><div class="hm-hi"><b>'+greet()+(nm?', '+esc(nm):'')+'</b><span>'+date+'</span></div><button class="hm-ic" onclick="toggleTheme()" aria-label="Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button></div>'+trial+
+      '<div class="hm-card"><div class="hm-l">Earned</div><div class="hm-big">'+money(paid)+'</div>'+spark(series())+'<div class="hm-tabs">'+['week','month','year'].map(function(r){return '<button data-r="'+r+'" class="'+(r===range?'on':'')+'">'+r[0].toUpperCase()+r.slice(1)+'</button>'}).join('')+'</div></div>'+
+      '<div class="hm-grid"><div class="hm-card"><div class="hm-l">Unpaid</div><div class="hm-v">'+money(unpaid)+'</div><span class="hm-pill hm-wait">'+unpaidN+(unpaidN===1?' invoice':' invoices')+'</span></div>'+
+      '<div class="hm-card"><div class="hm-l">Overdue</div><div class="hm-v">'+money(od)+'</div><span class="hm-pill hm-bad">'+odN+' late</span></div>'+
+      '<div class="hm-card"><div class="hm-l">Open jobs</div><div class="hm-v">'+jobs+'</div></div>'+
+      '<div class="hm-card"><div class="hm-l">Expenses</div><div class="hm-v">'+money(exp)+'</div></div></div>'+
+      '<div class="hm-q"><button onclick="go(\'invoices\');openM(\'invModal\')"><i>+</i>Invoice</button><button onclick="go(\'estimates\');openM(\'estModal\')"><i>&#128196;</i>Estimate</button><button onclick="go(\'jobs\');openM(\'jobModal\')"><i>&#128188;</i>Job</button><button onclick="go(\'clients\');openM(\'clientModal\')"><i>&#128100;</i>Client</button></div>'+
+      '<div class="hm-h"><b>Recent invoices</b><a onclick="go(\'invoices\')">See all</a></div><div class="hm-card" style="padding:6px 16px">'+rows+'</div>';
+    [].forEach.call(root.querySelectorAll('.hm-tabs button'),function(b){b.onclick=function(){range=b.dataset.r;render()}});
+  }
+  window.renderHome=render;
+  var prev=renderDash;renderDash=function(){prev.apply(this,arguments);render()};
+  var us=updateStats;updateStats=function(){us.apply(this,arguments);render()};
+  var sp=saveProfile;saveProfile=function(){sp.apply(this,arguments);render()};
 })();
 </script>
 </body>
