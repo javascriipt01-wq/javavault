@@ -774,6 +774,7 @@ body.light-mode #moreMenu{background:#fff!important;border-color:rgba(0,0,0,.12)
 </style>
 <style id="jv-fit">#subscription{width:100%;max-width:100%;overflow-x:hidden;box-sizing:border-box}#subscription>*{min-width:0;max-width:100%;box-sizing:border-box}#subscription #planGrid.pc{display:flex!important;grid-template-columns:none!important;width:100%}.main,#appShell,.content{min-width:0}</style>
 <style id="jv-logo2">.pc-card .lg,.ob-brand i,.wl-brand i{background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M24 7l14 5v11c0 9-6 15-14 18C16 38 10 32 10 23V12z' fill='none' stroke='%23000' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M17 20l7 11 7-11' fill='none' stroke='%23000' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/70% no-repeat!important}</style>
+<style id="jv-pc2">.pc-card .holder{position:absolute;left:14px;bottom:14px;right:14px;font:700 .62rem var(--display,Sora);letter-spacing:.12em;opacity:.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60%}.pc-card .tier{bottom:34px}.pc-trial{align-self:center;padding:7px 14px;border-radius:999px;border:1px solid rgba(74,222,128,.45);color:#4ade80;font-size:.8rem}.pc-trial b{font-weight:800}.pc-price small{opacity:.7;font-size:.75rem}</style>
 </head>
 <body>
 
@@ -6742,10 +6743,10 @@ function renderSubscription() {
   var checkSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
   grid.className = 'pc';
   grid.innerHTML =
-    '<div class="pc-head"><div class="pc-name" id="pcName"></div><div class="pc-price" id="pcPrice"></div></div>' +
+    '<div class="pc-trial">' + (isTrialActive() ? '7-day free trial: <b>' + getTrialDaysLeft() + ' days left</b>' : '7-day free trial on every new account') + '</div>' + '<div class="pc-head"><div class="pc-name" id="pcName"></div><div class="pc-price" id="pcPrice"></div></div>' +
     '<div class="pc-track" id="pcTrack">' + keys.map(function(k) {
       return '<button type="button" class="pc-card ' + k + '" data-k="' + k + '" aria-label="' + PLANS[k].name + ' plan">' +
-        '<span class="vt">Java Vault</span><span class="lg"></span>' +
+        '<span class="vt">Java Vault</span><span class="lg"></span><span class="holder">' + sx(((D.profile&&D.profile.name)||(window.fbUser&&fbUser.displayName)||'Your name').toUpperCase()) + '</span>' +
         (k === plan ? '<span class="cur">Current</span>' : '') +
         '<span class="tier">' + PLANS[k].name + '</span><span class="shine"></span></button>';
     }).join('') + '</div>' +
@@ -6761,7 +6762,8 @@ function renderSubscription() {
     pcCards.forEach(function(c) { c.classList.toggle('on', c.dataset.k === k); });
     pcDots.forEach(function(d, n) { d.classList.toggle('on', keys[n] === k); });
     document.getElementById('pcName').textContent = q.name;
-    document.getElementById('pcPrice').innerHTML = q.price === 0 ? '<b>Free</b> forever' : '<b>' + q.currency + q.price.toLocaleString() + '</b> / month';
+    document.getElementById('pcPrice').innerHTML = q.price === 0 ? '<b>Free</b> forever' : '<b>' + q.currency + q.price.toLocaleString() + '</b> / month'
+    if (q.price !== 0 && isTrialActive()) document.getElementById('pcPrice').innerHTML += '<br><small>Included free during your trial</small>';
     document.getElementById('pcFeats').innerHTML = q.features.slice(0, 7).map(function(f) { return '<div>' + checkSvg + '<span>' + f + '</span></div>'; }).join('');
     var cta = document.getElementById('pcCta');
     if (k === plan) { cta.textContent = 'Current plan'; cta.disabled = true; cta.onclick = null; }
