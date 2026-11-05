@@ -766,15 +766,39 @@ body.light-mode #moreMenu{background:#fff!important;border-color:rgba(0,0,0,.12)
 </style>
 <style id="jv-mobile">
 @media(max-width:760px){
-.section div[style*="grid-template-columns"],.section .grid2,.section .form-row,.section .two-col{grid-template-columns:1fr!important}
+.section div[style*="grid-template-columns"]:not(:has(>.stat-card)),.section .grid2,.section .form-row,.section .two-col{grid-template-columns:1fr!important}
+.section div:has(>.stat-card){display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}
+.stat-card{min-width:0;padding:16px!important}.stat-val{font-size:1.35rem!important;overflow-wrap:anywhere}
 .section .card{min-width:0}.section input,.section select,.section textarea{max-width:100%;box-sizing:border-box}
 .section{overflow-x:hidden}
-.section table{display:block;overflow-x:auto;white-space:nowrap}
 }
 </style>
 <style id="jv-fit">#subscription{width:100%;max-width:100%;overflow-x:hidden;box-sizing:border-box}#subscription>*{min-width:0;max-width:100%;box-sizing:border-box}#subscription #planGrid.pc{display:flex!important;grid-template-columns:none!important;width:100%}.main,#appShell,.content{min-width:0}</style>
 <style id="jv-logo2">.pc-card .lg,.ob-brand i,.wl-brand i{background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M24 7l14 5v11c0 9-6 15-14 18C16 38 10 32 10 23V12z' fill='none' stroke='%23000' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M17 20l7 11 7-11' fill='none' stroke='%23000' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/70% no-repeat!important}</style>
 <style id="jv-pc2">.pc-card .holder{position:absolute;left:14px;bottom:14px;right:14px;font:700 .62rem var(--display,Sora);letter-spacing:.12em;opacity:.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60%}.pc-card .tier{bottom:34px}.pc-trial{align-self:center;padding:7px 14px;border-radius:999px;border:1px solid rgba(74,222,128,.45);color:#4ade80;font-size:.8rem}.pc-trial b{font-weight:800}.pc-price small{opacity:.7;font-size:.75rem}</style>
+<style id="jv-beta">
+.nav-item[data-section="ai"],.nav-item[data-section="voicenotes"],.nav-item[data-section="receiptscanner"],
+.fab-item[onclick*="'ai'"],.fab-item[onclick*="'voicenotes'"],.fab-item[onclick*="'receiptscanner'"],
+button[onclick*="voiceToEstimate"],.hm-trial,#trialBanner,#planDashBanner{display:none!important}
+.hm-beta{font-size:.8rem;padding:10px 14px;border-radius:14px;border:1px solid rgba(128,128,128,.3);opacity:.85;margin-bottom:12px}
+</style>
+<style id="jv-cards">
+@media(max-width:760px){
+.section .card:has(>table){padding:0;background:none;border:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+.section table:not(.li-table),.section table:not(.li-table) tbody{display:block;width:100%}
+.section table:not(.li-table) thead{display:none}
+.section table:not(.li-table) tr{display:block;margin:0 0 12px;padding:14px 16px;border-radius:20px;border:1px solid rgba(128,128,128,.25);background:rgba(128,128,128,.1);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.section table:not(.li-table) td{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;padding:6px 0!important;border:0!important;text-align:right;font-size:.9rem}
+.section table:not(.li-table) td::before{content:attr(data-label);flex:none;opacity:.55;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;text-align:left;padding-top:2px}
+.section table:not(.li-table) td[data-label=""]::before,.section table:not(.li-table) td:not([data-label])::before{display:none}
+.section table:not(.li-table) td:last-child{justify-content:flex-start;flex-wrap:wrap;padding-top:12px!important;margin-top:6px;border-top:1px solid rgba(128,128,128,.2)!important}
+.section table:not(.li-table) td:last-child::before{display:none}
+.section table:not(.li-table) td[colspan]{display:block;text-align:center}
+.section table:not(.li-table) td[colspan]::before{display:none}
+.section h3,.section .card h3,.section .card-title{color:inherit}
+.section [style*="color:var(--acc)"]{color:inherit!important}
+}
+</style>
 </head>
 <body>
 
@@ -1294,19 +1318,19 @@ body.light-mode #moreMenu{background:#fff!important;border-color:rgba(0,0,0,.12)
       <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:18px;align-items:start">
         <div class="card">
           <h3 style="font-size:.95rem;margin-bottom:16px;color:var(--acc)">Business Details</h3>
-          <div class="form-group"><label>Business Name *</label><input id="profBiz" placeholder="e.g. Java Vault LLC" maxlength="100"/></div>
+          <div class="form-group"><label>Business Name *</label><input id="profBiz" placeholder="e.g. Okafor Plumbing Works" maxlength="100"/></div>
           <div class="form-row">
-            <div class="form-group"><label>Your Name</label><input id="profName" placeholder="John Smith" maxlength="100"/></div>
-            <div class="form-group"><label>Title</label><input id="profTitle" placeholder="Master Plumber" maxlength="60"/></div>
+            <div class="form-group"><label>Your Name</label><input id="profName" placeholder="e.g. Emeka Okafor" maxlength="100"/></div>
+            <div class="form-group"><label>Title</label><input id="profTitle" placeholder="e.g. Master Plumber" maxlength="60"/></div>
           </div>
           <div class="form-row">
-            <div class="form-group"><label>Phone</label><input id="profPhone" placeholder="555-0100" maxlength="20"/></div>
+            <div class="form-group"><label>Phone</label><input id="profPhone" placeholder="0803 123 4567" maxlength="20"/></div>
             <div class="form-group"><label>Email</label><input id="profEmail" type="email" placeholder="you@email.com" maxlength="100"/></div>
           </div>
-          <div class="form-group"><label>Address</label><input id="profAddress" placeholder="123 Main St, City, State" maxlength="200"/></div>
+          <div class="form-group"><label>Address</label><input id="profAddress" placeholder="12 Allen Avenue, Ikeja, Lagos" maxlength="200"/></div>
           <div class="form-row">
-            <div class="form-group"><label>Hourly Rate (₦) <span style="color:var(--muted);font-size:.72rem">for Job Timer</span></label><input id="profHourlyRate" type="number" placeholder="85" min="0" max="9999"/></div>
-            <div class="form-group"><label>Bank Details <span style="color:var(--muted);font-size:.72rem">for invoices</span></label><input id="profBank" placeholder="Bank name, account, routing..." maxlength="200"/></div>
+            <div class="form-group"><label>Hourly Rate (₦) <span style="color:var(--muted);font-size:.72rem">for Job Timer</span></label><input id="profHourlyRate" type="number" placeholder="5000" min="0" max="9999"/></div>
+            <div class="form-group"><label>Bank Details <span style="color:var(--muted);font-size:.72rem">for invoices</span></label><input id="profBank" placeholder="Bank name, account number" maxlength="200"/></div>
           <div class="form-group"><label>Flutterwave Public Key <span style="color:var(--muted);font-size:.72rem">for African payments</span></label><input id="profFlwKey" placeholder="FLWPUBK_TEST-..." maxlength="200"/></div>
           <div class="form-group"><label>Paystack Public Key <span style="color:var(--muted);font-size:.72rem">for Nigerian payments</span></label><input id="profPaystackKey" placeholder="pk_live_..." maxlength="200"/></div>
           </div>
@@ -1316,7 +1340,7 @@ body.light-mode #moreMenu{background:#fff!important;border-color:rgba(0,0,0,.12)
               <select id="profTrade"><option>Plumbing</option><option>Electrical</option><option>HVAC</option><option>Roofing</option><option>Painting</option><option>Carpentry</option><option>General Contractor</option></select>
             </div>
           </div>
-          <div class="form-group"><label>Payment Instructions (shown on invoices)</label><textarea id="profPayment" placeholder="e.g. Pay via Zelle to 555-0100. Due within 7 days." maxlength="300"></textarea></div>
+          <div class="form-group"><label>Payment Instructions (shown on invoices)</label><textarea id="profPayment" placeholder="e.g. Pay by bank transfer to GTBank 0123456789. Due within 7 days." maxlength="300"></textarea></div>
         </div>
         <div class="card">
           <h3 style="font-size:.95rem;margin-bottom:14px;color:var(--acc)">PDF Preview</h3>
@@ -1356,12 +1380,12 @@ body.light-mode #moreMenu{background:#fff!important;border-color:rgba(0,0,0,.12)
           </div>
           <div class="form-group">
             <label>Job Description</label>
-            <textarea id="aiJobDesc" placeholder="e.g. Replace kitchen faucet and fix leak under sink. Customer has a 2-bedroom house in suburban area." style="min-height:100px"></textarea>
+            <textarea id="aiJobDesc" placeholder="e.g. Replace kitchen faucet and fix leak under sink. Customer has a 2-bedroom house in Lekki." style="min-height:100px"></textarea>
           </div>
           <div class="form-row">
             <div class="form-group">
               <label>Your Location</label>
-              <input id="aiLocation" placeholder="e.g. Houston, TX" maxlength="100"/>
+              <input id="aiLocation" placeholder="e.g. Ikeja, Lagos" maxlength="100"/>
             </div>
             <div class="form-group">
               <label>Your Experience</label>
@@ -1772,7 +1796,7 @@ body.light-mode #moreMenu{background:#fff!important;border-color:rgba(0,0,0,.12)
         </div>
         <div id="receiptFields" style="display:none">
           <div class="receipt-field-row">
-            <div class="form-group"><label>Vendor / Store</label><input id="rVendor" placeholder="e.g. Home Depot"/></div>
+            <div class="form-group"><label>Vendor / Store</label><input id="rVendor" placeholder="e.g. Computer Village, Lagos"/></div>
             <div class="form-group"><label>Date</label><input id="rDate" type="date"/></div>
           </div>
           <div class="receipt-field-row">
@@ -1810,8 +1834,8 @@ body.light-mode #moreMenu{background:#fff!important;border-color:rgba(0,0,0,.12)
     <div class="modal-hdr"><div class="modal-title">New Estimate</div><button class="modal-x" onclick="closeM('estModal')">X</button></div>
     <div class="modal-body">
       <div class="form-row">
-        <div class="form-group"><label>Client Name *</label><input id="eClient" placeholder="John Smith" maxlength="100"/></div>
-        <div class="form-group"><label>Phone</label><input id="ePhone" placeholder="555-0100" maxlength="20"/></div>
+        <div class="form-group"><label>Client Name *</label><input id="eClient" placeholder="e.g. Emeka Okafor" maxlength="100"/></div>
+        <div class="form-group"><label>Phone</label><input id="ePhone" placeholder="0803 123 4567" maxlength="20"/></div>
       </div>
       <div class="form-group"><label>Job Description *</label><input id="eDesc" placeholder="e.g. Fix kitchen sink leak" maxlength="200"/></div>
       <div class="form-group">
@@ -1849,8 +1873,8 @@ body.light-mode #moreMenu{background:#fff!important;border-color:rgba(0,0,0,.12)
     <div class="modal-hdr"><div class="modal-title">New Invoice</div><button class="modal-x" onclick="closeM('invModal')">X</button></div>
     <div class="modal-body">
       <div class="form-row">
-        <div class="form-group"><label>Client Name *</label><input id="iClient" placeholder="John Smith" maxlength="100"/></div>
-        <div class="form-group"><label>Phone</label><input id="iPhone" placeholder="555-0100" maxlength="20"/></div>
+        <div class="form-group"><label>Client Name *</label><input id="iClient" placeholder="e.g. Emeka Okafor" maxlength="100"/></div>
+        <div class="form-group"><label>Phone</label><input id="iPhone" placeholder="0803 123 4567" maxlength="20"/></div>
       </div>
       <div class="form-group"><label>Job Description *</label><input id="iDesc" placeholder="e.g. Replaced kitchen faucet" maxlength="200"/></div>
       <div class="form-group">
@@ -1895,7 +1919,7 @@ body.light-mode #moreMenu{background:#fff!important;border-color:rgba(0,0,0,.12)
         <div class="form-group"><label>Start Date</label><input id="jStart" type="date"/></div>
         <div class="form-group"><label>Status</label><select id="jStatus"><option value="scheduled">Scheduled</option><option value="in-progress">In Progress</option><option value="completed">Completed</option></select></div>
       </div>
-      <div class="form-group"><label>Address</label><input id="jAddress" placeholder="123 Main St" maxlength="200"/></div>
+      <div class="form-group"><label>Address</label><input id="jAddress" placeholder="12 Allen Avenue, Ikeja" maxlength="200"/></div>
       <div class="form-group"><label>Notes</label><textarea id="jNotes" placeholder="Job details..." maxlength="500"></textarea></div>
     </div>
     <div class="modal-foot">
@@ -1911,11 +1935,11 @@ body.light-mode #moreMenu{background:#fff!important;border-color:rgba(0,0,0,.12)
     <div class="modal-hdr"><div class="modal-title">Add Client</div><button class="modal-x" onclick="closeM('clientModal')">X</button></div>
     <div class="modal-body">
       <div class="form-row">
-        <div class="form-group"><label>Full Name *</label><input id="cName" placeholder="John Smith" maxlength="100"/></div>
-        <div class="form-group"><label>Phone</label><input id="cPhone" placeholder="555-0100" maxlength="20"/></div>
+        <div class="form-group"><label>Full Name *</label><input id="cName" placeholder="e.g. Emeka Okafor" maxlength="100"/></div>
+        <div class="form-group"><label>Phone</label><input id="cPhone" placeholder="0803 123 4567" maxlength="20"/></div>
       </div>
-      <div class="form-group"><label>Email</label><input id="cEmail" type="email" placeholder="john@email.com" maxlength="100"/></div>
-      <div class="form-group"><label>Address</label><input id="cAddress" placeholder="123 Main St" maxlength="200"/></div>
+      <div class="form-group"><label>Email</label><input id="cEmail" type="email" placeholder="name@email.com" maxlength="100"/></div>
+      <div class="form-group"><label>Address</label><input id="cAddress" placeholder="12 Allen Avenue, Ikeja" maxlength="200"/></div>
       <div class="form-group"><label>Notes</label><textarea id="cNotes" maxlength="500"></textarea></div>
     </div>
     <div class="modal-foot">
@@ -1930,7 +1954,7 @@ body.light-mode #moreMenu{background:#fff!important;border-color:rgba(0,0,0,.12)
   <div class="modal">
     <div class="modal-hdr"><div class="modal-title">Add Job Photos</div><button class="modal-x" onclick="closeM('photoModal')">X</button></div>
     <div class="modal-body">
-      <div class="form-group"><label>Job Name</label><input id="pJob" placeholder="e.g. Johnson Kitchen Fix" maxlength="100"/></div>
+      <div class="form-group"><label>Job Name</label><input id="pJob" placeholder="e.g. Adeyemi Kitchen Repair" maxlength="100"/></div>
       <div class="form-group"><label>Type</label><select id="pType"><option>Before</option><option>After</option><option>In Progress</option><option>Issue Found</option></select></div>
       <div class="form-group"><label>Photo (max 5MB)</label><input type="file" id="pFile" accept="image/jpeg,image/png,image/webp" onchange="previewPic(this)"/></div>
       <div id="pPreviewBox" style="display:none;margin-top:8px"><img id="pPreview" style="width:100%;border-radius:7px;max-height:180px;object-fit:cover" alt="preview"/></div>
@@ -2010,14 +2034,14 @@ body.light-mode #moreMenu{background:#fff!important;border-color:rgba(0,0,0,.12)
     <div class="modal-hdr"><div class="modal-title">Add Team Member</div><button class="modal-x" onclick="closeM('teamModal')">X</button></div>
     <div class="modal-body">
       <div class="form-row">
-        <div class="form-group"><label>Full Name *</label><input id="tmName" placeholder="John Smith" maxlength="100"/></div>
+        <div class="form-group"><label>Full Name *</label><input id="tmName" placeholder="e.g. Emeka Okafor" maxlength="100"/></div>
         <div class="form-group"><label>Role</label>
           <select id="tmRole"><option>Apprentice</option><option>Technician</option><option>Journeyman</option><option>Foreman</option><option>Subcontractor</option></select>
         </div>
       </div>
       <div class="form-row">
-        <div class="form-group"><label>Phone</label><input id="tmPhone" placeholder="555-0100" maxlength="20"/></div>
-        <div class="form-group"><label>Email</label><input id="tmEmail" type="email" placeholder="john@email.com" maxlength="100"/></div>
+        <div class="form-group"><label>Phone</label><input id="tmPhone" placeholder="0803 123 4567" maxlength="20"/></div>
+        <div class="form-group"><label>Email</label><input id="tmEmail" type="email" placeholder="name@email.com" maxlength="100"/></div>
       </div>
       <div class="form-row">
         <div class="form-group"><label>Daily Rate (₦)</label><input id="tmRate" type="number" placeholder="200" min="0" max="9999"/></div>
@@ -2103,7 +2127,7 @@ body.light-mode #moreMenu{background:#fff!important;border-color:rgba(0,0,0,.12)
         <div style="background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.15);border-radius:9px;padding:14px;margin-bottom:14px;font-size:.8rem;color:var(--muted)">
           Powered by <strong style="color:var(--text)">Stripe</strong> — Your card details are encrypted and never stored on our servers.
         </div>
-        <div class="form-group"><label>Cardholder Name</label><input id="payCardName" placeholder="John Smith" maxlength="100"/></div>
+        <div class="form-group"><label>Cardholder Name</label><input id="payCardName" placeholder="e.g. Emeka Okafor" maxlength="100"/></div>
         <div class="form-group"><label>Card Number</label><input id="payCardNum" placeholder="1234 5678 9012 3456" maxlength="19" oninput="fmtCard(this)"/></div>
         <div class="form-row">
           <div class="form-group"><label>Expiry</label><input id="payExpiry" placeholder="MM/YY" maxlength="5" oninput="fmtExpiry(this)"/></div>
@@ -2253,7 +2277,7 @@ body.light-mode #moreMenu{background:#fff!important;border-color:rgba(0,0,0,.12)
     <div class="modal-hdr"><div class="modal-title">New Recurring Invoice</div><button class="modal-x" onclick="closeM('recurringModal')">X</button></div>
     <div class="modal-body">
       <div class="form-row">
-        <div class="form-group"><label>Client Name *</label><input id="recClient" placeholder="John Smith" maxlength="100"/></div>
+        <div class="form-group"><label>Client Name *</label><input id="recClient" placeholder="e.g. Emeka Okafor" maxlength="100"/></div>
         <div class="form-group"><label>Amount (₦) *</label><input id="recAmount" type="number" placeholder="0.00" min="0" step="0.01"/></div>
       </div>
       <div class="form-group"><label>Description *</label><input id="recDesc" placeholder="e.g. Monthly HVAC maintenance" maxlength="200"/></div>
@@ -2560,7 +2584,9 @@ body.light-mode #moreMenu{background:#fff!important;border-color:rgba(0,0,0,.12)
 
 <!-- PWA Manifest -->
 <link rel="manifest" href="manifest.json"/>
-<meta name="theme-color" content="#08090b"/>
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png"/>
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
+<meta name="theme-color" content="#000000"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="Java Vault"/>
@@ -3128,6 +3154,7 @@ var D = {
   photos: [], expenses: [], activities: [], profile: {},
   calYear: new Date().getFullYear(), calMonth: new Date().getMonth()
 };
+['team','timeLogs','recurring','voiceNotes','inventory','fuelLogs','warranties','reviews','reminders'].forEach(function(k){ if(!Array.isArray(D[k])) D[k]=[]; });
 
 function loadState() {
   try {
@@ -3982,7 +4009,7 @@ function buildReviewMsg() {
   var biz = p.bizname || 'Java Vault';
   var link = (document.getElementById('reviewLink') || {value:''}).value || '[Your Google Review Link]';
   var jobText = job ? job + ' work' : 'work';
-  var msg = 'Hi ' + client + ', This is a reminder that your ' + job + ' appointment is on ' + dateStr + ' at ' + timeStr + '. Please make sure someone is home. To reschedule contact us. Thank you! - ' + biz + (p.phone ? ' ' + p.phone : '');
+  var msg = 'Hi ' + client + ', thank you for choosing ' + biz + ' for your ' + jobText + '. If you were happy with our service, we would really appreciate a short review: ' + link + ' Thank you!' + (p.phone ? ' ' + p.phone : '');
 if (p.phone) msg += '\n' + p.phone;
   var el = document.getElementById('reviewMsg');
   if (el) el.value = msg;
@@ -8623,7 +8650,7 @@ window.onPaystackLoad = function() {
     var rows=inv.slice(0,4).map(function(i){var c=esc(i.client||'Client'),ini=c.replace(/&[^;]+;/g,'').split(/\s+/).map(function(w){return w[0]||''}).join('').slice(0,2).toUpperCase(),st=i.status==='paid'?['Paid','hm-ok']:i.status==='overdue'?['Overdue','hm-bad']:['Unpaid','hm-wait'];
       return '<div class="hm-row"><div class="hm-av">'+ini+'</div><div class="hm-m"><b>'+c+'</b><span>'+esc(i.desc||'')+' · '+esc(i.id)+'</span></div><div class="hm-r"><b>'+money(i.total)+'</b><span class="hm-bd '+st[1]+'">'+st[0]+'</span></div></div>'}).join('')||'<div class="hm-empty">No invoices yet. Tap Invoice above to create your first one.</div>';
     root.innerHTML=
-      '<div class="hm-top"><div class="hm-logo"></div><div class="hm-hi"><b>'+greet()+(nm?', '+esc(nm):'')+'</b><span>'+date+'</span></div><button class="hm-ic" onclick="toggleTheme()" aria-label="Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button></div>'+trial+
+      '<div class="hm-top"><div class="hm-logo"></div><div class="hm-hi"><b>'+greet()+(nm?', '+esc(nm):'')+'</b><span>'+date+'</span></div><button class="hm-ic" onclick="toggleTheme()" aria-label="Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button></div>'+(typeof JV_BETA!=='undefined'&&JV_BETA?'<div class="hm-beta">Free beta: every feature is free while we test. Tell us what to improve.</div>':trial)+
       '<div class="hm-card"><div class="hm-l">Earned</div><div class="hm-big">'+money(paid)+'</div>'+spark(series())+'<div class="hm-tabs">'+['week','month','year'].map(function(r){return '<button data-r="'+r+'" class="'+(r===range?'on':'')+'">'+r[0].toUpperCase()+r.slice(1)+'</button>'}).join('')+'</div></div>'+
       '<div class="hm-grid"><div class="hm-card"><div class="hm-l">Unpaid</div><div class="hm-v">'+money(unpaid)+'</div><span class="hm-pill hm-wait">'+unpaidN+(unpaidN===1?' invoice':' invoices')+'</span></div>'+
       '<div class="hm-card"><div class="hm-l">Overdue</div><div class="hm-v">'+money(od)+'</div><span class="hm-pill hm-bad">'+odN+' late</span></div>'+
@@ -8670,6 +8697,83 @@ window.onPaystackLoad = function() {
   setInterval(function(){if(signedIn()&&!window._cloudSynced&&document.visibilityState==='visible')syncFromCloud()},8000);
   /* name screen waits for the cloud copy */
   var oldShow=window.jvSetupShow;
+})();
+</script>
+<script>
+/* ===== FREE BETA MODE =====
+   JV_BETA=true: every working feature is unlocked, nothing asks for payment.
+   Set JV_BETA=false later to switch plans and payment back on. */
+var JV_BETA=true;
+(function(){
+  /* 1. Close the insecure login shortcuts */
+  window.useGmailAsId=function(){toast('Please use Continue with Google to sign in.','warn')};
+  window.handleGoogleResponse=function(){};
+  window.showGoogleInstructions=function(){toast('Google sign-in is not available right now. Please sign in with email.','warn')};
+  var lwp=loginWithPhone;
+  loginWithPhone=function(){
+    if(!(typeof FB_READY!=='undefined'&&FB_READY&&fbAuth)){toast('Phone sign-in is not available right now. Please use Google or email.','warn');return}
+    return lwp.apply(this,arguments)};
+  var vo=verifyOtp;
+  verifyOtp=function(){
+    if(!(typeof FB_READY!=='undefined'&&FB_READY&&window.confirmationResult)){toast('Phone sign-in is not available right now.','warn');return}
+    return vo.apply(this,arguments)};
+  /* 2. Free beta: unlock working features, no trial or expiry prompts */
+  var gcp=getCurrentPlan;
+  getCurrentPlan=function(){return JV_BETA?'gold':gcp.apply(this,arguments)};
+  var nop=function(){};
+  ['checkTrialExpiry','checkSubscriptionExpiry','sendRenewalReminder','renderTrialBanner','startFreeTrial'].forEach(function(n){
+    var f=window[n];if(typeof f!=='function')return;window[n]=function(){return JV_BETA?undefined:f.apply(this,arguments)}});
+  /* 3. Unfinished features say "coming soon" */
+  var hidden={ai:1,voicenotes:1,receiptscanner:1};
+  var g=go;go=function(id){if(hidden[id]){toast('Coming soon','info');return}return g.apply(this,arguments)};
+  var vte=voiceToEstimate;voiceToEstimate=function(){toast('Coming soon','info')};
+  /* 4. Beta note on the dashboard */
+  var rh=window.renderHome;
+  if(rh){window.renderHome=function(){rh.apply(this,arguments);var r=document.getElementById('jvHome');if(r&&!r.querySelector('.hm-beta')){var d=document.createElement('div');d.className='hm-beta';d.textContent='Free beta: every feature is free while we test. Tell us what to improve.';var t=r.querySelector('.hm-top');if(t)t.after(d)}}}
+})();
+</script>
+<script>
+/* Crash tracking. Paste your Sentry DSN between the quotes to switch it on. */
+var JV_SENTRY_DSN='';
+(function(){
+  if(!JV_SENTRY_DSN)return;
+  var sc=document.createElement('script');
+  sc.src='https://browser.sentry-cdn.com/7.120.3/bundle.min.js';sc.crossOrigin='anonymous';
+  sc.onload=function(){try{Sentry.init({dsn:JV_SENTRY_DSN,release:'javavault@beta',environment:'beta',tracesSampleRate:0,
+    beforeSend:function(e){try{if(e.user)delete e.user.email}catch(x){}return e}})}catch(e){}};
+  document.head.appendChild(sc);
+})();
+</script>
+<script>
+/* Label each table cell with its column name so phones can show cards instead of wide tables */
+(function(){
+  function label(t){
+    if(t.classList&&t.classList.contains('li-table'))return;
+    var heads=[].map.call(t.querySelectorAll('thead th'),function(h){return h.textContent.trim()});
+    if(!heads.length)return;
+    [].forEach.call(t.querySelectorAll('tbody tr'),function(tr){
+      [].forEach.call(tr.children,function(td,i){if(td.hasAttribute('colspan'))return;var l=heads[i]||'';if(td.getAttribute('data-label')!==l)td.setAttribute('data-label',l)})})}
+  function all(){[].forEach.call(document.querySelectorAll('.section table'),label)}
+  var t;new MutationObserver(function(){clearTimeout(t);t=setTimeout(all,50)}).observe(document.body,{childList:true,subtree:true});
+  document.addEventListener('DOMContentLoaded',all);all();
+})();
+</script>
+<script>
+/* Show naira amounts as ₦185,000 instead of ₦185000.00 (display only, saved data is unchanged) */
+(function(){
+  var re=/₦(\d[\d,]*)(\.\d+)?/g;
+  function fmt(m,i,d){var n=parseFloat(i.replace(/,/g,'')+(d||''));if(isNaN(n))return m;
+    var whole=Math.abs(n-Math.round(n))<0.005;
+    return '₦'+(whole?Math.round(n).toLocaleString('en-NG'):n.toLocaleString('en-NG',{minimumFractionDigits:2,maximumFractionDigits:2}))}
+  function walk(root){
+    var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:function(n){
+      var p=n.parentNode;if(!p||/^(SCRIPT|STYLE|TEXTAREA|INPUT|OPTION)$/.test(p.nodeName))return NodeFilter.FILTER_REJECT;
+      return n.nodeValue.indexOf('₦')>=0?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT}});
+    var list=[],n;while(n=w.nextNode())list.push(n);
+    list.forEach(function(t){var v=t.nodeValue.replace(re,fmt);if(v!==t.nodeValue)t.nodeValue=v})}
+  var timer;function run(){var r=document.getElementById('appShell');if(r)walk(r)}
+  new MutationObserver(function(){clearTimeout(timer);timer=setTimeout(run,60)}).observe(document.body,{childList:true,subtree:true,characterData:true});
+  document.addEventListener('DOMContentLoaded',run);
 })();
 </script>
 </body>
