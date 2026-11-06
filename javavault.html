@@ -1632,7 +1632,7 @@ button[onclick*="voiceToEstimate"],.hm-trial,#trialBanner,#planDashBanner{displa
       <div class="stats-grid" style="grid-template-columns:repeat(4,1fr)">
         <div class="stat-card"><div class="stat-label">This Month</div><div class="stat-val c-orange" id="fuelMonth">₦0</div><div class="stat-sub">fuel cost</div></div>
         <div class="stat-card"><div class="stat-label">This Year</div><div class="stat-val c-blue" id="fuelYear">₦0</div><div class="stat-sub">total spent</div></div>
-        <div class="stat-card"><div class="stat-label">Miles</div><div class="stat-val" id="fuelMiles">0</div><div class="stat-sub">this year</div></div>
+        <div class="stat-card"><div class="stat-label">Km</div><div class="stat-val" id="fuelMiles">0</div><div class="stat-sub">this year</div></div>
         <div class="stat-card"><div class="stat-label">Tax Deduction</div><div class="stat-val c-green" id="fuelDeduction">₦0</div><div class="stat-sub">estimated</div></div>
       </div>
       <div class="card">
@@ -2233,7 +2233,7 @@ button[onclick*="voiceToEstimate"],.hm-trial,#trialBanner,#planDashBanner{displa
       </div>
       <div class="form-row">
         <div class="form-group"><label>Price Per Unit (₦)</label><input id="fuelPrice" type="number" placeholder="3.89" min="0" step="0.01"/></div>
-        <div class="form-group"><label>Miles Driven</label><input id="fuelMilesInput" type="number" placeholder="120" min="0"/></div>
+        <div class="form-group"><label>Distance Driven (km)</label><input id="fuelMilesInput" type="number" placeholder="120" min="0"/></div>
       </div>
       <div class="form-group"><label>Related Job</label>
         <select id="fuelJobSel"><option value="">Not linked to a job</option></select>
@@ -2594,8 +2594,8 @@ button[onclick*="voiceToEstimate"],.hm-trial,#trialBanner,#planDashBanner{displa
 
 <!-- PWA Manifest -->
 <link rel="manifest" href="manifest.json"/>
-<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png"/>
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"/>
+<link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
 <meta name="theme-color" content="#000000"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
@@ -2774,6 +2774,8 @@ document.addEventListener('visibilitychange', function() {
 });
 
 //    FIREBASE AUTH FUNCTIONS   
+(function(){try{if(typeof fbAuth!=='undefined'&&fbAuth&&fbAuth.getRedirectResult){fbAuth.getRedirectResult().then(function(r){if(r&&r.user){fbUser=r.user;toast('Signed in with Google!','success');setTimeout(unlockApp,500);}}).catch(function(e){if(e&&e.code==='auth/network-request-failed')toast('No connection to Google. Check your data or Wi-Fi and try again.','error');});}}catch(e){}})();
+
 function signInWithGoogle() {
   if (!FB_READY || !fbAuth) {
     showGoogleInstructions();
@@ -2787,9 +2789,16 @@ function signInWithGoogle() {
       setTimeout(unlockApp, 500);
     })
     .catch(function(err) {
-      if (err.code === 'auth/popup-blocked') {
-        // Try redirect instead
-        fbAuth.signInWithRedirect(provider);
+      if (err.code === 'auth/popup-blocked' || err.code === 'auth/network-request-failed' || err.code === 'auth/operation-not-supported-in-this-environment') {
+        // Popups often fail on phones: try the full-page redirect instead
+        toast('Opening Google sign-in...', 'info');
+        fbAuth.signInWithRedirect(provider).catch(function(e2) {
+          toast(e2.code === 'auth/network-request-failed'
+            ? 'No connection to Google. Check your data or Wi-Fi, turn off any VPN or data saver, then try again.'
+            : 'Google sign in failed: ' + e2.message, 'error');
+        });
+      } else if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
+        // user closed it; nothing to show
       } else {
         toast('Google sign in failed: ' + err.message, 'error');
       }
@@ -4198,7 +4207,7 @@ function getShareMsg() {
   var p = D.profile || {};
   var biz = p.bizname || 'Java Vault';
   var link = document.getElementById('shareLink').value;
-  return 'Hi ' + inv.client + ',\n\nPlease find your invoice from ' + biz + '.\n\nInvoice: ' + inv.id + '\nJob: ' + inv.desc + '\nAmount Due: ' + CUR() + (+inv.total||0).toFixed(2) + '\nDue: ' + (inv.due||'On Receipt') + '\n\nView here:\n' + link + '\n\nThank you!\n- ' + biz;
+  return 'Hi ' + inv.client + ',\n\nPlease find your invoice from ' + biz + '.\n\nInvoice: ' + inv.id + (inv.desc ? '\nJob: ' + inv.desc : '') + '\nAmount Due: ' + CUR() + (+inv.total||0).toFixed(2) + '\nDue: ' + (inv.due||'On Receipt') + '\n\nView here:\n' + link + '\n\nThank you!\n- ' + biz;
 }
 
 function shareWA() { window.open('https://wa.me/?text=' + encodeURIComponent(getShareMsg()), '_blank'); }
@@ -5894,7 +5903,7 @@ function renderFuel() {
 
   var tbody = document.getElementById('fuelTbody');
   if (!D.fuelLogs.length) {
-    tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><div class="empty-state-icon"><i data-lucide="fuel" style="width:28px;height:28px;color:var(--acc)"></i></div><h3>No Fuel Logs Yet</h3><p>Track your fuel costs for tax deductions. The IRS allows $0.67 per mile driven for business.</p></div></td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><div class="empty-state-icon"><i data-lucide="fuel" style="width:28px;height:28px;color:var(--acc)"></i></div><h3>No Fuel Logs Yet</h3><p>Track your fuel and transport costs so you know your real running costs per job.</p></div></td></tr>';
     refreshIcons(); return;
   }
   var html = '';
@@ -5905,7 +5914,7 @@ function renderFuel() {
     var total = (+fl.qty||0) * (+fl.pricePerUnit||0);
     html += '<tr><td>' + san(fl.date) + '</td><td>' + (+fl.qty||0).toFixed(2) + '</td><td>' + CUR() + (+fl.pricePerUnit||0).toFixed(3) + '</td>';
     html += '<td><strong>' + CUR() + total.toFixed(2) + '</strong></td>';
-    html += '<td>' + (fl.miles ? fl.miles + ' mi' : '-') + '</td>';
+    html += '<td>' + (fl.miles ? fl.miles + ' km' : '-') + '</td>';
     html += '<td>' + san(fl.job||'-') + '</td>';
     html += '<td><button class="btn btn-danger btn-sm" onclick="deleteFuel(' + origIdx + ')">Del</button></td></tr>';
   }
@@ -8743,14 +8752,13 @@ var JV_BETA=true;
 })();
 </script>
 <script>
-/* Crash tracking. Paste your Sentry DSN between the quotes to switch it on. */
-var JV_SENTRY_DSN='';
+/* Crash tracking (Sentry loader for the javavault project) */
+window.sentryOnLoad=function(){try{Sentry.init({release:'javavault@beta',environment:'beta',
+  beforeSend:function(e){try{if(e.user){delete e.user.email;delete e.user.ip_address}}catch(x){}return e}})}catch(e){}};
 (function(){
-  if(!JV_SENTRY_DSN)return;
   var sc=document.createElement('script');
-  sc.src='https://browser.sentry-cdn.com/7.120.3/bundle.min.js';sc.crossOrigin='anonymous';
-  sc.onload=function(){try{Sentry.init({dsn:JV_SENTRY_DSN,release:'javavault@beta',environment:'beta',tracesSampleRate:0,
-    beforeSend:function(e){try{if(e.user)delete e.user.email}catch(x){}return e}})}catch(e){}};
+  sc.src='https://js-de.sentry-cdn.com/126dee67bb7c0a7c28c8b2ca45a4520f.min.js';
+  sc.crossOrigin='anonymous';sc.async=true;
   document.head.appendChild(sc);
 })();
 </script>
