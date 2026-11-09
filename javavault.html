@@ -1131,7 +1131,7 @@ button[onclick*="voiceToEstimate"],.hm-trial,#trialBanner,#planDashBanner{displa
     <div class="sidebar-foot">
       <button class="btn btn-ghost btn-sm" style="width:100%;margin-bottom:6px" onclick="toggleTheme()" id="themeBtn">Light Mode</button>
       <div style="font-size:.7rem;color:var(--muted);text-align:center;margin-bottom:6px">Cloud: <span id="syncBadge" style="color:var(--muted)">Offline</span></div>
-      <button class="btn btn-ghost btn-sm" style="width:100%" onclick="doLogout()">Lock App</button>
+      <button class="btn btn-ghost btn-sm" style="width:100%" onclick="doLogout()">Log out</button>
     </div>
   </aside>
 
@@ -2422,7 +2422,7 @@ button[onclick*="voiceToEstimate"],.hm-trial,#trialBanner,#planDashBanner{displa
   <button class="fab-item" onclick="go('voicenotes');closeMoreMenu()"><i data-lucide="mic" style="width:18px;height:18px"></i> Voice Notes</button>
   <button class="fab-item" onclick="go('settings');closeMoreMenu()"><i data-lucide="settings" style="width:18px;height:18px"></i> My Business</button>
   <div style="border-top:1px solid var(--bor);margin:6px 0"></div>
-  <button class="fab-item" style="color:var(--red)" onclick="doLogout();closeMoreMenu()"><i data-lucide="log-out" style="width:18px;height:18px"></i> Lock App</button>
+  <button class="fab-item" style="color:var(--red)" onclick="doLogout();closeMoreMenu()"><i data-lucide="log-out" style="width:18px;height:18px"></i> Log out</button>
 </div>
 
 
@@ -5328,6 +5328,7 @@ function startTimer() {
   if (timerRunning) return;
   timerRunning = true;
   timerStartTime = Date.now() - timerSeconds * 1000;
+  try{localStorage.setItem('jv_timer_start',String(timerStartTime))}catch(e){}
   timerInterval = setInterval(function() {
     timerSeconds = Math.floor((Date.now() - timerStartTime) / 1000);
     updateTimerDisplay();
@@ -5344,6 +5345,7 @@ function pauseTimer() {
   if (!timerRunning) return;
   clearInterval(timerInterval);
   timerRunning = false;
+  try{localStorage.removeItem('jv_timer_start')}catch(e){}
   document.getElementById('timerPauseBtn').textContent = 'Resume';
   document.getElementById('timerPauseBtn').setAttribute('onclick', 'resumeTimer()');
   var disp = document.getElementById('timerDisplay');
@@ -5364,8 +5366,8 @@ function resumeTimer() {
 }
 
 function stopTimer() {
-  if (!confirm('Stop timer and save this time log?')) return;
   clearInterval(timerInterval);
+  try{localStorage.removeItem('jv_timer_start')}catch(e){}
   timerRunning = false;
   var hours = timerSeconds / 3600;
   var p = D.profile || {};
@@ -8632,11 +8634,11 @@ window.onPaystackLoad = function() {
 (function(){
   var trades=['Plumbing','Electrical','HVAC','Roofing','Painting','Carpentry','General Contractor','Other'],pick='';
   function $(i){return document.getElementById(i)}
-  function needs(){try{var p=(D&&D.profile)||{};return !(p.name&&p.trade)&&!localStorage.getItem('jv_setup_done')}catch(e){return false}}
+  function needs(){try{var p=(D&&D.profile)||{};return !(p.name&&p.trade)&&!localStorage.getItem('jv_setup_done_'+((window.fbUser&&fbUser.uid)||'local'))}catch(e){return false}}
   function build(){var w=$('suTrades');if(w.children.length)return;
     trades.forEach(function(t){var b=document.createElement('button');b.type='button';b.className='chip';b.textContent=t;
       b.onclick=function(){pick=t;[].forEach.call(w.children,function(c){c.classList.toggle('on',c===b)});$('suOther').style.display=t==='Other'?'block':'none'};w.appendChild(b)})}
-  function close(){try{localStorage.setItem('jv_setup_done','1')}catch(e){}$('jvSetup').classList.remove('show')}
+  function close(){try{localStorage.setItem('jv_setup_done_'+((window.fbUser&&fbUser.uid)||'local'),'1')}catch(e){}$('jvSetup').classList.remove('show')}
   function show(){if(!needs())return;build();var p=D.profile||{};
     $('suName').value=p.name||(window.fbUser&&fbUser.displayName)||'';$('jvSetup').classList.add('show')}
   $('suSkip').onclick=close;
@@ -8647,7 +8649,7 @@ window.onPaystackLoad = function() {
     var p=D.profile||{};p.name=n;p.trade=t;
     var b=$('suBiz').value.trim();if(b)p.bizname=b;else if(!p.bizname)p.bizname=n;
     D.profile=p;saveState();close();toast('Welcome, '+n.split(' ')[0]+'!','success')};
-  var prev=unlockApp;unlockApp=function(){prev();var n=0,t=setInterval(function(){n++;var wait=typeof FB_READY!=='undefined'&&FB_READY&&window.fbUser&&!window._cloudSynced;if(!wait||n>20){clearInterval(t);if(!wait)show()}},500)};
+  var prev=unlockApp;unlockApp=function(){prev();var n=0,t=setInterval(function(){n++;var wait=typeof FB_READY!=='undefined'&&FB_READY&&window.fbUser&&!window._cloudSynced;if(!wait||n>20){clearInterval(t);show()}},500)};
 })();
 </script>
 <script>
@@ -8815,6 +8817,57 @@ window.sentryOnLoad=function(){try{Sentry.init({release:'javavault@beta',environ
     var n=document.querySelector('#planGrid .pc-note');
     if(n&&!n.dataset.beta){n.dataset.beta='1';n.innerHTML='Everything is free while we test. These plans are a preview and will start later. '+n.innerHTML}
   };
+})();
+</script>
+
+<script>
+/* ===== LOGIN + LOG OUT FIX =====
+   The Sign In button used to check only a password saved on this phone.
+   Now an email goes to Firebase, so login works after logging out or on a new phone. */
+(function(){
+  var localLogin=doLogin;
+  doLogin=function(){
+    var idEl=document.getElementById('loginIdentifier'),pwEl=document.getElementById('loginPw');
+    var id=(idEl&&idEl.value||'').trim(),pw=(pwEl&&pwEl.value)||'';
+    var fbOk=typeof FB_READY!=='undefined'&&FB_READY&&window.fbAuth;
+    if(id.indexOf('@')>0&&fbOk){
+      if(!pw){showErr('Enter your password');return}
+      var btn=document.querySelector('.login-btn-primary');if(btn)btn.style.opacity='.6';
+      fbAuth.signInWithEmailAndPassword(id,pw).then(function(r){
+        fbUser=r.user;try{localStorage.setItem('jv_pw',hashPw(pw))}catch(e){}
+        hideErr();if(btn)btn.style.opacity='';unlockApp();
+      }).catch(function(e){
+        if(btn)btn.style.opacity='';
+        var m=e.code;
+        if(m==='auth/user-not-found'||m==='auth/invalid-credential'||m==='auth/invalid-login-credentials'||m==='auth/wrong-password'){
+          fbAuth.fetchSignInMethodsForEmail(id).then(function(list){
+            if(list&&list.indexOf('google.com')>-1&&list.indexOf('password')<0)showErr('This email was created with Google. Tap Continue with Google, or use Forgot Password to add a password.');
+            else if(list&&list.length===0)showErr('Wrong email or password. If you signed up with Google, tap Continue with Google. New here? Tap Create one.');
+            else showErr('Wrong email or password.');
+          }).catch(function(){showErr('Wrong email or password.')});
+        }else if(m==='auth/network-request-failed')showErr('No connection. Check your data or Wi-Fi.');
+        else if(m==='auth/too-many-requests')showErr('Too many tries. Wait a few minutes or use Forgot Password.');
+        else showErr(e.message);
+      });
+      return;
+    }
+    if(id&&id.indexOf('@')<0&&/^[+0-9 ]{6,}$/.test(id)){showErr('For a phone number, tap the Phone button below.');return}
+    return localLogin.apply(this,arguments);
+  };
+  /* send a verification email after sign-up (does not block the user) */
+  var sp=window.setupPasswordNew;
+  if(sp){window.setupPasswordNew=function(){
+    var r=sp.apply(this,arguments);
+    var t=0,iv=setInterval(function(){t++;try{var u=firebase.auth().currentUser;if(u&&!u.emailVerified&&!window._verSent){window._verSent=1;clearInterval(iv);u.sendEmailVerification().then(function(){toast('Verification email sent. Check your inbox and spam folder.','success')}).catch(function(){})}}catch(e){}if(t>20)clearInterval(iv)},500);
+    return r}}
+  /* log out button on the dashboard header */
+  function addOut(){var top=document.querySelector('#jvHome .hm-top');
+    if(top&&!top.querySelector('.hm-out')){var b=document.createElement('button');b.className='hm-ic hm-out';b.setAttribute('aria-label','Log out');b.title='Log out';b.onclick=function(){if(confirm('Log out of Java Vault?'))doLogout()};b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>';top.appendChild(b)}}
+  setInterval(addOut,700);
+
+  /* keep a running timer alive after the page is closed or reloaded */
+  setTimeout(function(){try{var st=parseInt(localStorage.getItem('jv_timer_start')||'0',10);
+    if(st&&!timerRunning&&Date.now()-st<864e5){timerSeconds=Math.floor((Date.now()-st)/1000);startTimer();toast('Timer is still running','info')}}catch(e){}},2500);
 })();
 </script>
 </body>
