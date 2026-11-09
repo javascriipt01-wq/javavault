@@ -2811,12 +2811,15 @@ function signInWithPhone(phoneNumber) {
     return;
   }
   // Set up reCAPTCHA
-  if (!window.recaptchaVerifier) {
-    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptchaContainer', {
-      size: 'invisible',
-      callback: function() {}
-    });
-  }
+  // Always build a fresh reCAPTCHA (re-using one causes "already been rendered")
+  try { if (window.recaptchaVerifier) window.recaptchaVerifier.clear(); } catch (e) {}
+  window.recaptchaVerifier = null;
+  var rc = document.getElementById('recaptchaContainer');
+  if (rc) { var fresh = document.createElement('div'); fresh.id = 'recaptchaContainer'; rc.parentNode.replaceChild(fresh, rc); }
+  window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptchaContainer', {
+    size: 'invisible',
+    callback: function() {}
+  });
   fbAuth.signInWithPhoneNumber(phoneNumber, window.recaptchaVerifier)
     .then(function(confirmationResult) {
       window.confirmationResult = confirmationResult;
@@ -2828,11 +2831,14 @@ function signInWithPhone(phoneNumber) {
       toast('Verification code sent!', 'success');
     })
     .catch(function(err) {
-      toast('Phone error: ' + err.message, 'error');
-      if (window.recaptchaVerifier) {
-        window.recaptchaVerifier.clear();
-        window.recaptchaVerifier = null;
-      }
+      var m = err.message;
+      if (err.code === 'auth/operation-not-allowed') m = 'Phone sign-in is not switched on in Firebase yet.';
+      else if (err.code === 'auth/invalid-phone-number') m = 'That phone number is not valid. Use e.g. 0904 592 7022.';
+      else if (err.code === 'auth/too-many-requests' || err.code === 'auth/quota-exceeded') m = 'Too many codes requested. Try again later.';
+      else if (err.code === 'auth/network-request-failed') m = 'No connection. Check your data or Wi-Fi and try again.';
+      toast('Phone error: ' + m, 'error');
+      try { if (window.recaptchaVerifier) window.recaptchaVerifier.clear(); } catch (e) {}
+      window.recaptchaVerifier = null;
     });
 }
 
@@ -6614,6 +6620,7 @@ loginWithPhone = function() {
   var countryCode = (document.getElementById('countryCodeSel')||{value:'+234'}).value.replace('-CA','+1').replace('+1+1','+1');
   var number = (document.getElementById('loginPhone')||{value:''}).value.trim().replace(/\D/g,'');
   if (!number || number.length < 6) { toast('Enter a valid phone number', 'warn'); return; }
+  number = number.replace(/^0+/, '');
   var fullPhone = countryCode + number;
 
   // Firebase phone auth
