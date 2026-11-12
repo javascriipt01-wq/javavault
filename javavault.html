@@ -777,8 +777,8 @@ body.light-mode #moreMenu{background:#fff!important;border-color:rgba(0,0,0,.12)
 <style id="jv-logo2">.pc-card .lg,.ob-brand i,.wl-brand i{animation:none!important;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M24 7l14 5v11c0 9-6 15-14 18C16 38 10 32 10 23V12z' fill='none' stroke='%23000' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M17 20l7 11 7-11' fill='none' stroke='%23000' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/70% no-repeat!important}</style>
 <style id="jv-pc2">.pc-card .holder{position:absolute;left:14px;bottom:14px;right:14px;font:700 .62rem var(--display,Sora);letter-spacing:.12em;opacity:.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60%}.pc-card .tier{bottom:34px}.pc-trial{align-self:center;padding:7px 14px;border-radius:999px;border:1px solid rgba(74,222,128,.45);color:#4ade80;font-size:.8rem}.pc-trial b{font-weight:800}.pc-price small{opacity:.7;font-size:.75rem}</style>
 <style id="jv-beta">
-.nav-item[data-section="ai"],.nav-item[data-section="voicenotes"],.nav-item[data-section="receiptscanner"],
-.fab-item[onclick*="'ai'"],.fab-item[onclick*="'voicenotes'"],.fab-item[onclick*="'receiptscanner'"],
+.nav-item[data-section="ai"],
+.fab-item[onclick*="'ai'"],
 button[onclick*="voiceToEstimate"],.hm-trial,#trialBanner,#planDashBanner{display:none!important}
 .hm-beta{font-size:.8rem;padding:10px 14px;border-radius:14px;border:1px solid rgba(128,128,128,.3);opacity:.85;margin-bottom:12px}
 </style>
@@ -2420,6 +2420,7 @@ button[onclick*="voiceToEstimate"],.hm-trial,#trialBanner,#planDashBanner{displa
   <button class="fab-item" onclick="go('timeline');closeMoreMenu()"><i data-lucide="clock" style="width:18px;height:18px"></i> Client History</button>
   <button class="fab-item" onclick="go('recurring');closeMoreMenu()"><i data-lucide="repeat" style="width:18px;height:18px"></i> Recurring</button>
   <button class="fab-item" onclick="go('voicenotes');closeMoreMenu()"><i data-lucide="mic" style="width:18px;height:18px"></i> Voice Notes</button>
+  <button class="fab-item" onclick="go('receiptscanner');closeMoreMenu()"><i data-lucide="scan" style="width:18px;height:18px"></i> Receipt Scanner</button>
   <button class="fab-item" onclick="go('settings');closeMoreMenu()"><i data-lucide="settings" style="width:18px;height:18px"></i> My Business</button>
   <div style="border-top:1px solid var(--bor);margin:6px 0"></div>
   <button class="fab-item" style="color:var(--red)" onclick="doLogout();closeMoreMenu()"><i data-lucide="log-out" style="width:18px;height:18px"></i> Log out</button>
@@ -3713,6 +3714,7 @@ function renderEsts() {
     html += '<td>' + san(e.date) + '</td>';
     html += '<td><span class="badge ' + (sc[e.status]||'b-orange') + '">' + san(e.status) + '</span></td>';
     html += '<td style="display:flex;gap:5px;flex-wrap:wrap">';
+    html += '<button class="btn btn-green btn-sm" onclick="sendEst(' + i + ')">Send</button>';
     html += '<button class="btn btn-ghost btn-sm" onclick="downloadPDF(' + i + ', \'est\')">PDF</button>';
     html += '<button class="btn btn-ghost btn-sm" onclick="convertToInv(' + i + ')">To Invoice</button>';
     html += '<button class="btn btn-danger btn-sm" onclick="deleteEst(' + i + ')">Del</button>';
@@ -8752,7 +8754,7 @@ var JV_BETA=true;
   ['checkTrialExpiry','checkSubscriptionExpiry','sendRenewalReminder','renderTrialBanner','startFreeTrial'].forEach(function(n){
     var f=window[n];if(typeof f!=='function')return;window[n]=function(){return JV_BETA?undefined:f.apply(this,arguments)}});
   /* 3. Unfinished features say "coming soon" */
-  var hidden={ai:1,voicenotes:1,receiptscanner:1};
+  var hidden={ai:1};
   var g=go;go=function(id){if(hidden[id]){toast('Coming soon','info');return}return g.apply(this,arguments)};
   var vte=voiceToEstimate;voiceToEstimate=function(){toast('Coming soon','info')};
   /* 4. Beta note on the dashboard */
@@ -8868,6 +8870,187 @@ window.sentryOnLoad=function(){try{Sentry.init({release:'javavault@beta',environ
   /* keep a running timer alive after the page is closed or reloaded */
   setTimeout(function(){try{var st=parseInt(localStorage.getItem('jv_timer_start')||'0',10);
     if(st&&!timerRunning&&Date.now()-st<864e5){timerSeconds=Math.floor((Date.now()-st)/1000);startTimer();toast('Timer is still running','info')}}catch(e){}},2500);
+})();
+</script>
+
+<style id="jv-free">
+/* hide features that are not finished */
+.nav-item[data-section="ai"],.nav-item[data-section="team"],.nav-item[data-section="subscription"],
+[onclick*="go('ai')"],[onclick*="go('team')"],[onclick*="go('subscription')"],
+#trialBanner,.trial-banner{display:none!important}
+/* timer fits small phones */
+#timerDisplay{font-size:clamp(2.2rem,14vw,4rem)!important;letter-spacing:1px!important;white-space:nowrap;max-width:100%;overflow:hidden}
+#jvQuote{position:fixed;inset:0;z-index:100000;background:rgba(0,0,0,.6);display:none;align-items:flex-end;justify-content:center}
+#jvQuote.show{display:flex}
+#jvQuote .sheet{width:100%;max-width:480px;background:var(--surf,#14161b);color:var(--text,#fff);border:1px solid var(--bor,#2a2f45);border-radius:22px 22px 0 0;padding:20px 18px 26px}
+#jvQuote h3{margin:0 0 4px;font-size:1.1rem}
+#jvQuote .sub{font-size:.82rem;opacity:.7;margin-bottom:14px}
+#jvQuote input{width:100%;box-sizing:border-box;padding:13px;border-radius:12px;border:1px solid var(--bor,#2a2f45);background:var(--surf2,#1c1f27);color:inherit;font-size:1rem;margin-bottom:10px}
+#jvQuote .row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px}
+#jvQuote button{min-height:48px;border-radius:14px;border:1px solid var(--bor,#2a2f45);background:var(--surf2,#1c1f27);color:inherit;font-weight:700;font-size:.9rem;cursor:pointer}
+#jvQuote button.wa{background:#22c55e;color:#04210f;border-color:#22c55e}
+#jvQuote .x{width:100%;margin-top:10px;background:transparent;border:0;opacity:.7}
+</style>
+<div id="jvQuote" role="dialog" aria-label="Send quote"><div class="sheet">
+  <h3 id="jqT">Send quote</h3><div class="sub" id="jqS"></div>
+  <input id="jqPhone" type="tel" placeholder="Client phone, e.g. 0803 000 0000">
+  <input id="jqEmail" type="email" placeholder="Client email (for email)">
+  <div class="row"><button class="wa" id="jqWa">WhatsApp</button><button id="jqSms">SMS</button><button id="jqMail">Email</button></div>
+  <button class="x" id="jqX">Cancel</button>
+</div></div>
+<script>
+/* ===== FREE FOR NOW + SEND QUOTES ===== */
+(function(){
+  /* everything is free in the beta: no plan locks, no upgrade pop-ups */
+  var cup=canUsePlan;
+  canUsePlan=function(f){if(typeof JV_BETA!=='undefined'&&JV_BETA&&f!=='admin')return true;return cup.apply(this,arguments)};
+  requirePlan=function(f){return canUsePlan(f)};
+  /* take unfinished features out of every menu (AI, voice notes, receipt scanner, team, plans) */
+  function prune(){document.querySelectorAll('[onclick*="go(\'ai\')"],[onclick*="go(\'team\')"],[onclick*="go(\'subscription\')"]').forEach(function(e){e.remove()})}
+  prune();setTimeout(prune,1500);setInterval(prune,5000);
+  var cur=null;
+  function digits(ph){var d=(ph||'').replace(/[^\d]/g,'');if(!d)return '';if(d.indexOf('234')===0)return d;if(d.charAt(0)==='0')return '234'+d.slice(1);return d}
+  function money(n){return (typeof CUR==='function'?CUR():'₦')+Math.round(+n||0).toLocaleString('en-NG')}
+  function msg(e){
+    var p=D.profile||{},biz=p.bizname||'Java Vault';
+    var l='Hello '+(e.client||'')+',\n\nHere is your quote from '+biz+':\n\n';
+    l+='Quote '+e.id+'\n'+(e.desc||'')+'\n\n';
+    (e.items||[]).forEach(function(it){l+='- '+it.desc+' (x'+it.qty+'): '+money(it.qty*it.price)+'\n'});
+    l+='\nTotal: '+money(e.total)+'\n';
+    if(e.valid)l+='Valid until: '+e.valid+'\n';
+    if(e.notes)l+='\nNote: '+e.notes+'\n';
+    l+='\nReply to accept this quote. Thank you!';
+    if(p.phone)l+='\n'+biz+': '+p.phone;
+    return l}
+  window.sendEst=function(i){
+    cur=D.estimates[i];if(!cur){toast('Quote not found','error');return}
+    document.getElementById('jqT').textContent='Send quote '+cur.id;
+    document.getElementById('jqS').textContent=(cur.client||'')+' · '+money(cur.total);
+    document.getElementById('jqPhone').value=cur.phone||'';
+    document.getElementById('jqEmail').value=cur.email||'';
+    document.getElementById('jvQuote').classList.add('show')};
+  function close(){document.getElementById('jvQuote').classList.remove('show')}
+  function mark(){if(cur&&cur.status==='pending'){cur.status='sent';try{saveState();renderEsts()}catch(e){}}}
+  document.getElementById('jqX').onclick=close;
+  document.getElementById('jqWa').onclick=function(){if(!cur)return;var d=digits(document.getElementById('jqPhone').value);
+    window.open('https://wa.me/'+d+'?text='+encodeURIComponent(msg(cur)),'_blank');mark();close()};
+  document.getElementById('jqSms').onclick=function(){if(!cur)return;var d=digits(document.getElementById('jqPhone').value);
+    window.open('sms:'+(d?'+'+d:'')+'?body='+encodeURIComponent(msg(cur)),'_blank');mark();close()};
+  document.getElementById('jqMail').onclick=function(){if(!cur)return;var m=document.getElementById('jqEmail').value.trim();
+    window.open('mailto:'+m+'?subject='+encodeURIComponent('Quote '+cur.id+' from '+((D.profile||{}).bizname||'Java Vault'))+'&body='+encodeURIComponent(msg(cur)),'_blank');mark();close()};
+})();
+</script>
+
+<style id="jv-voice">
+#voicenotes .grid-stack,#voicenotes > div[style*="grid-template-columns"]{grid-template-columns:1fr!important}
+@media(min-width:900px){#voicenotes > div[style*="grid-template-columns"]{grid-template-columns:1fr 1fr!important}}
+#voiceTranscript{min-height:110px;outline:none;white-space:pre-wrap;word-break:break-word}
+#voiceTranscript:empty:before{content:attr(data-ph);opacity:.55}
+.vn-act{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.vn-act button{min-height:40px}
+#voiceMicBtn.rec{animation:vnpulse 1.2s infinite}
+@keyframes vnpulse{0%{box-shadow:0 0 0 0 rgba(239,68,68,.5)}100%{box-shadow:0 0 0 18px rgba(239,68,68,0)}}
+</style>
+<script>
+/* ===== VOICE NOTES: works on phones (Chrome/Android), editable text, send to WhatsApp ===== */
+(function(){
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  var rec=null,wantOn=false,finalText='',sessText='',restarts=0;
+  function box(){return document.getElementById('voiceTranscript')}
+  function status(t){var s=document.getElementById('voiceStatus');if(s)s.textContent=t}
+  function paint(){var b=box();if(!b)return;var t=(finalText+sessText).trim();if(b.dataset.edited==='1'&&!wantOn)return;b.textContent=t}
+  function setMic(on){var m=document.getElementById('voiceMicBtn');if(!m)return;m.classList.toggle('rec',on);m.style.background=on?'var(--red)':'var(--acc)'}
+  function begin(){
+    rec=new SR();rec.continuous=false;rec.interimResults=true;rec.lang='en-NG';rec.maxAlternatives=1;
+    sessText='';
+    rec.onresult=function(e){var t='';for(var i=0;i<e.results.length;i++)t+=e.results[i][0].transcript;sessText=t;paint()};
+    rec.onerror=function(e){
+      if(e.error==='no-speech'||e.error==='aborted')return;
+      wantOn=false;setMic(false);
+      var m={'not-allowed':'Microphone is blocked. Allow the microphone for this site in your browser settings.','service-not-allowed':'Microphone is blocked. Allow it in your browser settings.','network':'No internet. Voice typing needs a connection.','audio-capture':'No microphone found.'};
+      status(m[e.error]||('Voice error: '+e.error));
+    };
+    rec.onend=function(){
+      finalText+=(sessText?sessText+' ':'');sessText='';
+      if(wantOn&&restarts<200){restarts++;setTimeout(function(){if(wantOn)try{begin()}catch(x){wantOn=false;setMic(false)}},150)}
+      else{setMic(false);status('Stopped. Fix any words, then save.');var b=box();if(b)b.textContent=finalText.trim()}
+    };
+    rec.start();
+  }
+  window.startVoiceRecording=function(){
+    if(!SR){toast('Voice typing needs Chrome. Open Java Vault in Chrome.','warn');status('Voice typing is not supported in this browser. Use Chrome.');return}
+    var b=box();if(b){b.contentEditable='true';b.dataset.ph='Your words appear here. You can also type or fix them.';
+      finalText=(b.textContent||'').trim();if(finalText)finalText+=' '}
+    sessText='';wantOn=true;restarts=0;voiceRecording=true;setMic(true);status('Listening... speak clearly');
+    try{begin()}catch(e){wantOn=false;setMic(false);status('Could not start the microphone. Try again.')}
+  };
+  window.stopVoiceRecording=function(){
+    wantOn=false;voiceRecording=false;
+    finalText=(finalText+sessText).trim();if(finalText)finalText+=' ';sessText='';
+    try{rec&&rec.stop()}catch(e){}
+    setMic(false);
+    var b=box();if(b){b.textContent=finalText.trim();b.dataset.edited='1'}
+    status('Stopped. Fix any words, then save.')
+  };
+  window.toggleVoiceRecording=function(){if(wantOn||voiceRecording){window.stopVoiceRecording()}else{window.startVoiceRecording()}};
+  var sv=window.saveVoiceNote;
+  window.saveVoiceNote=function(){
+    if(wantOn)window.stopVoiceRecording();
+    sv.apply(this,arguments);finalText='';sessText='';var b=box();if(b){b.dataset.edited='0'}
+  };
+  window.sendVoiceNote=function(i){var n=D.voiceNotes[i];if(!n)return;
+    window.open('https://wa.me/?text='+encodeURIComponent((n.job?'Job: '+n.job+'\n':'')+n.text),'_blank')};
+  /* better saved-note cards: send to WhatsApp + delete */
+  window.renderVoiceNotesList=function(){
+    var el=document.getElementById('voiceNotesList');if(!el)return;
+    if(!D.voiceNotes.length){el.innerHTML='<div class="empty"><div style="font-size:.85rem;color:var(--muted);padding:18px 0">No voice notes yet. Tap the mic and speak.</div></div>';return}
+    var h='';D.voiceNotes.forEach(function(n,i){
+      h+='<div style="background:var(--surf2);border:1px solid var(--bor);border-radius:12px;padding:12px;margin-bottom:10px">'
+       +'<div style="font-size:.72rem;color:var(--muted);margin-bottom:6px">'+san(n.date)+' '+san(n.time)+(n.job?' - '+san(n.job):'')+'</div>'
+       +'<div style="font-size:.9rem;line-height:1.55">'+san(n.text)+'</div>'
+       +'<div class="vn-act"><button class="btn btn-ghost btn-sm" onclick="sendVoiceNote('+i+')">Send on WhatsApp</button><button class="btn btn-danger btn-sm" onclick="deleteVoiceNote('+i+')">Delete</button></div></div>'});
+    el.innerHTML=h};
+  window.renderVoiceNotes=function(){
+    var js=document.getElementById('voiceLinkedJob');
+    if(js){js.innerHTML='<option value="">Link to job (optional)</option>';(D.jobs||[]).forEach(function(j){var o=document.createElement('option');o.value=j.title;o.textContent=j.title;js.appendChild(o)})}
+    window.renderVoiceNotesList();
+    var b=box();if(b){b.contentEditable='true';b.dataset.ph='Your words appear here. You can also type or fix them.'}
+    if(!SR)status('Voice typing needs Chrome. You can still type a note below.')};
+})();
+</script>
+
+<script>
+/* ===== RECEIPT SCANNER (Gemini, through our own server so the key stays secret) ===== */
+(function(){
+  function blank(msg,type){
+    var ind=document.getElementById('receiptScanningIndicator');if(ind)ind.style.display='none';
+    fillReceiptFields({vendor:null,date:new Date().toISOString().slice(0,10),total:null,category:'Other',description:null});
+    if(msg)toast(msg,type||'warn')}
+  function shrink(dataUrl,cb){
+    var im=new Image();im.onload=function(){
+      var max=1280,w=im.width,h=im.height,k=Math.min(1,max/Math.max(w,h));
+      var c=document.createElement('canvas');c.width=Math.round(w*k);c.height=Math.round(h*k);
+      c.getContext('2d').drawImage(im,0,0,c.width,c.height);
+      cb(c.toDataURL('image/jpeg',0.82).split(',')[1])};
+    im.onerror=function(){cb(null)};im.src=dataUrl}
+  window.scanReceiptWithAI=function(dataUrl){
+    document.getElementById('receiptScanningIndicator').style.display='flex';
+    document.getElementById('receiptFields').style.display='none';
+    document.getElementById('receiptEmptyState').style.display='none';
+    var u=null;try{u=firebase.auth().currentUser}catch(e){}
+    if(!u){blank('Log in with your account to use auto-scan. You can type the details by hand.');return}
+    if(!navigator.onLine){blank('No internet. Type the receipt details by hand.');return}
+    shrink(dataUrl,function(b64){
+      if(!b64){blank('Could not read that photo. Try another one.');return}
+      u.getIdToken().then(function(tok){
+        return fetch('/api/scan',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+tok},body:JSON.stringify({image:b64,mimeType:'image/jpeg'})})
+      }).then(function(r){return r.json().then(function(j){return {s:r.status,j:j}})})
+      .then(function(x){
+        document.getElementById('receiptScanningIndicator').style.display='none';
+        if(x.s===200&&x.j&&x.j.data){fillReceiptFields(x.j.data);toast('Receipt read. Check the amount before saving.','success')}
+        else blank((x.j&&x.j.error)||'Scan failed. Type the details by hand.')
+      }).catch(function(){blank('Scan failed. Type the details by hand.')})
+    })};
 })();
 </script>
 </body>
