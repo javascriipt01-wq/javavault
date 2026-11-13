@@ -1025,22 +1025,30 @@ button[onclick*="voiceToEstimate"],.hm-trial,#trialBanner,#planDashBanner{displa
         <div style="text-align:center;margin-bottom:24px">
           <div style="font-size:2.5rem;margin-bottom:12px">📧</div>
           <div class="login-box-title">Forgot Password?</div>
-          <div class="login-box-sub">No worries! Enter your email or phone number and we'll help you reset your password.</div>
+          <div class="login-box-sub">No worries! Enter the email you signed up with and we will send you a 6-digit code to reset your password.</div>
         </div>
         <div class="login-input-group">
-          <label>Email or Phone Number</label>
-          <input class="login-input" id="forgotEmail" type="email" placeholder="Enter your email or phone" maxlength="100" onkeydown="if(event.key==='Enter')sendForgotEmail()"/>
+          <label>Email</label>
+          <input class="login-input" id="forgotEmail" type="email" placeholder="Enter your email" maxlength="100" onkeydown="if(event.key==='Enter')sendForgotEmail()"/>
         </div>
         <button class="login-btn-primary" onclick="sendForgotEmail()" style="width:100%;padding:14px">Send Code</button>
         <div style="text-align:center;margin-top:14px;font-size:.8rem;color:#8892aa">
           Remember your password? <a onclick="showLoginView()" style="color:#f97316;cursor:pointer">Sign In</a>
         </div>
       </div>
-      <div id="forgotStep2" style="display:none;text-align:center;padding:20px 0">
-        <div style="width:70px;height:70px;background:rgba(34,197,94,.15);border:2px solid rgba(34,197,94,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:2rem">✓</div>
-        <div class="login-box-title">Check Your Email</div>
-        <div id="forgotEmailSent" class="login-box-sub" style="margin:10px 0 24px;line-height:1.7"></div>
-        <button class="login-btn-primary" onclick="showLoginView()" style="width:100%;padding:14px">Go to Sign In</button>
+      <div id="forgotStep2" style="display:none;padding:8px 0">
+        <div style="text-align:center;margin-bottom:18px">
+          <div style="font-size:2.5rem;margin-bottom:10px">✉️</div>
+          <div class="login-box-title">Enter the code</div>
+          <div id="forgotEmailSent" class="login-box-sub" style="margin:8px 0 0;line-height:1.7"></div>
+        </div>
+        <div class="login-input-group"><label>6-digit code</label>
+          <input class="login-input" id="fgCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="123456" style="letter-spacing:6px;text-align:center;font-size:1.3rem"/></div>
+        <div class="login-input-group"><label>New password</label>
+          <input class="login-input" id="fgPw" type="password" maxlength="64" placeholder="At least 8 characters"/></div>
+        <div id="fgErr" style="display:none;color:#f87171;font-size:.8rem;margin:0 0 12px"></div>
+        <button class="login-btn-primary" id="fgBtn" onclick="jvResetDone()" style="width:100%;padding:14px">Change password</button>
+        <div style="text-align:center;margin-top:14px;font-size:.8rem;color:#8892aa">Did not get it? <a id="fgResend" onclick="jvResetResend()" style="cursor:pointer">Send again</a></div>
       </div>
     </div>
 
@@ -6658,11 +6666,18 @@ function sendForgotEmail() {
   if (!email || email.indexOf('@') < 0) { toast('Enter a valid email address', 'warn'); return; }
 
   if (FB_READY && fbAuth) {
-    sendPasswordReset(email);
-    document.getElementById('forgotStep1').style.display = 'none';
-    document.getElementById('forgotStep2').style.display = 'block';
-    var sentEl = document.getElementById('forgotEmailSent');
-    if (sentEl) sentEl.textContent = 'We sent a reset link to ' + email + '. Check your inbox and spam folder.';
+    fbAuth.sendPasswordResetEmail(email).then(function() {
+      document.getElementById('forgotStep1').style.display = 'none';
+      document.getElementById('forgotStep2').style.display = 'block';
+      var sentEl = document.getElementById('forgotEmailSent');
+      if (sentEl) sentEl.textContent = 'If ' + email + ' has an account, we sent a link to reset your password. Open it, set a new password, then come back and sign in. Check spam too.';
+    }).catch(function(e) {
+      var c = e && e.code;
+      toast(c === 'auth/network-request-failed' ? 'No connection. Check your data or Wi-Fi.' :
+            c === 'auth/invalid-email' ? 'That email address does not look right.' :
+            c === 'auth/too-many-requests' ? 'Too many tries. Wait a few minutes and try again.' :
+            'Could not send the email. Try again.', 'error');
+    });
     return;
   }
 
@@ -7507,14 +7522,14 @@ function setupPasswordNew() {
     if (authFn) {
       authFn.then(function(uc) {
         if (err) err.style.display = 'none';
-        startFreeTrial();
-        unlockApp();
+        window._verSent = 1;
+        jvAskCode(function(){ startFreeTrial(); unlockApp(); });
       }).catch(function(e) {
         if (e.code === 'auth/email-already-in-use') {
-          firebase.auth().signInWithEmailAndPassword(email, pw).then(function() {
-            if (err) err.style.display = 'none';
-            unlockApp();
-          }).catch(function(e2) { showErr(e2.message); });
+          showErr('This email already has an account. Tap Back, then Sign In. If you forgot the password, use Forgot Password.');
+        } else if (e.code === 'auth/network-request-failed') { showErr('No connection. Check your data or Wi-Fi and try again.');
+        } else if (e.code === 'auth/invalid-email') { showErr('That email address does not look right.');
+        } else if (e.code === 'auth/weak-password') { showErr('Password is too weak. Use at least 8 characters.');
         } else { showErr(e.message); }
       });
       return;
@@ -8837,7 +8852,7 @@ window.sentryOnLoad=function(){try{Sentry.init({release:'javavault@beta',environ
       var btn=document.querySelector('.login-btn-primary');if(btn)btn.style.opacity='.6';
       fbAuth.signInWithEmailAndPassword(id,pw).then(function(r){
         fbUser=r.user;try{localStorage.setItem('jv_pw',hashPw(pw))}catch(e){}
-        hideErr();if(btn)btn.style.opacity='';unlockApp();
+        hideErr();if(btn)btn.style.opacity='';if(r.user&&!r.user.emailVerified){jvAskCode(unlockApp);return}unlockApp();
       }).catch(function(e){
         if(btn)btn.style.opacity='';
         var m=e.code;
@@ -9051,6 +9066,94 @@ window.sentryOnLoad=function(){try{Sentry.init({release:'javavault@beta',environ
         else blank((x.j&&x.j.error)||'Scan failed. Type the details by hand.')
       }).catch(function(){blank('Scan failed. Type the details by hand.')})
     })};
+})();
+</script>
+
+<style id="jv-code">
+#jvCodeView{position:fixed;inset:0;z-index:100000;display:none;align-items:center;justify-content:center;padding:24px;background:var(--bg,#08090b)}
+#jvCodeView .jc{width:100%;max-width:380px;text-align:center}
+#jvCodeView .jc h2{font:700 1.5rem var(--display,Sora,sans-serif);margin:8px 0}
+#jvCodeView .jc p{color:var(--muted,#a0a5ad);font-size:.9rem;line-height:1.6;margin-bottom:18px}
+#jvCodeView .jc input{width:100%;text-align:center;letter-spacing:8px;font-size:1.6rem;padding:14px;border-radius:16px;border:1px solid var(--bor,#333);background:var(--surf,#111);color:var(--text,#fff);margin-bottom:12px}
+#jvCodeView .jc button.go{width:100%;padding:14px;border-radius:999px;border:0;background:var(--btn,#f4f5f7);color:var(--btn-ink,#0b0c0f);font:700 1rem var(--display,Sora,sans-serif);cursor:pointer}
+#jvCodeView .jc a{color:var(--text,#fff);font-weight:600;cursor:pointer;text-decoration:underline}
+#jvCodeView .er{color:#f87171;font-size:.82rem;min-height:1.2em;margin-bottom:10px}
+</style>
+<div id="jvCodeView"><div class="jc">
+  <div style="font-size:2.4rem">✉️</div><h2>Check your email</h2>
+  <p id="jcMsg"></p>
+  <input id="jcCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="······"/>
+  <div class="er" id="jcErr"></div>
+  <button class="go" id="jcBtn" onclick="jvCodeSubmit()">Verify</button>
+  <p style="margin:16px 0 4px;font-size:.82rem">Did not get it? <a id="jcResend" onclick="jvCodeResend()">Send again</a></p>
+  <p style="font-size:.78rem"><a onclick="jvCodeCancel()">Use a different email</a></p>
+</div></div>
+<script id="jv-code-js">
+(function(){
+  var cb=null, lastSent=0;
+  function $(i){return document.getElementById(i)}
+  function call(body,token){
+    var h={'Content-Type':'application/json'};if(token)h.Authorization='Bearer '+token;
+    if(navigator.onLine===false)return Promise.resolve({ok:false,j:{error:'No connection. Check your data or Wi-Fi.'}});
+    return fetch('/api/code',{method:'POST',headers:h,body:JSON.stringify(body)}).then(function(r){return r.json().catch(function(){return{}}).then(function(j){return{ok:r.ok,status:r.status,j:j}})}).catch(function(){return{ok:false,j:{error:'No connection. Check your data or Wi-Fi.'}}});
+  }
+  function tick(btnId,txt){var el=$(btnId);if(!el)return;var left=Math.ceil((lastSent+60000-Date.now())/1000);
+    if(left>0){el.textContent='Send again in '+left+'s';el.style.pointerEvents='none';el.style.opacity='.6';setTimeout(function(){tick(btnId,txt)},1000)}else{el.textContent=txt;el.style.pointerEvents='';el.style.opacity=''}}
+  function sendSignup(){
+    var u=firebase.auth().currentUser;if(!u)return;lastSent=Date.now();tick('jcResend','Send again');$('jcErr').textContent='';
+    u.getIdToken().then(function(t){return call({action:'send',purpose:'signup'},t)}).then(function(r){
+      if(r.ok&&r.j.verified){finish();return}
+      if(!r.ok){$('jcErr').textContent=r.j.error||'Could not send the code.';if(r.status!==429){lastSent=0;tick('jcResend','Send again')}}
+    });
+  }
+  function finish(){var u=firebase.auth().currentUser;$('jvCodeView').style.display='none';var f=cb;cb=null;
+    (u?u.getIdToken(true).then(function(){return u.reload()}).catch(function(){}):Promise.resolve()).then(function(){if(f)f()})}
+  window.jvAskCode=function(done){
+    var u=firebase.auth().currentUser;cb=done;
+    $('jcMsg').textContent='We sent a 6-digit code to '+(u&&u.email||'your email')+'. It expires in 10 minutes. Check spam too.';
+    $('jcCode').value='';$('jcErr').textContent='';$('jvCodeView').style.display='flex';sendSignup();
+  };
+  window.jvCodeResend=sendSignup;
+  window.jvCodeSubmit=function(){
+    var code=$('jcCode').value.replace(/\D/g,'');if(code.length!==6){$('jcErr').textContent='Type the 6-digit code.';return}
+    var b=$('jcBtn');b.disabled=true;b.style.opacity='.6';var u=firebase.auth().currentUser;
+    u.getIdToken().then(function(t){return call({action:'verify',purpose:'signup',code:code},t)}).then(function(r){
+      b.disabled=false;b.style.opacity='';
+      if(r.ok)finish();else $('jcErr').textContent=r.j.error||'Wrong code.';
+    });
+  };
+  window.jvCodeCancel=function(){$('jvCodeView').style.display='none';cb=null;try{firebase.auth().signOut()}catch(e){}location.reload()};
+
+  /* forgot password */
+  var fgEmail='';
+  function fgErr(m){var e=$('fgErr');e.textContent=m||'';e.style.display=m?'block':'none'}
+  window.sendForgotEmail=function(){
+    var email=($('forgotEmail')||{value:''}).value.trim().toLowerCase();
+    if(!email||email.indexOf('@')<0){toast('Enter a valid email address','warn');return}
+    fgEmail=email;lastSent=Date.now();
+    call({action:'send',purpose:'reset',email:email}).then(function(r){
+      if(!r.ok&&r.status!==429){toast(r.j.error||'Could not send the code. Try again.','error');return}
+      $('forgotStep1').style.display='none';$('forgotStep2').style.display='block';
+      $('forgotEmailSent').textContent='If '+email+' has an account, we sent a 6-digit code. It expires in 10 minutes. Check spam too.';
+      $('fgCode').value='';$('fgPw').value='';fgErr('');tick('fgResend','Send again');
+    });
+  };
+  window.jvResetResend=function(){
+    lastSent=Date.now();tick('fgResend','Send again');
+    call({action:'send',purpose:'reset',email:fgEmail}).then(function(r){if(!r.ok&&r.status!==429)fgErr(r.j.error||'Could not send the code.')});
+  };
+  window.jvResetDone=function(){
+    var code=$('fgCode').value.replace(/\D/g,''),pw=$('fgPw').value;
+    if(code.length!==6){fgErr('Type the 6-digit code.');return}
+    if(pw.length<8){fgErr('Password must be at least 8 characters.');return}
+    var b=$('fgBtn');b.disabled=true;b.style.opacity='.6';fgErr('');
+    call({action:'verify',purpose:'reset',email:fgEmail,code:code,newPassword:pw}).then(function(r){
+      b.disabled=false;b.style.opacity='';
+      if(!r.ok){fgErr(r.j.error||'Wrong code.');return}
+      toast('Password changed. Please sign in.','success');showLoginView();
+      var li=document.getElementById('loginIdentifier');if(li)li.value=fgEmail;
+    });
+  };
 })();
 </script>
 </body>
