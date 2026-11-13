@@ -2666,6 +2666,19 @@ function initFirebase() {
       fbUser = user;
       if (user) {
         console.log('User signed in:', user.email || user.phoneNumber);
+        try {
+          // Keep each account's data separate on a shared phone: a different account must never inherit the last one's data.
+          var owner = localStorage.getItem('jv_owner');
+          var md = user.metadata || {};
+          var isNew = md.creationTime && md.lastSignInTime && Math.abs(Date.parse(md.lastSignInTime) - Date.parse(md.creationTime)) < 120000;
+          if ((owner && owner !== user.uid) || (!owner && isNew)) {
+            ['estimates','invoices','jobs','clients','photos','expenses','activities','team','timeLogs','recurring','voiceNotes','inventory','fuelLogs','warranties','reviews','reminders'].forEach(function(k){ D[k] = []; });
+            D.profile = {};
+            saveLocal();
+            try { updateStats(); renderDash(); } catch(e2) {}
+          }
+          localStorage.setItem('jv_owner', user.uid);
+        } catch(e) {}
         syncFromCloud();
       }
     });
