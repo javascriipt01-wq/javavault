@@ -1,9 +1,9 @@
-/* Java Vault service worker, built for weak networks.
+/* JobPay service worker, built for weak networks.
    - The app page: try the network for up to 4 seconds, then use the saved copy.
    - Libraries and fonts (Firebase SDK, icons, PDF, fonts): saved after the first load,
      served instantly from the phone afterwards, refreshed quietly in the background.
    - Live data calls (Firestore, login, payments): never touched. */
-const CACHE = 'javavault-v3';
+const CACHE = 'jobpay-v4';
 const PRECACHE = ['javavault.html', 'manifest.json', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'favicon-32.png'];
 const LIBS = [
   'www.gstatic.com/firebasejs/',

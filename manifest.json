@@ -1,6 +1,6 @@
 {
-  "name": "Java Vault",
-  "short_name": "Java Vault",
+  "name": "JobPay",
+  "short_name": "JobPay",
   "description": "Estimates, invoices, jobs and receipts for plumbers, electricians and HVAC.",
   "start_url": "/javavault.html",
   "scope": "/",
