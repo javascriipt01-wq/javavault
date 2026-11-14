@@ -9169,5 +9169,132 @@ window.sentryOnLoad=function(){try{Sentry.init({release:'javavault@beta',environ
   };
 })();
 </script>
+
+<style id="jv-v2">
+/* ---- new home header, smaller type, no log-out on home ---- */
+#jvHome .hm-out{display:none!important}
+#jvHome .hm-top{gap:10px;margin-bottom:6px}
+#jvHome .hm-logo{width:38px;height:38px;border-radius:12px;flex:none}
+#jvHome .jv-brand{flex:1;min-width:0;line-height:1.15}
+#jvHome .jv-brand b{display:block;font:800 1.02rem Sora,system-ui,sans-serif}
+#jvHome .jv-brand span{display:block;font-size:.66rem;opacity:.6;margin-top:2px}
+#jvHome .jv-tg{display:flex;padding:3px;border-radius:999px;border:1px solid rgba(128,128,128,.3);background:rgba(128,128,128,.12);cursor:pointer;flex:none}
+#jvHome .jv-tg span{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;opacity:.55}
+#jvHome .jv-tg span svg{width:15px;height:15px}
+#jvHome .jv-tg span.on{background:var(--btn,#fff);color:var(--btn-ink,#000);opacity:1}
+#jvHome .jv-hello{display:flex;align-items:center;gap:12px;margin:12px 0 14px}
+.jv-ring{position:relative;width:62px;height:62px;border-radius:50%;padding:3px;flex:none;cursor:pointer;isolation:isolate;animation:jvpulse 3.4s ease-in-out infinite;-webkit-tap-highlight-color:transparent}
+.jv-ring:before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,var(--text,#fff),rgba(128,128,128,.12) 55%,var(--text,#fff));animation:jvspin 4.5s linear infinite;z-index:-1}
+.jv-ring .in{width:100%;height:100%;border-radius:50%;background:var(--bg,#08090b) center/cover no-repeat;display:grid;place-items:center;border:2px solid var(--bg,#08090b);overflow:hidden}
+.jv-ring .in svg{width:28px;height:28px;opacity:.55}
+.jv-ring .cam{position:absolute;right:-3px;bottom:-3px;width:21px;height:21px;border-radius:50%;background:var(--btn,#fff);color:var(--btn-ink,#000);border:2px solid var(--bg,#08090b);display:grid;place-items:center}
+.jv-ring .cam svg{width:11px;height:11px}
+@keyframes jvspin{to{transform:rotate(360deg)}}
+@keyframes jvpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}
+@media (prefers-reduced-motion:reduce){.jv-ring,.jv-ring:before{animation:none}}
+#jvHome .hm-hi b{font-size:1.02rem}#jvHome .hm-hi span{font-size:.75rem}
+#jvHome .hm-card{padding:14px;border-radius:20px}#jvHome .hm-grid .hm-card{padding:13px}
+#jvHome .hm-l{font-size:.6rem}#jvHome .hm-big{font-size:1.55rem}#jvHome .hm-v{font-size:1.1rem}
+#jvHome .hm-tabs button{padding:6px 12px;font-size:.74rem}
+#jvHome .hm-pill{font-size:.66rem;padding:3px 9px}
+#jvHome .hm-q i{aspect-ratio:1.3;border-radius:18px}#jvHome .hm-q button{font-size:.72rem}
+#jvHome .hm-h b{font-size:1rem}#jvHome .hm-m b{font-size:.85rem}#jvHome .hm-m span{font-size:.7rem}
+#jvHome .hm-r b{font-size:.85rem}#jvHome .hm-bd{font-size:.62rem}#jvHome .hm-beta{font-size:.72rem;padding:8px 12px}
+#jvHome .hm-empty{font-size:.8rem}
+/* ---- bottom bar: six equal buttons, nothing sticks out ---- */
+#fabMenu,#moreMenu{display:none!important}
+#bottomNav .bnav-btn{flex:1;min-width:0;font-size:.56rem;padding:6px 2px;gap:3px;margin:6px 1px}
+#bottomNav .bnav-btn svg{width:21px;height:21px}
+/* ---- More page ---- */
+#more{padding-bottom:110px}
+#more .mo-card{display:flex;align-items:center;gap:12px;padding:14px;border-radius:20px;border:1px solid var(--bor,rgba(128,128,128,.25));background:var(--surf,rgba(128,128,128,.1));margin-bottom:6px}
+#more .mo-card .mo-n{flex:1;min-width:0}#more .mo-card b{display:block;font:800 1rem Sora,system-ui,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#more .mo-card span.s{display:block;font-size:.74rem;opacity:.6;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#more .mo-edit{border:1px solid rgba(128,128,128,.4);background:none;color:inherit;border-radius:999px;padding:6px 14px;font-weight:700;font-size:.74rem;cursor:pointer}
+#more .mo-h{font-size:.62rem;letter-spacing:.14em;font-weight:700;opacity:.55;margin:16px 4px 7px}
+#more .mo-i{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:9px 13px;margin-bottom:6px;border-radius:16px;border:1px solid var(--bor,rgba(128,128,128,.25));background:var(--surf,rgba(128,128,128,.1));color:inherit;font:600 .88rem 'DM Sans',system-ui,sans-serif;cursor:pointer}
+#more .mo-i i{width:32px;height:32px;border-radius:50%;background:rgba(128,128,128,.18);display:grid;place-items:center;font-style:normal;font-size:.95rem;flex:none}
+#more .mo-i em{margin-left:auto;font-style:normal;opacity:.5}
+#more .mo-out{color:#f87171;border-color:rgba(248,113,113,.5);justify-content:center;margin-top:14px}
+</style>
+<script id="jv-v2-js">
+(function(){
+  function $(i){return document.getElementById(i)}
+  var P=function(){return (window.D&&D.profile)||{}};
+  var ICON={
+    person:'<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4.2"/><path d="M3.5 21c0-4.4 3.8-6.8 8.5-6.8s8.5 2.4 8.5 6.8z"/></svg>',
+    cam:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 4 7.5 6H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-2.5L15 4zm3 4.5A4.5 4.5 0 1 1 7.5 13 4.5 4.5 0 0 1 12 8.5z"/></svg>',
+    sun:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.4 1.4M17.6 17.6 19 19M19 5l-1.4 1.4M6.4 17.6 5 19"/></svg>',
+    moon:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5z"/></svg>'};
+
+  /* ---------- profile photo ---------- */
+  var inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.style.display='none';inp.id='jvPhotoIn';document.body.appendChild(inp);
+  inp.onchange=function(){var f=inp.files&&inp.files[0];inp.value='';if(!f)return;
+    var rd=new FileReader();rd.onload=function(){var im=new Image();im.onload=function(){
+      var s=Math.min(im.width,im.height),c=document.createElement('canvas');c.width=c.height=256;
+      c.getContext('2d').drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,256,256);
+      D.profile=D.profile||{};D.profile.photo=c.toDataURL('image/jpeg',0.8);
+      try{saveState()}catch(e){}toast('Photo saved','success');paintAll()};
+      im.onerror=function(){toast('Could not read that picture','error')};im.src=rd.result};rd.readAsDataURL(f)};
+  window.jvPickPhoto=function(){inp.click()};
+  function photoOk(){var p=P().photo;return typeof p==='string'&&p.indexOf('data:image/')===0?p:''}
+  function ring(size){var ph=photoOk();
+    return '<div class="jv-ring" onclick="jvPickPhoto()" role="button" aria-label="Add your photo" style="'+(size?'width:'+size+'px;height:'+size+'px;':'')+'"><div class="in"'+(ph?' style="background-image:url(\''+ph+'\')"':'')+'>'+(ph?'':ICON.person)+'</div><div class="cam">'+ICON.cam+'</div></div>'}
+
+  /* ---------- home header ---------- */
+  function patchHome(){var root=$('jvHome');if(!root)return;var top=root.querySelector('.hm-top');if(!top||top.getAttribute('data-v2'))return;
+    var hi=top.querySelector('.hm-hi'),logo=top.querySelector('.hm-logo');if(!hi||!logo)return;
+    var light=document.body.classList.contains('light-mode');
+    top.setAttribute('data-v2','1');top.innerHTML='';top.appendChild(logo);
+    var br=document.createElement('div');br.className='jv-brand';br.innerHTML='<b>JavaVault</b><span>Your Skills. Your Business.</span>';top.appendChild(br);
+    var tg=document.createElement('div');tg.className='jv-tg';tg.setAttribute('role','button');tg.setAttribute('aria-label','Switch light or dark');
+    tg.innerHTML='<span class="'+(light?'on':'')+'">'+ICON.sun+'</span><span class="'+(light?'':'on')+'">'+ICON.moon+'</span>';
+    tg.onclick=function(){try{toggleTheme()}catch(e){}var l=document.body.classList.contains('light-mode'),s=tg.children;s[0].className=l?'on':'';s[1].className=l?'':'on'};top.appendChild(tg);
+    var row=document.createElement('div');row.className='jv-hello';row.innerHTML=ring();row.appendChild(hi);top.parentNode.insertBefore(row,top.nextSibling);
+    var o=root.querySelector('.hm-out');if(o)o.remove()}
+  var busy=false;
+  function watchHome(){var root=$('jvHome');if(!root)return false;
+    new MutationObserver(function(){if(busy)return;busy=true;try{patchHome()}catch(e){}busy=false}).observe(root,{childList:true});patchHome();return true}
+
+  /* ---------- bottom bar ---------- */
+  var SV={
+    home:'<path d="M12 3 3 10.5V20a1 1 0 0 0 1 1h5v-6h6v6h5a1 1 0 0 0 1-1v-9.5z"/>',
+    doc:'<path d="M6 2h8l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zM8 12h8v1.8H8zm0 3.5h8v1.8H8z"/>',
+    plus:'<path d="M11 4h2v7h7v2h-7v7h-2v-7H4v-2h7z"/>',
+    job:'<path d="M9 3h6a1 1 0 0 1 1 1v2h3a2 2 0 0 1 2 2v3H2V8a2 2 0 0 1 2-2h3V4a1 1 0 0 1 1-1zm1 2v1h4V5zM2 13h8v1.5h4V13h8v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z"/>',
+    scan:'<path d="M3 7V5a2 2 0 0 1 2-2h2v2H5v2zm14-4h2a2 2 0 0 1 2 2v2h-2V5h-2zM3 17h2v2h2v2H5a2 2 0 0 1-2-2zm16 0h2v2a2 2 0 0 1-2 2h-2v-2h2zM7 11h10v2H7z"/>',
+    more:'<circle cx="5" cy="12" r="2.2"/><circle cx="12" cy="12" r="2.2"/><circle cx="19" cy="12" r="2.2"/>'};
+  function buildNav(){var nav=$('bottomNav');if(!nav||nav.getAttribute('data-v2'))return;var row=nav.firstElementChild;if(!row)return;nav.setAttribute('data-v2','1');
+    var it=[['dashboard','Home','home',"go('dashboard')"],['estimates','Estimates','doc',"go('estimates')"],['quote','Quotation','plus',"go('estimates');openM('estModal')"],
+      ['jobs','Jobs','job',"go('jobs')"],['receiptscanner','Scan','scan',"go('receiptscanner')"],['more','More','more',"go('more')"]];
+    row.innerHTML=it.map(function(x,i){return '<button class="bnav-btn'+(i===0?' active':'')+'" id="bn-'+x[0]+'" onclick="'+x[3]+'"><svg viewBox="0 0 24 24" fill="currentColor">'+SV[x[2]]+'</svg><span>'+x[1]+'</span></button>'}).join('')}
+
+  /* ---------- More page ---------- */
+  function ensureMore(){if($('more'))return $('more');var ref=$('estimates');if(!ref||!ref.parentNode)return null;
+    var s=document.createElement('section');s.id='more';s.className='section';ref.parentNode.appendChild(s);return s}
+  var GROUPS=[
+    ['MONEY',[['📄','Invoices','invoices'],['📈','Profits','profits'],['📊','Daily earnings','daily'],['💳','Expenses','expenses'],['⛽','Fuel log','fuel']]],
+    ['WORK',[['👥','Clients','clients'],['🕘','Client history','timeline'],['📅','Schedule','schedule'],['⏱️','Job timer','timer'],['🎙️','Voice notes','voicenotes'],['📷','Photos','photos'],['📍','GPS jobs','gps'],['🔁','Recurring invoices','recurring'],['🔔','Reminders','reminders'],['⭐','Reviews','reviews'],['📦','Inventory','inventory'],['🛡️','Warranties','warranty']]],
+    ['TOOLS',[['🧾','Receipt scanner','receiptscanner']]],
+    ['APP',[['⚙️','My business','settings']]]];
+  function esc(x){return String(x==null?'':x).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function renderMore(){var s=ensureMore();if(!s)return;var p=P(),u=window.fbUser||{};
+    var name=p.name||u.displayName||'Your name',sub=[p.trade,u.email||u.phoneNumber].filter(Boolean).join(' · ')||'Tap Edit to add your details';
+    var h='<div class="page-hdr"><div><div class="page-title">More</div></div></div>'+
+      '<div class="mo-card">'+ring(54)+'<div class="mo-n"><b>'+esc(name)+'</b><span class="s">'+esc(sub)+'</span></div><button class="mo-edit" onclick="go(\'settings\')">Edit</button></div>';
+    GROUPS.forEach(function(g){h+='<div class="mo-h">'+g[0]+'</div>';g[1].forEach(function(x){h+='<button class="mo-i" onclick="go(\''+x[2]+'\')"><i>'+x[0]+'</i>'+x[1]+'<em>›</em></button>'})});
+    h+='<button class="mo-i" onclick="window.open(\'privacy-policy.html\',\'_blank\')"><i>🔒</i>Privacy policy<em>›</em></button>'+
+       '<button class="mo-i" onclick="window.open(\'terms-of-service.html\',\'_blank\')"><i>📄</i>Terms of service<em>›</em></button>'+
+       '<button class="mo-i mo-out" onclick="doLogout()">Log out</button>';
+    s.innerHTML=h}
+  function paintAll(){var root=$('jvHome');if(root){var t=root.querySelector('.hm-top');if(t)t.removeAttribute('data-v2');try{if(window.renderHome)window.renderHome()}catch(e){}}
+    var m=$('more');if(m&&m.classList.contains('active'))renderMore()}
+  var g0=window.go;window.go=function(id){g0.apply(this,arguments);if(id==='more')renderMore()};
+
+  function boot(){buildNav();ensureMore();if(!watchHome())setTimeout(boot,500)}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+  setInterval(function(){buildNav();var r=$('jvHome');if(r&&r.querySelector('.hm-top')&&!r.querySelector('.hm-top').getAttribute('data-v2'))patchHome()},1500);
+})();
+</script>
 </body>
 </html>
