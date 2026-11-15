@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>User Policy — JobPay</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#08090b;--surf:rgba(255,255,255,.065);--bor:rgba(255,255,255,.12);--text:#f4f5f7;--muted:#a0a5ad;--body:#d3d6db;--blob1:#2a2d33;--blob2:#14161a;--shadow:0 10px 30px rgba(0,0,0,.45);--logo:url(data:image/png;base64,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);
+--display:'Sora',system-ui,sans-serif;--sans:'Manrope',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(60% 40% at 85% 6%,var(--blob1),transparent 70%),radial-gradient(55% 40% at 0% 60%,var(--blob2),transparent 70%)}
+.header{position:sticky;top:0;z-index:5;background:var(--surf);border-bottom:1px solid var(--bor);-webkit-backdrop-filter:blur(22px) saturate(140%);backdrop-filter:blur(22px) saturate(140%);padding:14px 0}
+.header-inner{max-width:760px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:9px;font:700 1.05rem var(--display);letter-spacing:-.02em}
+.logo i{width:30px;height:30px;border-radius:50%;background:var(--logo) center/cover no-repeat}
+.back-btn{color:var(--text);font-size:.85rem;font-weight:600;text-decoration:none;border:1px solid var(--bor);background:var(--surf);padding:8px 14px;border-radius:999px}
+.back-btn:hover{background:var(--bor)}
+.content{max-width:760px;margin:0 auto;padding:32px 20px 80px}
+.doc-title{font-family:var(--display);font-size:1.9rem;font-weight:700;letter-spacing:-.02em;line-height:1.15;margin-bottom:8px}
+.doc-meta{color:var(--muted);font-size:.85rem;margin-bottom:28px}
+h2{font-family:var(--display);font-size:1.05rem;font-weight:600;letter-spacing:-.01em;color:var(--text);margin:26px 0 10px}
+p{line-height:1.75;color:var(--body);margin-bottom:12px;font-size:.92rem}
+ul{margin:0 0 12px 20px}
+li{line-height:1.75;color:var(--body);font-size:.92rem;margin-bottom:4px}
+.highlight-box{background:var(--surf);border:1px solid var(--bor);border-radius:20px;padding:18px 20px;margin:16px 0;box-shadow:var(--shadow);-webkit-backdrop-filter:blur(22px);backdrop-filter:blur(22px)}
+.highlight-box p{margin:0}
+a{color:var(--text);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.footer{border-top:1px solid var(--bor);padding:22px 20px;text-align:center;font-size:.78rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-inner">
+    <div class="logo"><i></i>JobPay</div>
+    <a href="javavault.html" class="back-btn">← Back to App</a>
+  </div>
+</div>
+
+<div class="content">
+  <div class="doc-title">User Policy</div>
+  <div class="doc-meta">Effective Date: November 15, 2026 &nbsp;·&nbsp; Last Updated: November 15, 2026</div>
+
+  <div class="highlight-box">
+    <p><strong>Summary:</strong> Be honest in your quotations and invoices, protect your clients’ data, keep your account safe, and do not misuse the app. Serious or repeated breaches can lead to a suspended account.</p>
+  </div>
+
+  <h2>1. Why This Policy Exists</h2>
+  <p>JobPay helps tradespeople look professional and get paid. This User Policy sets the rules for using it, so the app stays safe and fair for you, your clients and other users. It forms part of our <a href="terms-of-service.html">Terms of Service</a>.</p>
+
+  <h2>2. Be Honest in Your Documents</h2>
+  <ul>
+    <li>Only create quotations, estimates and invoices for real work and real prices.</li>
+    <li>Do not make fake invoices, fake receipts, fake clients or fake records, and do not change figures to mislead a client, a tax authority, a bank or anyone else.</li>
+    <li>Use your own name and business details. Do not pretend to be another person or company, and do not use someone else's logo or licence number.</li>
+    <li>Check every price, quantity, tax and date before you send a document. You are responsible for it.</li>
+  </ul>
+
+  <h2>3. Estimates and Quotations</h2>
+  <ul>
+    <li>An <strong>estimate</strong> is a rough price that may change. A <strong>quotation</strong> is a firm price for described work. Label and use them honestly.</li>
+    <li>If you send a quotation, say how long it is valid and keep to it unless the client changes the job.</li>
+    <li>State clearly what is included and what is not, such as materials, transport and deposits.</li>
+  </ul>
+
+  <h2>4. Respect Your Clients' Data</h2>
+  <ul>
+    <li>Only add client details you have a right to keep, and use them only for your work with that client.</li>
+    <li>Do not sell, share or publish your clients' details, and do not use them for spam.</li>
+    <li>Do not send messages to a client who has asked you to stop.</li>
+    <li>Do not upload photos or recordings of people without their permission, especially inside private homes.</li>
+  </ul>
+
+  <h2>5. Keep Your Account Safe</h2>
+  <ul>
+    <li>Do not share your password or verification codes with anyone, including anyone who says they work for JobPay. We will never ask for your code.</li>
+    <li>Do not share one account between different businesses or people.</li>
+    <li>Tell us straight away if you think someone else has got into your account.</li>
+  </ul>
+
+  <h2>6. What You Must Not Do</h2>
+  <ul>
+    <li>break the law, or use JobPay for fraud, money laundering, or any scam;</li>
+    <li>try to get into other users' accounts or data, or test for weaknesses without our written permission;</li>
+    <li>send spam, threats, harassment, hate or sexual content through the app;</li>
+    <li>upload viruses, harmful files or illegal content;</li>
+    <li>copy, reverse-engineer, resell or attack the app, or use bots or scripts to overload it;</li>
+    <li>misuse the Receipt Scanner or voice tools, for example by uploading very large numbers of images or content you do not own;</li>
+    <li>use the JobPay name, logo or design in a way that suggests you are JobPay.</li>
+  </ul>
+
+  <h2>7. Fair Use of Shared Services</h2>
+  <p>JobPay is free and runs on shared services with limits, such as email codes and receipt scanning. Please use them normally. We may slow down or limit accounts that use far more than a normal business would, or that try to get around limits.</p>
+
+  <h2>8. Reporting a Problem</h2>
+  <p>If you see abuse, a fake document sent in our name, a security problem or a bug that exposes data, email <a href="mailto:Javascriipt01@gmail.com">Javascriipt01@gmail.com</a> with as much detail as you can. Please give us reasonable time to fix a security problem before you tell anyone else.</p>
+
+  <h2>9. What Happens If Rules Are Broken</h2>
+  <p>Depending on how serious it is, we may warn you, remove content, limit features, suspend your account or close it. For serious cases, such as fraud or threats, we may close the account without warning and, where the law requires or allows, report it to the authorities. If you think we made a mistake, email us and we will review it.</p>
+
+  <h2>10. Changes</h2>
+  <p>We may update this policy. We will put the new version here with a new date, and tell you in the app if the change is important.</p>
+
+  <h2>Contact</h2>
+  <div class="highlight-box">
+    <p>📧 <a href="mailto:Javascriipt01@gmail.com">Javascriipt01@gmail.com</a><br/>
+    🌐 <a href="https://javavault.vercel.app" target="_blank">javavault.vercel.app</a></p>
+  </div>
+</div>
+
+<div class="footer">
+  © 2026 JobPay · Built for the Trade · <a href="terms-of-service.html">Terms of Service</a> · <a href="privacy-policy.html">Privacy Policy</a> · <a href="refund-policy.html">Refund Policy</a> · <a href="javavault.html">Back to App</a>
+</div>
+</body>
+</html>

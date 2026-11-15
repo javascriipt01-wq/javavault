@@ -930,7 +930,7 @@ button[onclick*="voiceToEstimate"],.hm-trial,#trialBanner,#planDashBanner{displa
       <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:16px">
         <input type="checkbox" id="consentCheck" style="width:16px;height:16px;margin-top:3px;accent-color:#f97316;flex-shrink:0;cursor:pointer"/>
         <label for="consentCheck" style="font-size:.72rem;color:#8892aa;line-height:1.6;cursor:pointer">
-          I am 18 or older and I agree to JobPay's <a href="terms-of-service.html" target="_blank" style="color:#f97316">Terms of Service</a> and <a href="privacy-policy.html" target="_blank" style="color:#f97316">Privacy Policy</a>
+          I am 18 or older and I agree to JobPay's <a href="terms-of-service.html" target="_blank" style="color:#f97316">Terms of Service</a>, <a href="privacy-policy.html" target="_blank" style="color:#f97316">Privacy Policy</a> and <a href="user-policy.html" target="_blank" style="color:#f97316">User Policy</a>
         </label>
       </div>
       <button class="login-btn-primary" onclick="setupPasswordNew()" style="width:100%;padding:14px">Create Account</button>
@@ -7996,6 +7996,7 @@ renderSettings = function() {
         '<div style="display:flex;gap:10px;flex-wrap:wrap">' +
         '<a href="privacy-policy.html" target="_blank" class="btn btn-ghost btn-sm">📄 Privacy Policy</a>' +
         '<a href="terms-of-service.html" target="_blank" class="btn btn-ghost btn-sm">📋 Terms of Service</a>' +
+        '<a href="user-policy.html" target="_blank" class="btn btn-ghost btn-sm">🤝 User Policy</a>' +
         '<a href="refund-policy.html" target="_blank" class="btn btn-ghost btn-sm">💳 Refund Policy</a>' +
         '<button class="btn btn-ghost btn-sm" onclick="go(\'subscription\')">👑 Subscription Plans</button>' +
         '<button class="btn btn-danger btn-sm" onclick="deleteMyAccount()">🗑 Delete my account</button>' +
@@ -9288,6 +9289,7 @@ window.sentryOnLoad=function(){try{Sentry.init({release:'javavault@beta',environ
     GROUPS.forEach(function(g){h+='<div class="mo-h">'+g[0]+'</div>';g[1].forEach(function(x){h+='<button class="mo-i" onclick="go(\''+x[2]+'\')"><i>'+x[0]+'</i>'+x[1]+'<em>›</em></button>'})});
     h+='<button class="mo-i" onclick="window.open(\'privacy-policy.html\',\'_blank\')"><i>🔒</i>Privacy policy<em>›</em></button>'+
        '<button class="mo-i" onclick="window.open(\'terms-of-service.html\',\'_blank\')"><i>📄</i>Terms of service<em>›</em></button>'+
+       '<button class="mo-i" onclick="window.open(\'user-policy.html\',\'_blank\')"><i>🤝</i>User policy<em>›</em></button>'+
        '<button class="mo-i mo-out" onclick="doLogout()">Log out</button>';
     s.innerHTML=h}
   function paintAll(){var root=$('jvHome');if(root){var t=root.querySelector('.hm-top');if(t)t.removeAttribute('data-v2');try{if(window.renderHome)window.renderHome()}catch(e){}}
