@@ -8869,7 +8869,7 @@ window.sentryOnLoad=function(){try{Sentry.init({release:'javavault@beta',environ
       var btn=document.querySelector('.login-btn-primary');if(btn)btn.style.opacity='.6';
       fbAuth.signInWithEmailAndPassword(id,pw).then(function(r){
         fbUser=r.user;try{localStorage.setItem('jv_pw',hashPw(pw))}catch(e){}
-        hideErr();if(btn)btn.style.opacity='';if(r.user&&!r.user.emailVerified){jvAskCode(unlockApp);return}unlockApp();
+        hideErr();if(btn)btn.style.opacity='';if(r.user&&!r.user.emailVerified){jvAskCode(unlockApp);return}if(r.user&&window.jvDeviceTrusted&&!jvDeviceTrusted(r.user.uid)){jvAskCode(unlockApp,'device');return}unlockApp();
       }).catch(function(e){
         if(btn)btn.style.opacity='';
         var m=e.code;
@@ -9107,7 +9107,9 @@ window.sentryOnLoad=function(){try{Sentry.init({release:'javavault@beta',environ
 </div></div>
 <script id="jv-code-js">
 (function(){
-  var cb=null, lastSent=0;
+  var cb=null, lastSent=0, pur='signup';
+  window.jvDeviceTrusted=function(uid){try{return localStorage.getItem('jv_dev_'+uid)==='1'}catch(e){return true}};
+  function trust(){var u=firebase.auth().currentUser;if(u)try{localStorage.setItem('jv_dev_'+u.uid,'1')}catch(e){}}
   function $(i){return document.getElementById(i)}
   function call(body,token){
     var h={'Content-Type':'application/json'};if(token)h.Authorization='Bearer '+token;
@@ -9118,23 +9120,23 @@ window.sentryOnLoad=function(){try{Sentry.init({release:'javavault@beta',environ
     if(left>0){el.textContent='Send again in '+left+'s';el.style.pointerEvents='none';el.style.opacity='.6';setTimeout(function(){tick(btnId,txt)},1000)}else{el.textContent=txt;el.style.pointerEvents='';el.style.opacity=''}}
   function sendSignup(){
     var u=firebase.auth().currentUser;if(!u)return;lastSent=Date.now();tick('jcResend','Send again');$('jcErr').textContent='';
-    u.getIdToken().then(function(t){return call({action:'send',purpose:'signup'},t)}).then(function(r){
+    u.getIdToken().then(function(t){return call({action:'send',purpose:pur},t)}).then(function(r){
       if(r.ok&&r.j.verified){finish();return}
       if(!r.ok){$('jcErr').textContent=r.j.error||'Could not send the code.';if(r.status!==429){lastSent=0;tick('jcResend','Send again')}}
     });
   }
-  function finish(){var u=firebase.auth().currentUser;$('jvCodeView').style.display='none';var f=cb;cb=null;
+  function finish(){var u=firebase.auth().currentUser;trust();$('jvCodeView').style.display='none';var f=cb;cb=null;
     (u?u.getIdToken(true).then(function(){return u.reload()}).catch(function(){}):Promise.resolve()).then(function(){if(f)f()})}
-  window.jvAskCode=function(done){
-    var u=firebase.auth().currentUser;cb=done;
-    $('jcMsg').textContent='We sent a 6-digit code to '+(u&&u.email||'your email')+'. It expires in 10 minutes. Check spam too.';
+  window.jvAskCode=function(done,purpose){
+    var u=firebase.auth().currentUser;cb=done;pur=purpose==='device'?'device':'signup';
+    $('jcMsg').textContent=(pur==='device'?'To keep your account safe, we sent a 6-digit code to ':'We sent a 6-digit code to ')+(u&&u.email||'your email')+(pur==='device'?' to confirm it is you on this phone.':'.')+' It expires in 10 minutes. Check spam too.';
     $('jcCode').value='';$('jcErr').textContent='';$('jvCodeView').style.display='flex';sendSignup();
   };
   window.jvCodeResend=sendSignup;
   window.jvCodeSubmit=function(){
     var code=$('jcCode').value.replace(/\D/g,'');if(code.length!==6){$('jcErr').textContent='Type the 6-digit code.';return}
     var b=$('jcBtn');b.disabled=true;b.style.opacity='.6';var u=firebase.auth().currentUser;
-    u.getIdToken().then(function(t){return call({action:'verify',purpose:'signup',code:code},t)}).then(function(r){
+    u.getIdToken().then(function(t){return call({action:'verify',purpose:pur,code:code},t)}).then(function(r){
       b.disabled=false;b.style.opacity='';
       if(r.ok)finish();else $('jcErr').textContent=r.j.error||'Wrong code.';
     });
@@ -9472,5 +9474,6 @@ body.light-mode #quotation .q-pri{background:#111;color:#fff;border-color:#111}
   setInterval(function(){try{upd()}catch(e){}},1000);
 })();
 </script>
+<script id="jv-v3-persist">try{if(window.firebase&&firebase.auth)firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)}catch(e){}</script>
 </body>
 </html>
