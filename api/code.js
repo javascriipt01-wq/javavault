@@ -67,7 +67,7 @@ async function sendMail(to, subject, text, html) {
   if (!r.ok) throw new Error('email failed');
 }
 function mailBody(code, purpose) {
-  const what = purpose === 'reset' ? 'reset your password' : 'verify your email';
+  const what = purpose === 'reset' ? 'reset your password' : (purpose === 'device' ? 'sign in on a new phone or browser' : 'verify your email');
   const text = 'Your JobPay code is ' + code + '. Use it to ' + what + '. It expires in 10 minutes. If you did not ask for this, ignore this email.';
   const html = '<div style="font-family:Arial,sans-serif;max-width:420px;margin:auto;padding:24px"><h2 style="margin:0 0 8px">JobPay</h2>' +
     '<p style="color:#444">Use this code to ' + what + ':</p><div style="font-size:34px;font-weight:700;letter-spacing:8px;margin:16px 0">' + code + '</div>' +
@@ -81,11 +81,11 @@ module.exports = async (req, res) => {
   if (!process.env.BREVO_API_KEY && !process.env.RESEND_API_KEY) return res.status(503).json({ error: 'Email is not set up yet' });
   if (!process.env.FB_PRIVATE_KEY || !process.env.FB_CLIENT_EMAIL) return res.status(503).json({ error: 'Server is not set up yet' });
   let body = req.body; if (typeof body === 'string') { try { body = JSON.parse(body); } catch (e) { body = {}; } } body = body || {};
-  const action = body.action, purpose = body.purpose === 'reset' ? 'reset' : 'signup';
+  const action = body.action, purpose = body.purpose === 'reset' ? 'reset' : (body.purpose === 'device' ? 'device' : 'signup');
   const bearer = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
   try {
     let email, user = null;
-    if (purpose === 'signup') {
+    if (purpose === 'signup' || purpose === 'device') {
       user = bearer ? await userByToken(bearer) : null;
       if (!user || !user.email) return res.status(401).json({ error: 'Please sign in again' });
       email = user.email.toLowerCase();
@@ -98,7 +98,7 @@ module.exports = async (req, res) => {
     if (action === 'send') {
       if (cur && now - cur.sent < WAIT) return res.status(429).json({ error: 'Wait a minute before asking for another code.', wait: Math.ceil((WAIT - (now - cur.sent)) / 1000) });
       if (purpose === 'reset') { user = await userByEmail(email); if (!user) return res.status(200).json({ ok: true }); } // same answer whether or not the account exists
-      else if (user.emailVerified) return res.status(200).json({ ok: true, verified: true });
+      else if (purpose === 'signup' && user.emailVerified) return res.status(200).json({ ok: true, verified: true });
       const code = String(crypto.randomInt(100000, 1000000));
       await setDoc(id, { h: hashCode(code, id), exp: now + TTL, tries: 0, sent: now });
       const m = mailBody(code, purpose);
@@ -113,6 +113,7 @@ module.exports = async (req, res) => {
       const ok = code.length === 6 && crypto.timingSafeEqual(Buffer.from(hashCode(code, id)), Buffer.from(cur.h));
       if (!ok) { await setDoc(id, { ...cur, tries: cur.tries + 1 }); return res.status(400).json({ error: 'Wrong code. Check it and try again.', left: MAX_TRIES - cur.tries - 1 }); }
       if (purpose === 'signup') { await itCall('/accounts:update', { localId: user.localId, emailVerified: true }); }
+      else if (purpose === 'device') { /* code was right: this phone or browser is confirmed */ }
       else {
         const pw = String(body.newPassword || '');
         if (pw.length < 8 || pw.length > 64) return res.status(400).json({ error: 'Password must be 8 to 64 characters.' });
