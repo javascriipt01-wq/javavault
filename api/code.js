@@ -8,6 +8,18 @@ const PROJECT = process.env.FB_PROJECT_ID || 'javavault-29cbb';
 const SENDER = { name: 'JobPay', email: process.env.BREVO_SENDER || 'javascriipt01@gmail.com' };
 const TTL = 10 * 60 * 1000, WAIT = 60 * 1000, MAX_TRIES = 5;
 
+
+// Simple per-instance rate limit (resets when the server restarts; stops casual abuse).
+const HITS = new Map();
+function tooMany(key, max, windowMs) {
+  const now = Date.now(); const a = (HITS.get(key) || []).filter(t => now - t < windowMs);
+  if (a.length >= max) { HITS.set(key, a); return true; }
+  a.push(now); HITS.set(key, a);
+  if (HITS.size > 5000) { for (const k of HITS.keys()) { if (!(HITS.get(k) || []).some(t => now - t < windowMs)) HITS.delete(k); } }
+  return false;
+}
+const clientIp = req => String((req.headers['x-forwarded-for'] || '')).split(',')[0].trim() || 'unknown';
+
 const b64u = b => Buffer.from(b).toString('base64').replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
 let tokenCache = { t: '', exp: 0 };
 async function adminToken() {
@@ -93,6 +105,8 @@ module.exports = async (req, res) => {
       email = String(body.email || '').trim().toLowerCase();
       if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || email.length > 120) return res.status(400).json({ error: 'That email address does not look right.' });
     }
+    if (action === 'send' && (tooMany('c:' + clientIp(req), 15, 3600 * 1000) || tooMany('ce:' + email, 6, 3600 * 1000))) return res.status(429).json({ error: 'Too many code requests. Try again in an hour.' });
+    if (action === 'verify' && tooMany('v:' + clientIp(req), 40, 3600 * 1000)) return res.status(429).json({ error: 'Too many tries. Try again in an hour.' });
     const id = docId(purpose, email), cur = await getDoc(id), now = Date.now();
 
     if (action === 'send') {
