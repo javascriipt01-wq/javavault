@@ -8,13 +8,25 @@ const PROMPT = 'You read receipts for a small trades business in Nigeria. Return
   'category (one of Materials, Tools, Fuel, Food, Other), description (short string), ' +
   'items (array of {name, qty, price}). If something is unreadable use null. Do not guess amounts.';
 
+
+// Simple per-instance rate limit (resets when the server restarts; stops casual abuse).
+const HITS = new Map();
+function tooMany(key, max, windowMs) {
+  const now = Date.now(); const a = (HITS.get(key) || []).filter(t => now - t < windowMs);
+  if (a.length >= max) { HITS.set(key, a); return true; }
+  a.push(now); HITS.set(key, a);
+  if (HITS.size > 5000) { for (const k of HITS.keys()) { if (!(HITS.get(k) || []).some(t => now - t < windowMs)) HITS.delete(k); } }
+  return false;
+}
+const clientIp = req => String((req.headers['x-forwarded-for'] || '')).split(',')[0].trim() || 'unknown';
+
 async function checkLogin(idToken) {
   const r = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=' + FIREBASE_API_KEY, {
     method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ idToken })
   });
-  if (!r.ok) return false;
+  if (!r.ok) return null;
   const j = await r.json();
-  return !!(j.users && j.users[0]);
+  return (j.users && j.users[0] && j.users[0].localId) || null;
 }
 
 module.exports = async (req, res) => {
@@ -23,7 +35,9 @@ module.exports = async (req, res) => {
   if (!process.env.GEMINI_API_KEY) return res.status(503).json({ error: 'Scanner is not set up yet' });
 
   const auth = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
-  if (!auth || !(await checkLogin(auth).catch(() => false))) return res.status(401).json({ error: 'Please log in to scan receipts' });
+  const uid = auth ? await checkLogin(auth).catch(() => null) : null;
+  if (!uid) return res.status(401).json({ error: 'Please log in to scan receipts' });
+  if (tooMany('s:' + uid, 40, 24 * 3600 * 1000) || tooMany('i:' + clientIp(req), 120, 24 * 3600 * 1000)) return res.status(429).json({ error: 'Daily scan limit reached. Enter it by hand or try tomorrow.' });
 
   let body = req.body;
   if (typeof body === 'string') { try { body = JSON.parse(body); } catch (e) { body = {}; } }
