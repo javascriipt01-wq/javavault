@@ -5,6 +5,18 @@
 const FIREBASE_API_KEY = 'AIzaSyBewXRyo8wB3sDHGCCLjwO6Qb_SZMWdt9o'; // public web key, used only to check the user's login
 const FROM = process.env.EMAIL_FROM || 'JobPay <onboarding@resend.dev>';
 
+
+// Simple per-instance rate limit (resets when the server restarts; stops casual abuse).
+const HITS = new Map();
+function tooMany(key, max, windowMs) {
+  const now = Date.now(); const a = (HITS.get(key) || []).filter(t => now - t < windowMs);
+  if (a.length >= max) { HITS.set(key, a); return true; }
+  a.push(now); HITS.set(key, a);
+  if (HITS.size > 5000) { for (const k of HITS.keys()) { if (!(HITS.get(k) || []).some(t => now - t < windowMs)) HITS.delete(k); } }
+  return false;
+}
+const clientIp = req => String((req.headers['x-forwarded-for'] || '')).split(',')[0].trim() || 'unknown';
+
 async function getUser(idToken) {
   const r = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=' + FIREBASE_API_KEY, {
     method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ idToken })
@@ -31,6 +43,7 @@ module.exports = async (req, res) => {
   const text = String((body && body.text) || '').slice(0, 20000);
   if (!subject || !text) return res.status(400).json({ error: 'Subject and message are needed' });
 
+  if (tooMany('e:' + user.localId, 20, 24 * 3600 * 1000)) return res.status(429).json({ error: 'Daily email limit reached. Try tomorrow.' });
   // Mail only ever goes to the logged-in user's own address, so the endpoint cannot be used to spam others.
   try {
     const r = await fetch('https://api.resend.com/emails', {
