@@ -7997,6 +7997,7 @@ renderSettings = function() {
         '<a href="privacy-policy.html" target="_blank" class="btn btn-ghost btn-sm">📄 Privacy Policy</a>' +
         '<a href="terms-of-service.html" target="_blank" class="btn btn-ghost btn-sm">📋 Terms of Service</a>' +
         '<a href="user-policy.html" target="_blank" class="btn btn-ghost btn-sm">🤝 User Policy</a>' +
+        '<a href="mailto:Jobpay.support@gmail.com?subject=JobPay%20support" class="btn btn-ghost btn-sm">💬 Contact Support</a>' +
         '<a href="refund-policy.html" target="_blank" class="btn btn-ghost btn-sm">💳 Refund Policy</a>' +
         '<button class="btn btn-ghost btn-sm" onclick="go(\'subscription\')">👑 Subscription Plans</button>' +
         '<button class="btn btn-danger btn-sm" onclick="deleteMyAccount()">🗑 Delete my account</button>' +
@@ -9292,6 +9293,7 @@ window.sentryOnLoad=function(){try{Sentry.init({release:'javavault@beta',environ
     h+='<button class="mo-i" onclick="window.open(\'privacy-policy.html\',\'_blank\')"><i>🔒</i>Privacy policy<em>›</em></button>'+
        '<button class="mo-i" onclick="window.open(\'terms-of-service.html\',\'_blank\')"><i>📄</i>Terms of service<em>›</em></button>'+
        '<button class="mo-i" onclick="window.open(\'user-policy.html\',\'_blank\')"><i>🤝</i>User policy<em>›</em></button>'+
+       '<button class="mo-i" onclick="window.location.href=\'mailto:Jobpay.support@gmail.com?subject=JobPay%20support\'"><i>💬</i>Contact support<em>›</em></button>'+
        '<button class="mo-i mo-out" onclick="doLogout()">Log out</button>';
     s.innerHTML=h}
   function paintAll(){var root=$('jvHome');if(root){var t=root.querySelector('.hm-top');if(t)t.removeAttribute('data-v2');try{if(window.renderHome)window.renderHome()}catch(e){}}
@@ -9340,7 +9342,7 @@ body.light-mode #quotation .q-pri{background:#111;color:#fff;border-color:#111}
 
   function $(i){return document.getElementById(i)}
   function esc(x){return String(x==null?'':x).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-  function money(n){return 'NGN '+(+n||0).toLocaleString('en-NG',{maximumFractionDigits:2})}
+  function money(n){return (typeof CUR==='function'?CUR():'₦')+(+n||0).toLocaleString('en-NG',{maximumFractionDigits:2})}
   var rec=null,recOn=false,items=[];
 
   function ensure(){
@@ -9356,7 +9358,7 @@ body.light-mode #quotation .q-pri{background:#111;color:#fff;border-color:#111}
     '<label>CLIENT PHONE (for WhatsApp)</label><input id="qPhone" type="tel" placeholder="0803 123 4567" maxlength="20">'+
     '<label>JOB DESCRIPTION</label><input id="qDesc" placeholder="e.g. Kitchen sink repair" maxlength="200">'+
     '<label>ITEMS</label><div id="qItems"></div><button class="q-btn" style="width:100%" onclick="qAdd()">+ Add item</button>'+
-    '<div class="q-tot"><span>TOTAL</span><span id="qTotal">NGN 0</span></div>'+
+    '<div class="q-tot"><span>TOTAL</span><span id="qTotal">₦0</span></div>'+
     '<label>VALID UNTIL</label><input id="qValid" type="date" value="'+v.toISOString().slice(0,10)+'">'+
     '<label>NOTES</label><textarea id="qNotes" rows="2" placeholder="Terms, deposit, how long the work takes..." maxlength="500"></textarea>'+
     '<div class="q-acts"><button class="q-btn q-pri" onclick="qSend()">📄 Make PDF &amp; send</button><button class="q-btn" onclick="qSave(true)">Save</button></div></div>'+
@@ -9474,6 +9476,153 @@ body.light-mode #quotation .q-pri{background:#111;color:#fff;border-color:#111}
   setInterval(function(){try{upd()}catch(e){}},1000);
 })();
 </script>
-<script id="jv-v3-persist">try{if(window.firebase&&firebase.auth)firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)}catch(e){}</script>
+<script id="jv-v3-persist">try{if(window.firebase&&firebase.auth){firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+/* a session that is already signed in when the page opens belongs to a phone the user has already confirmed */
+var _first=true;firebase.auth().onAuthStateChanged(function(u){if(_first){_first=false;if(u)try{localStorage.setItem('jv_dev_'+u.uid,'1')}catch(e){}}})}}catch(e){}</script>
+<style id="jv-v4">
+.jvcc{display:flex;gap:8px;align-items:stretch}
+.jvcc select{flex:0 0 46%;max-width:46%;min-width:0;background:var(--inp,rgba(255,255,255,.06));color:inherit;border:1px solid rgba(128,128,128,.3);border-radius:12px;padding:0 8px;font:inherit;font-size:.82rem;text-overflow:ellipsis}
+.jvcc select option{color:#111;background:#fff}
+.jvcc input{flex:1;min-width:0}
+.jvfg{margin-bottom:14px}
+.jvfg select{width:100%;background:var(--inp,rgba(255,255,255,.06));color:inherit;border:1px solid rgba(128,128,128,.3);border-radius:12px;padding:12px;font:inherit}
+.jvfg select option{color:#111;background:#fff}
+.jvfg label{display:block;font-size:.78rem;margin-bottom:6px;opacity:.8}
+</style>
+<script id="jv-v4-js">
+(function(){
+  /* [iso, name, dial, currency] */
+  var C=[['NG','Nigeria','234','NGN'],['GH','Ghana','233','GHS'],['KE','Kenya','254','KES'],['ZA','South Africa','27','ZAR'],['TZ','Tanzania','255','TZS'],['UG','Uganda','256','UGX'],['RW','Rwanda','250','RWF'],['ET','Ethiopia','251','ETB'],['ZM','Zambia','260','ZMW'],['ZW','Zimbabwe','263','USD'],['CM','Cameroon','237','XAF'],['SN','Senegal','221','XOF'],['CI','Ivory Coast','225','XOF'],['BJ','Benin','229','XOF'],['TG','Togo','228','XOF'],['BF','Burkina Faso','226','XOF'],['ML','Mali','223','XOF'],['NE','Niger','227','XOF'],['GM','Gambia','220','GMD'],['EG','Egypt','20','EGP'],['MA','Morocco','212','MAD'],['AO','Angola','244','AOA'],['MZ','Mozambique','258','MZN'],['BW','Botswana','267','BWP'],
+   ['US','United States','1','USD'],['CA','Canada','1','CAD'],['GB','United Kingdom','44','GBP'],['IE','Ireland','353','EUR'],['DE','Germany','49','EUR'],['FR','France','33','EUR'],['ES','Spain','34','EUR'],['IT','Italy','39','EUR'],['NL','Netherlands','31','EUR'],['PT','Portugal','351','EUR'],['CH','Switzerland','41','CHF'],['SE','Sweden','46','SEK'],['NO','Norway','47','NOK'],['DK','Denmark','45','DKK'],['PL','Poland','48','PLN'],['TR','Turkey','90','TRY'],
+   ['AE','United Arab Emirates','971','AED'],['SA','Saudi Arabia','966','SAR'],['IN','India','91','INR'],['PK','Pakistan','92','PKR'],['BD','Bangladesh','880','BDT'],['CN','China','86','CNY'],['JP','Japan','81','JPY'],['KR','South Korea','82','KRW'],['PH','Philippines','63','PHP'],['ID','Indonesia','62','IDR'],['MY','Malaysia','60','MYR'],['SG','Singapore','65','SGD'],['TH','Thailand','66','THB'],['VN','Vietnam','84','VND'],
+   ['AU','Australia','61','AUD'],['NZ','New Zealand','64','NZD'],['BR','Brazil','55','BRL'],['MX','Mexico','52','MXN'],['JM','Jamaica','1876','JMD'],['TT','Trinidad and Tobago','1868','TTD']];
+  var SYM={NGN:'₦',GHS:'GH₵',KES:'KSh',ZAR:'R',TZS:'TSh',UGX:'USh',RWF:'RF',ETB:'Br',ZMW:'ZK',XAF:'FCFA',XOF:'CFA',GMD:'D',EGP:'E£',MAD:'MAD',AOA:'Kz',MZN:'MT',BWP:'P',USD:'$',CAD:'CA$',GBP:'£',EUR:'€',CHF:'CHF',SEK:'kr',NOK:'kr',DKK:'kr',PLN:'zł',TRY:'₺',AED:'AED',SAR:'SAR',INR:'₹',PKR:'Rs',BDT:'৳',CNY:'¥',JPY:'¥',KRW:'₩',PHP:'₱',IDR:'Rp',MYR:'RM',SGD:'S$',THB:'฿',VND:'₫',AUD:'A$',NZD:'NZ$',BRL:'R$',MXN:'MX$',JMD:'J$',TTD:'TT$'};
+  function flag(iso){return String.fromCodePoint.apply(null,iso.split('').map(function(c){return 127397+c.charCodeAt(0)}))}
+  function $(i){return document.getElementById(i)}
+  function find(iso){for(var i=0;i<C.length;i++)if(C[i][0]===iso)return C[i];return C[0]}
+  function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+  function lsSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+
+  /* currencies: add every code to the app's table */
+  try{if(typeof CURRENCIES!=='undefined')Object.keys(SYM).forEach(function(k){if(!CURRENCIES[k])CURRENCIES[k]={symbol:SYM[k],name:k};else CURRENCIES[k].symbol=SYM[k]})}catch(e){}
+  /* PDF fonts cannot print some symbols (₦, ₹ ...): print the code there, the real symbol everywhere else */
+  window.PDFCUR=function(){var s=(typeof CUR==='function')?CUR():'₦',code=(window.D&&D.profile&&D.profile.currency)||'NGN';
+    return /^[\x20-\x7E£¥€]+$/.test(s)?s+(/[A-Za-z]$/.test(s)?' ':''):code+' '};
+
+  var TZ={'Africa/Lagos':'NG','Africa/Accra':'GH','Africa/Nairobi':'KE','Africa/Johannesburg':'ZA','Africa/Dar_es_Salaam':'TZ','Africa/Kampala':'UG','Africa/Kigali':'RW','Africa/Addis_Ababa':'ET','Africa/Lusaka':'ZM','Africa/Harare':'ZW','Africa/Douala':'CM','Africa/Dakar':'SN','Africa/Abidjan':'CI','Africa/Cairo':'EG','Africa/Casablanca':'MA','Europe/London':'GB','Europe/Dublin':'IE','Europe/Paris':'FR','Europe/Berlin':'DE','Asia/Dubai':'AE','Asia/Kolkata':'IN','Asia/Tokyo':'JP','Asia/Shanghai':'CN','America/New_York':'US','America/Chicago':'US','America/Los_Angeles':'US','America/Toronto':'CA','Australia/Sydney':'AU'};
+  function guess(){var s=lsGet('jv_country');if(s)return s;try{var z=TZ[Intl.DateTimeFormat().resolvedOptions().timeZone];if(z)return z}catch(e){}
+    try{var m=(navigator.language||'').split('-')[1];if(m&&find(m.toUpperCase())[0]===m.toUpperCase())return m.toUpperCase()}catch(e){}return 'NG'}
+  function opts(sel,fmt){return C.map(function(c){return '<option value="'+c[0]+'"'+(c[0]===sel?' selected':'')+'>'+fmt(c)+'</option>'}).join('')}
+
+  /* ---- phone fields get a country-code picker ---- */
+  function pickers(){
+    [['signupPhone','ccSignup'],['loginPhone','ccLogin']].forEach(function(p){
+      var inp=$(p[0]);if(!inp||$(p[1]))return;
+      var w=document.createElement('div');w.className='jvcc';inp.parentNode.insertBefore(w,inp);
+      var s=document.createElement('select');s.id=p[1];s.setAttribute('aria-label','Country code');
+      s.innerHTML=opts(guess(),function(c){return flag(c[0])+' +'+c[2]+' '+c[1]});
+      w.appendChild(s);w.appendChild(inp);inp.placeholder='803 123 4567';inp.maxLength=18;
+      s.addEventListener('change',function(){lsSet('jv_country',s.value);var o=$('ccSignup'),l=$('ccLogin'),g=$('jvCountrySignup');[o,l,g].forEach(function(x){if(x&&x!==s)x.value=s.value})});
+    });
+    /* signup: choose country (sets currency) */
+    var ph=$('signupPhone');
+    if(ph&&!$('jvCountrySignup')){
+      var grp=ph.closest('.login-input-group');
+      if(grp){var g=document.createElement('div');g.className='login-input-group';
+        g.innerHTML='<label>Country <span style="color:#4a5568;font-weight:400">(sets your currency)</span></label><select class="login-input" id="jvCountrySignup" style="width:100%">'+opts(guess(),function(c){return flag(c[0])+' '+c[1]+' ('+(SYM[c[3]]||c[3])+')'})+'</select>';
+        grp.parentNode.insertBefore(g,grp);
+        $('jvCountrySignup').addEventListener('change',function(){lsSet('jv_country',this.value);var a=$('ccSignup'),b=$('ccLogin');if(a)a.value=this.value;if(b)b.value=this.value});}
+    }
+    /* settings: country + currency */
+    var ad=$('profAddress');
+    if(ad&&!$('profCountry')){
+      var fg=ad.closest('.form-group'),r=document.createElement('div');r.className='form-row';
+      r.innerHTML='<div class="form-group"><label>Country</label><select id="profCountry">'+opts(guess(),function(c){return flag(c[0])+' '+c[1]})+'</select></div>'+
+        '<div class="form-group"><label>Currency</label><select id="profCurrency">'+Object.keys(SYM).map(function(k){return '<option value="'+k+'">'+(SYM[k])+' '+k+'</option>'}).join('')+'</select></div>';
+      fg.parentNode.insertBefore(r,fg.nextSibling);
+      $('profCountry').addEventListener('change',function(){var c=find(this.value);$('profCurrency').value=c[3];lsSet('jv_country',c[0])});
+    }
+  }
+
+  /* ---- phone sign-in (fixed to the real screen) ---- */
+  function fullPhone(selId,inpId){
+    var raw=($(inpId)||{value:''}).value.trim(),d=raw.replace(/\D/g,'');
+    if(raw.charAt(0)==='+')return d.length>=8?'+'+d:'';
+    d=d.replace(/^0+/,'');if(d.length<6)return '';
+    var c=find(($(selId)||{value:'NG'}).value);return '+'+c[2]+d}
+  function otpVal(){var s='';for(var i=1;i<=6;i++){var e=$('otp'+i);s+=e?(e.value||'').slice(-1):''}return s}
+  function clearBoxes(){for(var i=1;i<=6;i++){var e=$('otp'+i);if(e)e.value=''}}
+  window.loginWithPhone=function(){
+    var num=fullPhone('ccLogin','loginPhone');if(!num){toast('Enter a valid phone number','warn');return}
+    if(typeof FB_READY==='undefined'||!FB_READY||!fbAuth){toast('No connection. Check your data or Wi-Fi.','error');return}
+    window.jvPhoneNum=num;lsSet('jv_phone_login',num);
+    try{if(window.recaptchaVerifier)window.recaptchaVerifier.clear()}catch(e){}window.recaptchaVerifier=null;
+    var rc=$('recaptchaContainer');if(rc){var f=document.createElement('div');f.id='recaptchaContainer';rc.parentNode.replaceChild(f,rc)}
+    try{window.recaptchaVerifier=new firebase.auth.RecaptchaVerifier('recaptchaContainer',{size:'invisible',callback:function(){}})}catch(e){}
+    fbAuth.signInWithPhoneNumber(num,window.recaptchaVerifier).then(function(cr){
+      window.confirmationResult=cr;$('phoneSendSection2').style.display='none';$('phoneOtpSection2').style.display='block';
+      var m=$('phoneMsg');if(m){m.style.display='block';m.textContent='We sent a 6-digit code by SMS to '+num}
+      clearBoxes();toast('Code sent!','success');setTimeout(function(){var e=$('otp1');if(e)e.focus()},300);
+    }).catch(function(err){
+      var c=err&&err.code,m=c==='auth/operation-not-allowed'?'Phone sign-in is not switched on yet.':c==='auth/invalid-phone-number'?'That phone number is not valid for this country.':
+        (c==='auth/too-many-requests'||c==='auth/quota-exceeded')?'Too many codes requested. Try again later.':c==='auth/network-request-failed'?'No connection. Check your data or Wi-Fi.':'Could not send the code. Try again.';
+      toast(m,'error');try{if(window.recaptchaVerifier)window.recaptchaVerifier.clear()}catch(e){}window.recaptchaVerifier=null});
+  };
+  window.verifyOtp=function(){
+    var code=otpVal();if(code.length!==6){toast('Enter the 6-digit code','warn');return}
+    if(!window.confirmationResult){toast('Ask for a new code first.','warn');return}
+    window.confirmationResult.confirm(code).then(function(r){
+      fbUser=r.user;try{localStorage.setItem('jv_dev_'+r.user.uid,'1')}catch(e){}
+      toast('Phone verified!','success');setTimeout(unlockApp,400);
+    }).catch(function(){toast('Wrong code. Try again.','error')});
+  };
+  window.resetPhoneLogin=function(){var a=$('phoneSendSection2'),b=$('phoneOtpSection2');if(a)a.style.display='block';if(b)b.style.display='none';window.confirmationResult=null;clearBoxes()};
+
+  /* ---- Forgot Password: phone option ---- */
+  function forgotPhone(){
+    var s1=$('forgotStep1');if(!s1||$('fgPhoneLink'))return;
+    var d=document.createElement('div');d.id='fgPhoneLink';d.style.cssText='text-align:center;margin-top:18px;padding-top:16px;border-top:1px solid rgba(128,128,128,.25);font-size:.82rem;color:#8892aa;line-height:1.6';
+    d.innerHTML='Signed up with your <b>phone number</b>?<br>Phone accounts have no password. <a style="cursor:pointer;font-weight:700" onclick="jvForgotPhone()">Get a code by SMS</a>';
+    s1.appendChild(d);
+    var ps=$('phoneSendSection2');if(ps&&!$('phNote')){var n=document.createElement('div');n.id='phNote';n.style.cssText='text-align:center;font-size:.76rem;color:#8892aa;margin:-8px 0 14px';n.textContent='No password needed. We text you a code each time you sign in.';ps.insertBefore(n,ps.querySelector('.login-input-group'))}
+  }
+  window.jvForgotPhone=function(){showLandingPhone();var sel=$('ccLogin');if(sel)sel.value=guess()};
+
+  /* ---- country to currency for the signed-in user ---- */
+  function apply(){
+    try{if(!window.D||!D.profile||!localStorage.getItem('jv_owner'))return;
+      var iso=lsGet('jv_country'),ph=lsGet('jv_signup_phone'),ch=false;
+      if(iso&&!D.profile.countrySet){var c=find(iso);D.profile.country=c[0];D.profile.currency=c[3];D.profile.countrySet=1;ch=true}
+      if(ph&&!D.profile.phone){D.profile.phone=ph;ch=true}if(ph)localStorage.removeItem('jv_signup_phone');
+      if(ch&&typeof saveLocal==='function')saveLocal();
+    }catch(e){}
+  }
+  var _sp=window.saveProfile;
+  if(typeof _sp==='function')window.saveProfile=function(){_sp.apply(this,arguments);try{var c=$('profCountry');if(c&&D.profile){D.profile.country=c.value;D.profile.countrySet=1;saveLocal()}}catch(e){}};
+  var _rs=window.renderSettings;
+  if(typeof _rs==='function')window.renderSettings=function(){_rs.apply(this,arguments);try{var c=$('profCountry');if(c&&D.profile){c.value=D.profile.country||guess();var u=$('profCurrency');if(u)u.value=D.profile.currency||'NGN'}}catch(e){}};
+
+  /* remember country and phone typed at sign-up (used once the account opens) */
+  var _su=window.setupPasswordNew;
+  if(typeof _su==='function')window.setupPasswordNew=function(){
+    try{var g=$('jvCountrySignup');if(g)lsSet('jv_country',g.value);var n=fullPhone('ccSignup','signupPhone');if(n)lsSet('jv_signup_phone',n);var D0=window.D;if(D0&&D0.profile)D0.profile.countrySet=0}catch(e){}
+    return _su.apply(this,arguments)};
+
+  /* swap leftover hard-coded naira signs when the user's currency is not naira */
+  var tm=0;
+  function swap(){
+    var s=(typeof CUR==='function')?CUR():'₦';if(s==='₦')return;
+    var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){
+      if(n.nodeValue.indexOf('₦')<0)return NodeFilter.FILTER_REJECT;var p=n.parentNode;
+      if(!p||/^(SCRIPT|STYLE|TEXTAREA|OPTION)$/.test(p.nodeName))return NodeFilter.FILTER_REJECT;
+      if(p.closest&&p.closest('#landingView,#setupView,#loginView,#adminSection,[id^="ad"],.wl'))return NodeFilter.FILTER_REJECT;return NodeFilter.FILTER_ACCEPT}});
+    var a=[],n;while((n=w.nextNode()))a.push(n);a.forEach(function(x){x.nodeValue=x.nodeValue.replace(/₦/g,s)});
+  }
+  function later(){clearTimeout(tm);tm=setTimeout(function(){pickers();forgotPhone();apply();swap()},300)}
+  function boot(){pickers();forgotPhone();apply();swap();new MutationObserver(later).observe(document.body,{childList:true,subtree:true,characterData:true});setInterval(apply,2000)}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+})();
+</script>
+
 </body>
 </html>
