@@ -9647,5 +9647,35 @@ var _first=true;firebase.auth().onAuthStateChanged(function(u){if(_first){_first
 .ob-soc[onclick*="showLandingPhone"],.login-btn-phone,#fgPhoneLink{display:none!important}
 .ob-socials{grid-template-columns:1fr!important}
 </style>
+<script id="jv-v6-stay">
+/* Stay signed in: reopen straight into the app, and never sign out on a timer. */
+(function(){
+  /* 1. The old 30-minute inactivity timer signed the user out. Push it out of reach (about 24 days, the browser maximum). */
+  window.SESSION_MS = 2147000000;
+  /* 2. On every start, wait for Firebase to restore the saved session, then go straight to the app. */
+  function resume(){
+    try{
+      var qs = location.search || '';
+      if (qs.indexOf('portal=') >= 0 || qs.indexOf('invoice=') >= 0) return;
+      if (typeof FB_READY === 'undefined' || !FB_READY || !window.firebase || !firebase.auth) {
+        if ((window._jvTries = (window._jvTries || 0) + 1) < 40) setTimeout(resume, 150);
+        return;
+      }
+      var done = false;
+      var off = firebase.auth().onAuthStateChanged(function(u){
+        if (done) return; done = true;
+        try{ off(); }catch(e){}
+        if (!u) return;
+        var ok = u.emailVerified || !!u.phoneNumber;
+        var trusted = (typeof jvDeviceTrusted === 'function') ? jvDeviceTrusted(u.uid) : true;
+        if (!ok || !trusted) return;   /* unverified or new device: normal sign-in and code flow */
+        try{ window.fbUser = u; fbUser = u; }catch(e){}
+        try{ unlockApp(); }catch(e){}
+      });
+    }catch(e){}
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', resume); else setTimeout(resume, 0);
+})();
+</script>
 </body>
 </html>
