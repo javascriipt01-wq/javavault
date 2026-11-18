@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="preconnect" href="https://www.gstatic.com" crossorigin><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
@@ -1044,7 +1046,7 @@ button[onclick*="voiceToEstimate"],.hm-trial,#trialBanner,#planDashBanner{displa
         <div class="login-input-group"><label>6-digit code</label>
           <input class="login-input" id="fgCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="123456" style="letter-spacing:6px;text-align:center;font-size:1.3rem"/></div>
         <div class="login-input-group"><label>New password</label>
-          <input class="login-input" id="fgPw" type="password" maxlength="64" placeholder="At least 8 characters"/></div>
+          <div class="login-input-wrap"><input class="login-input" id="fgPw" type="password" maxlength="64" placeholder="At least 8 characters" autocomplete="new-password"/><button type="button" class="login-eye" onclick="togglePwNew('fgPw')" aria-label="Show or hide password">👁</button></div></div>
         <div id="fgErr" style="display:none;color:#f87171;font-size:.8rem;margin:0 0 12px"></div>
         <button class="login-btn-primary" id="fgBtn" onclick="jvResetDone()" style="width:100%;padding:14px">Change password</button>
         <div style="text-align:center;margin-top:14px;font-size:.8rem;color:#8892aa">Did not get it? <a id="fgResend" onclick="jvResetResend()" style="cursor:pointer">Send again</a></div>
@@ -2600,7 +2602,7 @@ button[onclick*="voiceToEstimate"],.hm-trial,#trialBanner,#planDashBanner{displa
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <!-- Paystack Payment -->
-<script src="https://js.paystack.co/v1/inline.js"></script>
+<script async src="https://js.paystack.co/v1/inline.js"></script>
 
 
 <!-- PWA Manifest -->
@@ -2628,7 +2630,7 @@ button[onclick*="voiceToEstimate"],.hm-trial,#trialBanner,#planDashBanner{displa
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+
 <script>
 // ================================================================
 // FIREBASE CONFIG
@@ -7582,9 +7584,12 @@ function doResetPassword() {
   if (pw1 !== pw2) { if(err){err.textContent='Passwords do not match';err.style.display='block';} return; }
   if (firebase && firebase.auth && firebase.auth().currentUser) {
     firebase.auth().currentUser.updatePassword(pw1).then(function() {
-      ['resetPwView'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='none';});
-      var sv = document.getElementById('resetSuccessView');
-      if (sv) sv.style.display = 'block';
+      toast('Password changed','success');
+      try{ unlockApp(); }catch(e2){
+        ['resetPwView'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='none';});
+        var sv = document.getElementById('resetSuccessView');
+        if (sv) sv.style.display = 'block';
+      }
     }).catch(function(e) { if(err){err.textContent=e.message;err.style.display='block';} });
   } else {
     var sv = document.getElementById('resetSuccessView');
@@ -8816,7 +8821,7 @@ window.sentryOnLoad=function(){try{Sentry.init({release:'javavault@beta',environ
     [].forEach.call(t.querySelectorAll('tbody tr'),function(tr){
       [].forEach.call(tr.children,function(td,i){if(td.hasAttribute('colspan'))return;var l=heads[i]||'';if(td.getAttribute('data-label')!==l)td.setAttribute('data-label',l)})})}
   function all(){[].forEach.call(document.querySelectorAll('.section table'),label)}
-  var t;new MutationObserver(function(){clearTimeout(t);t=setTimeout(all,50)}).observe(document.body,{childList:true,subtree:true});
+  var t;new MutationObserver(function(){clearTimeout(t);t=setTimeout(all,250)}).observe(document.body,{childList:true,subtree:true});
   document.addEventListener('DOMContentLoaded',all);all();
 })();
 </script>
@@ -8834,7 +8839,7 @@ window.sentryOnLoad=function(){try{Sentry.init({release:'javavault@beta',environ
     var list=[],n;while(n=w.nextNode())list.push(n);
     list.forEach(function(t){var v=t.nodeValue.replace(re,fmt);if(v!==t.nodeValue)t.nodeValue=v})}
   var timer;function run(){var r=document.getElementById('appShell');if(r)walk(r)}
-  new MutationObserver(function(){clearTimeout(timer);timer=setTimeout(run,60)}).observe(document.body,{childList:true,subtree:true,characterData:true});
+  new MutationObserver(function(){clearTimeout(timer);timer=setTimeout(run,300)}).observe(document.body,{childList:true,subtree:true,characterData:true});
   document.addEventListener('DOMContentLoaded',run);
 })();
 </script>
@@ -8898,7 +8903,7 @@ window.sentryOnLoad=function(){try{Sentry.init({release:'javavault@beta',environ
   /* log out button on the dashboard header */
   function addOut(){var top=document.querySelector('#jvHome .hm-top');
     if(top&&!top.querySelector('.hm-out')){var b=document.createElement('button');b.className='hm-ic hm-out';b.setAttribute('aria-label','Log out');b.title='Log out';b.onclick=function(){if(confirm('Log out of JobPay?'))doLogout()};b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>';top.appendChild(b)}}
-  setInterval(addOut,700);
+  setInterval(addOut,4000);
 
   /* keep a running timer alive after the page is closed or reloaded */
   setTimeout(function(){try{var st=parseInt(localStorage.getItem('jv_timer_start')||'0',10);
@@ -9170,8 +9175,12 @@ window.sentryOnLoad=function(){try{Sentry.init({release:'javavault@beta',environ
     call({action:'verify',purpose:'reset',email:fgEmail,code:code,newPassword:pw}).then(function(r){
       b.disabled=false;b.style.opacity='';
       if(!r.ok){fgErr(r.j.error||'Wrong code.');return}
-      toast('Password changed. Please sign in.','success');showLoginView();
-      var li=document.getElementById('loginIdentifier');if(li)li.value=fgEmail;
+      toast('Password changed. Signing you in...','success');
+      var back=function(){showLoginView();var li=document.getElementById('loginIdentifier');if(li)li.value=fgEmail};
+      try{firebase.auth().signInWithEmailAndPassword(fgEmail,pw).then(function(rr){
+        try{localStorage.setItem('jv_dev_'+rr.user.uid,'1')}catch(e){}
+        try{window.fbUser=rr.user;fbUser=rr.user}catch(e){}
+        unlockApp()}).catch(function(){toast('Password changed. Please sign in.','success');back()})}catch(e){back()}
     });
   };
 })();
@@ -9302,7 +9311,7 @@ window.sentryOnLoad=function(){try{Sentry.init({release:'javavault@beta',environ
 
   function boot(){buildNav();ensureMore();if(!watchHome())setTimeout(boot,500)}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
-  setInterval(function(){buildNav();var r=$('jvHome');if(r&&r.querySelector('.hm-top')&&!r.querySelector('.hm-top').getAttribute('data-v2'))patchHome()},1500);
+  setInterval(function(){buildNav();var r=$('jvHome');if(r&&r.querySelector('.hm-top')&&!r.querySelector('.hm-top').getAttribute('data-v2'))patchHome()},3000);
 })();
 </script>
 <style id="jv-v3">
@@ -9449,7 +9458,7 @@ body.light-mode #quotation .q-pri{background:#111;color:#fff;border-color:#111}
   var og=window.go;
   window.go=function(id){if(id==='quotation')ensure();og.apply(this,arguments);if(id==='quotation')renderQ()};
   function fixNav(){var b=$('bn-quote')||$('bn-quotation');if(!b)return;if(b.id!=='bn-quotation')b.id='bn-quotation';b.setAttribute('onclick',"go('quotation')")}
-  fixNav();setInterval(fixNav,1500);
+  fixNav();setInterval(fixNav,3000);
   if(window.D&&!D.quotations)D.quotations=[];
 })();
 </script>
@@ -9619,7 +9628,7 @@ var _first=true;firebase.auth().onAuthStateChanged(function(u){if(_first){_first
     var a=[],n;while((n=w.nextNode()))a.push(n);a.forEach(function(x){x.nodeValue=x.nodeValue.replace(/₦/g,s)});
   }
   function later(){clearTimeout(tm);tm=setTimeout(function(){pickers();forgotPhone();apply();swap()},300)}
-  function boot(){pickers();forgotPhone();apply();swap();new MutationObserver(later).observe(document.body,{childList:true,subtree:true,characterData:true});setInterval(apply,2000)}
+  function boot(){pickers();forgotPhone();apply();swap();new MutationObserver(later).observe(document.body,{childList:true,subtree:true,characterData:true});setInterval(apply,5000)}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();
 </script>
@@ -9675,6 +9684,42 @@ var _first=true;firebase.auth().onAuthStateChanged(function(u){if(_first){_first
     }catch(e){}
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', resume); else setTimeout(resume, 0);
+})();
+</script>
+<script id="jv-v7-photo">
+/* Nudge: tell users the circle is tappable until they add a photo. */
+(function(){
+  function has(){try{var p=D&&D.profile&&D.profile.photo;return typeof p==='string'&&p.indexOf('data:image/')===0}catch(e){return false}}
+  function tick(){
+    try{
+      var hi=document.querySelector('#jvHome .jv-hello .hm-hi');if(!hi)return;
+      var ex=hi.querySelector('.jv-addph');
+      if(has()){if(ex)ex.remove();return}
+      if(ex)return;
+      var a=document.createElement('div');a.className='jv-addph';a.textContent='Tap the circle to add your photo';
+      a.style.cssText='margin-top:6px;font-size:.72rem;font-weight:700;color:#f97316;cursor:pointer';
+      a.onclick=function(){try{jvPickPhoto()}catch(e){}};
+      hi.appendChild(a);
+    }catch(e){}
+  }
+  setInterval(tick,2500);
+})();
+</script>
+<script id="jv-v8-net">
+/* Never hang: calls to our own server give up after 20 seconds (45 for the receipt scanner)
+   and show the usual "No connection" message instead of spinning forever. */
+(function(){
+  var f=window.fetch;if(!f||!window.AbortController)return;
+  window.fetch=function(u,o){
+    try{
+      var s=typeof u==='string'?u:(u&&u.url)||'';
+      if(s.indexOf('/api/')===0&&!(o&&o.signal)){
+        var c=new AbortController(),ms=s.indexOf('/api/scan')===0?45000:20000,t=setTimeout(function(){c.abort()},ms);
+        o=Object.assign({},o||{},{signal:c.signal});
+        return f.call(this,u,o).then(function(r){clearTimeout(t);return r},function(e){clearTimeout(t);throw e});
+      }
+    }catch(e){}
+    return f.apply(this,arguments)};
 })();
 </script>
 </body>
