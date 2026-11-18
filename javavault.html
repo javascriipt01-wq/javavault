@@ -947,8 +947,8 @@ button[onclick*="voiceToEstimate"],.hm-trial,#trialBanner,#planDashBanner{displa
         <div class="login-box-sub">Sign in to continue to JobPay</div>
       </div>
       <div class="login-input-group">
-        <label>Email or Phone Number</label>
-        <input class="login-input" type="text" id="loginIdentifier" placeholder="Enter your email or phone" maxlength="100"/>
+        <label>Email Address</label>
+        <input class="login-input" type="text" id="loginIdentifier" placeholder="Enter your email" maxlength="100"/>
       </div>
       <div class="login-input-group">
         <label>Password</label>
@@ -7528,7 +7528,7 @@ function setupPasswordNew() {
   // Save consent
   localStorage.setItem('jv_consent_agreed', '1');
   localStorage.setItem('jv_consent_date', new Date().toISOString());
-  if (!email) { showErr('Enter your email address. We send a 6-digit code to it to confirm your account. To use a phone number instead, tap Back and choose Phone.'); return; }
+  if (!email) { showErr('Enter your email address. We send a 6-digit code to it to confirm your account.'); return; }
   if (!pw) { showErr('Enter a password'); return; }
   if (pw.length < 8) { showErr('Password must be at least 8 characters'); return; }
   if (pw !== pw2) { showErr('Passwords do not match'); return; }
@@ -9642,5 +9642,10 @@ var _first=true;firebase.auth().onAuthStateChanged(function(u){if(_first){_first
     return _ua.apply(this,arguments)};
 })();
 </script>
+<style id="jv-phone-off">
+/* Phone sign-in is switched off until Firebase billing is enabled. To turn it back on, delete this style block. */
+.ob-soc[onclick*="showLandingPhone"],.login-btn-phone,#fgPhoneLink{display:none!important}
+.ob-socials{grid-template-columns:1fr!important}
+</style>
 </body>
 </html>
