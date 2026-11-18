@@ -7530,7 +7530,8 @@ function setupPasswordNew() {
   // Save consent
   localStorage.setItem('jv_consent_agreed', '1');
   localStorage.setItem('jv_consent_date', new Date().toISOString());
-  if (!email && !pw) { showErr('Enter your email and password'); return; }
+  if (!email) { showErr('Enter your email address. We send a 6-digit code to it to confirm your account. To use a phone number instead, tap Back and choose Phone.'); return; }
+  if (!pw) { showErr('Enter a password'); return; }
   if (pw.length < 8) { showErr('Password must be at least 8 characters'); return; }
   if (pw !== pw2) { showErr('Passwords do not match'); return; }
   // Try Firebase email signup
@@ -7552,8 +7553,8 @@ function setupPasswordNew() {
       return;
     }
   }
-  // Fallback: local password setup
-  setupPassword();
+  // No local-only accounts: an account is only created after the email code is confirmed.
+  showErr('No connection. Check your data or Wi-Fi and try again.');
 }
 
 function otpNextNew(el, nextId) {
@@ -9634,6 +9635,10 @@ var _first=true;firebase.auth().onAuthStateChanged(function(u){if(_first){_first
       if(u&&!u.emailVerified&&!u.phoneNumber&&(u.providerData||[]).some(function(p){return p&&p.providerId==='password'})){
         if(!window._jvGate&&typeof jvAskCode==='function'){window._jvGate=1;var a=arguments,t=this;
           jvAskCode(function(){window._jvGate=0;_ua.apply(t,a)})}
+        return}
+      if(typeof FB_READY!=='undefined'&&FB_READY&&window.firebase&&firebase.auth&&!firebase.auth().currentUser){
+        try{toast('Please sign in first.','warn')}catch(e){}
+        try{showLoginView()}catch(e){}
         return}
     }catch(e){}
     return _ua.apply(this,arguments)};
