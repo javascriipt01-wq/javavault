@@ -907,6 +907,7 @@ button[onclick*="voiceToEstimate"],.hm-trial,#trialBanner,#planDashBanner{displa
       <div class="login-input-group">
         <label>Phone Number <span style="color:#4a5568;font-weight:400">(Optional)</span></label>
         <input class="login-input" type="tel" id="signupPhone" placeholder="+234 800 000 0000" maxlength="20"/>
+        <div id="jvPhHint" style="font-size:.74rem;color:#8892aa;margin-top:6px;line-height:1.5">Only saved on your profile. We do <b>not</b> text you here. We confirm your account with a code sent to your <b>email</b>.</div>
       </div>
       <div class="login-input-group">
         <label>Password</label>
@@ -9564,8 +9565,8 @@ var _first=true;firebase.auth().onAuthStateChanged(function(u){if(_first){_first
       var m=$('phoneMsg');if(m){m.style.display='block';m.textContent='We sent a 6-digit code by SMS to '+num}
       clearBoxes();toast('Code sent!','success');setTimeout(function(){var e=$('otp1');if(e)e.focus()},300);
     }).catch(function(err){
-      var c=err&&err.code,m=c==='auth/operation-not-allowed'?'Phone sign-in is not switched on yet.':c==='auth/invalid-phone-number'?'That phone number is not valid for this country.':
-        (c==='auth/too-many-requests'||c==='auth/quota-exceeded')?'Too many codes requested. Try again later.':c==='auth/network-request-failed'?'No connection. Check your data or Wi-Fi.':'Could not send the code. Try again.';
+      var c=err&&err.code,m=c==='auth/operation-not-allowed'?'Phone sign-in is not switched on yet. Please use email.':c==='auth/invalid-phone-number'?'That phone number is not valid for this country.':
+        (c==='auth/too-many-requests'||c==='auth/quota-exceeded')?'Text codes are used up for today during testing. Please sign up or sign in with your email.':c==='auth/network-request-failed'?'No connection. Check your data or Wi-Fi.':'Could not send the code. Try again.';
       toast(m,'error');try{if(window.recaptchaVerifier)window.recaptchaVerifier.clear()}catch(e){}window.recaptchaVerifier=null});
   };
   window.verifyOtp=function(){
@@ -9584,7 +9585,7 @@ var _first=true;firebase.auth().onAuthStateChanged(function(u){if(_first){_first
     var d=document.createElement('div');d.id='fgPhoneLink';d.style.cssText='text-align:center;margin-top:18px;padding-top:16px;border-top:1px solid rgba(128,128,128,.25);font-size:.82rem;color:#8892aa;line-height:1.6';
     d.innerHTML='Signed up with your <b>phone number</b>?<br>Phone accounts have no password. <a style="cursor:pointer;font-weight:700" onclick="jvForgotPhone()">Get a code by SMS</a>';
     s1.appendChild(d);
-    var ps=$('phoneSendSection2');if(ps&&!$('phNote')){var n=document.createElement('div');n.id='phNote';n.style.cssText='text-align:center;font-size:.76rem;color:#8892aa;margin:-8px 0 14px';n.textContent='No password needed. We text you a code each time you sign in.';ps.insertBefore(n,ps.querySelector('.login-input-group'))}
+    var ps=$('phoneSendSection2');if(ps&&!$('phNote')){var n=document.createElement('div');n.id='phNote';n.style.cssText='text-align:center;font-size:.76rem;color:#8892aa;margin:-8px 0 14px';n.innerHTML='No password needed. We text you a code each time you sign in.<br><b>During testing, text codes are limited each day.</b> If none arrives, <a style="cursor:pointer;font-weight:700;color:#f97316" onclick="showNewSignup()">create your account with email</a> instead.';ps.insertBefore(n,ps.querySelector('.login-input-group'))}
   }
   window.jvForgotPhone=function(){showLandingPhone();var sel=$('ccLogin');if(sel)sel.value=guess()};
 
@@ -9624,5 +9625,19 @@ var _first=true;firebase.auth().onAuthStateChanged(function(u){if(_first){_first
 })();
 </script>
 
+<script id="jv-v5-gate">
+/* Rule: an email account is only approved after its email code is confirmed. No code, no entry. */
+(function(){
+  var _ua=window.unlockApp;if(typeof _ua!=='function')return;
+  window.unlockApp=function(){
+    try{var u=window.firebase&&firebase.auth&&firebase.auth().currentUser;
+      if(u&&!u.emailVerified&&!u.phoneNumber&&(u.providerData||[]).some(function(p){return p&&p.providerId==='password'})){
+        if(!window._jvGate&&typeof jvAskCode==='function'){window._jvGate=1;var a=arguments,t=this;
+          jvAskCode(function(){window._jvGate=0;_ua.apply(t,a)})}
+        return}
+    }catch(e){}
+    return _ua.apply(this,arguments)};
+})();
+</script>
 </body>
 </html>
