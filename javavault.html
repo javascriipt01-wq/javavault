@@ -881,7 +881,7 @@ button[onclick*="voiceToEstimate"],.hm-trial,#trialBanner,#planDashBanner{displa
         <button class="ob-soc" type="button" onclick="showLandingPhone()">Phone</button>
       </div>
     </div>
-    <div class="ob-fine" id="obFine">7-day free trial. No card needed.</div>
+    <div class="ob-fine" id="obFine">Free while we test. No card needed.</div>
   </div>
 </div>
 </div>
@@ -897,9 +897,7 @@ button[onclick*="voiceToEstimate"],.hm-trial,#trialBanner,#planDashBanner{displa
         <div class="login-box-title">Create Your Account</div>
         <div class="login-box-sub">Let's set up your account</div>
       </div>
-      <div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:10px;padding:10px 14px;text-align:center;margin-bottom:20px">
-        <div style="color:#22c55e;font-weight:700;font-size:.82rem">🎁 7 Days Free Pro Access — No card required</div>
-      </div>
+      <div style="text-align:center;color:#8892aa;font-size:.8rem;margin-bottom:18px">Free while we test. No card needed.</div>
       <div class="login-input-group">
         <label>Email Address</label>
         <input class="login-input" type="email" id="signupEmail" placeholder="Enter your email" maxlength="100"/>
@@ -8639,7 +8637,7 @@ window.onPaystackLoad = function() {
       var last=i===slides.length-1;
       main.textContent=last?'Create account':'Next';
       alt.hidden=!last;skip.style.visibility=last?'hidden':'visible';
-      fine.textContent=last?'7-day free trial. No card needed.':'7-day free trial. No card needed.';
+      fine.textContent=last?'Free while we test. No card needed.':'Free while we test. No card needed.';
       if(i===0&&!counted){counted=true;count();}
     }
     var raf=0;
@@ -9567,7 +9565,7 @@ var _first=true;firebase.auth().onAuthStateChanged(function(u){if(_first){_first
       clearBoxes();toast('Code sent!','success');setTimeout(function(){var e=$('otp1');if(e)e.focus()},300);
     }).catch(function(err){
       var c=err&&err.code,m=c==='auth/operation-not-allowed'?'Phone sign-in is not switched on yet. Please use email.':c==='auth/invalid-phone-number'?'That phone number is not valid for this country.':
-        (c==='auth/too-many-requests'||c==='auth/quota-exceeded')?'Text codes are used up for today during testing. Please sign up or sign in with your email.':c==='auth/network-request-failed'?'No connection. Check your data or Wi-Fi.':'Could not send the code. Try again.';
+        (c==='auth/too-many-requests'||c==='auth/quota-exceeded')?'Text codes are used up for today during testing. Please sign up or sign in with your email.':c==='auth/network-request-failed'?'No connection. Check your data or Wi-Fi.':c==='auth/billing-not-enabled'?'Text codes are not available on this project yet. Please use email.':(c==='auth/captcha-check-failed'||c==='auth/invalid-app-credential'||c==='auth/missing-app-credential')?'Security check failed. Reload the page and try again. ('+c+')':c==='auth/unauthorized-domain'?'This website address is not allowed for text codes yet. ('+c+')':'Could not send the code. Please try email instead. ['+(c||'unknown')+']';
       toast(m,'error');try{if(window.recaptchaVerifier)window.recaptchaVerifier.clear()}catch(e){}window.recaptchaVerifier=null});
   };
   window.verifyOtp=function(){
