@@ -4291,7 +4291,7 @@ function checkClientView() {
       var it = inv.items[i];
       itemsHtml += '<tr style="border-bottom:1px solid #f3f4f6">';
       itemsHtml += '<td style="padding:9px 10px;color:#333">' + san(it.desc) + '</td>';
-      itemsHtml += '<td style="padding:9px 10px;text-align:center;color:#555">' + it.qty + '</td>';
+      itemsHtml += '<td style="padding:9px 10px;text-align:center;color:#555">' + san(String(it.qty == null ? '' : it.qty)) + '</td>';
       itemsHtml += '<td style="padding:9px 10px;text-align:right;color:#555">' + CUR() + (+it.price||0).toFixed(2) + '</td>';
       itemsHtml += '<td style="padding:9px 10px;text-align:right;font-weight:600">' + CUR() + ((+it.qty||1)*(+it.price||0)).toFixed(2) + '</td>';
       itemsHtml += '</tr>';
@@ -6995,7 +6995,6 @@ function isAdminUser() {
   if (!fbUser) return false;
   // Check by email or custom admin claim
   var adminEmails = [ADMIN_EMAIL];
-  if (D.profile && D.profile.adminEmail) adminEmails.push(D.profile.adminEmail);
   var em = (fbUser.email || '').toLowerCase();
   return adminEmails.some(function(a){ return (a || '').toLowerCase() === em; });
 }
@@ -9133,10 +9132,10 @@ window.sentryOnLoad=function(){try{Sentry.init({release:'javavault@beta',environ
   }
   function finish(){var u=firebase.auth().currentUser;trust();$('jvCodeView').style.display='none';var f=cb;cb=null;
     (u?u.getIdToken(true).then(function(){return u.reload()}).catch(function(){}):Promise.resolve()).then(function(){if(f)f()})}
-  window.jvAskCode=function(done,purpose){
+  window.jvAskCode=function(done,purpose,keep){
     var u=firebase.auth().currentUser;cb=done;pur=purpose==='device'?'device':'signup';
     $('jcMsg').textContent=(pur==='device'?'To keep your account safe, we sent a 6-digit code to ':'We sent a 6-digit code to ')+(u&&u.email||'your email')+(pur==='device'?' to confirm it is you on this phone.':'.')+' It expires in 10 minutes. Check spam too.';
-    $('jcCode').value='';$('jcErr').textContent='';$('jvCodeView').style.display='flex';sendSignup();
+    $('jcCode').value='';$('jcErr').textContent='';$('jvCodeView').style.display='flex';if(!keep)sendSignup();
   };
   window.jvCodeResend=sendSignup;
   window.jvCodeSubmit=function(){
@@ -9158,6 +9157,7 @@ window.sentryOnLoad=function(){try{Sentry.init({release:'javavault@beta',environ
     fgEmail=email;lastSent=Date.now();
     call({action:'send',purpose:'reset',email:email}).then(function(r){
       if(!r.ok&&r.status!==429){toast(r.j.error||'Could not send the code. Try again.','error');return}
+      if(r.j&&r.j.exists===false){toast('No account found for '+email+'. Check the spelling, or tap Create account.','error');return}
       $('forgotStep1').style.display='none';$('forgotStep2').style.display='block';
       $('forgotEmailSent').textContent='If '+email+' has an account, we sent a 6-digit code. It expires in 10 minutes. Check spam too.';
       $('fgCode').value='';$('fgPw').value='';fgErr('');tick('fgResend','Send again');
@@ -9675,6 +9675,14 @@ var _first=true;firebase.auth().onAuthStateChanged(function(u){if(_first){_first
         if (done) return; done = true;
         try{ off(); }catch(e){}
         if (!u) return;
+        /* Came back mid sign-up (for example after reading the code in Gmail): show the code screen again, without sending a new code. */
+        var pw = (u.providerData || []).some(function(p){ return p && p.providerId === 'password'; });
+        if (!u.emailVerified && !u.phoneNumber && pw && typeof jvAskCode === 'function') {
+          try{ window.fbUser = u; fbUser = u; }catch(e){}
+          window._jvGate = 1;
+          jvAskCode(function(){ window._jvGate = 0; unlockApp(); }, 'signup', true);
+          return;
+        }
         var ok = u.emailVerified || !!u.phoneNumber;
         var trusted = (typeof jvDeviceTrusted === 'function') ? jvDeviceTrusted(u.uid) : true;
         if (!ok || !trusted) return;   /* unverified or new device: normal sign-in and code flow */
