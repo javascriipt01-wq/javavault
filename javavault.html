@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<style id="jv-boot-css">html.jv-boot #loginScreen,html.jv-boot #landingView,html.jv-boot #appShell{visibility:hidden!important}html.jv-boot body::before{content:"JobPay";position:fixed;inset:0;z-index:2147483000;background:#0b0b0d;color:#f97316;display:flex;align-items:center;justify-content:center;font:800 1.6rem system-ui,sans-serif;letter-spacing:.5px}</style>
+<script>try{if(localStorage.getItem('jv_hint')==='1'){document.documentElement.classList.add('jv-boot');setTimeout(function(){document.documentElement.classList.remove('jv-boot')},6000)}}catch(e){}</script>
+
 <link rel="preconnect" href="https://www.gstatic.com" crossorigin><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 <meta charset="UTF-8"/>
@@ -3456,7 +3459,7 @@ function saveEst() {
   var mk = Math.min(Math.max(parseFloat(document.getElementById('eMarkup').value)||0, 0), 200);
   var total = sub * (1 + mk / 100);
   var est = {
-    id: 'EST-' + String(D.estimates.length + 1).padStart(3,'0'),
+    id: jvNextId(D.estimates,'EST-'),
     client: client, phone: document.getElementById('ePhone').value.trim(),
     desc: desc, items: items, markup: mk, total: total,
     valid: document.getElementById('eValid').value,
@@ -3519,7 +3522,7 @@ function saveInv() {
   var taxAmt = (sub - discAmt) * taxPct / 100;
   var total = sub - discAmt + taxAmt;
   var inv = {
-    id: 'INV-' + String(D.invoices.length + 1).padStart(3,'0'),
+    id: jvNextId(D.invoices,'INV-'),
     client: client, phone: document.getElementById('iPhone').value.trim(),
     desc: desc, items: items, total: total,
     due: document.getElementById('iDue').value,
@@ -3561,7 +3564,7 @@ function saveJob() {
   var title = document.getElementById('jTitle').value.trim();
   if (!title) { toast('Job title required', 'warn'); return; }
   var job = {
-    id: 'JOB-' + String(D.jobs.length + 1).padStart(3,'0'),
+    id: jvNextId(D.jobs,'JOB-'),
     title: title, client: document.getElementById('jClient').value.trim(),
     trade: document.getElementById('jTrade').value,
     start: document.getElementById('jStart').value,
@@ -5607,7 +5610,7 @@ function calcNextDue(fromDate, freq) {
 function generateRecurringInv(i) {
   var r = D.recurring[i];
   var inv = {
-    id: 'INV-' + String(D.invoices.length + 1).padStart(3,'0'),
+    id: jvNextId(D.invoices,'INV-'),
     client: r.client, phone: '', desc: r.desc,
     items: [{desc: r.desc, qty: 1, price: r.amount}],
     total: r.amount, due: r.nextDue, status: 'unpaid',
@@ -9290,7 +9293,7 @@ window.sentryOnLoad=function(){try{Sentry.init({release:'javavault@beta',environ
     var s=document.createElement('section');s.id='more';s.className='section';ref.parentNode.appendChild(s);return s}
   var GROUPS=[
     ['MONEY',[['📄','Invoices','invoices'],['📈','Profits','profits'],['📊','Daily earnings','daily'],['💳','Expenses','expenses'],['⛽','Fuel log','fuel']]],
-    ['WORK',[['👥','Clients','clients'],['🕘','Client history','timeline'],['📅','Schedule','schedule'],['⏱️','Job timer','timer'],['🎙️','Voice notes','voicenotes'],['📷','Photos','photos'],['📍','GPS jobs','gps'],['🔁','Recurring invoices','recurring'],['🔔','Reminders','reminders'],['⭐','Reviews','reviews'],['📦','Inventory','inventory'],['🛡️','Warranties','warranty']]],
+    ['WORK',[['📝','To-do & Notes','todos'],['👥','Clients','clients'],['🕘','Client history','timeline'],['📅','Schedule','schedule'],['⏱️','Job timer','timer'],['🎙️','Voice notes','voicenotes'],['📷','Photos','photos'],['📍','GPS jobs','gps'],['🔁','Recurring invoices','recurring'],['🔔','Reminders','reminders'],['⭐','Reviews','reviews'],['📦','Inventory','inventory'],['🛡️','Warranties','warranty']]],
     ['TOOLS',[['🧾','Receipt scanner','receiptscanner']]],
     ['APP',[['⚙️','My business','settings']]]];
   function esc(x){return String(x==null?'':x).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
@@ -9425,7 +9428,7 @@ body.light-mode #quotation .q-pri{background:#111;color:#fff;border-color:#111}
     if(!client){toast('Client name needed','warn');return null}
     if(!its.length){toast('Add at least one item','warn');return null}
     D.quotations=D.quotations||[];
-    return{id:'QUO-'+String(D.quotations.length+1).padStart(3,'0'),client:client,phone:$('qPhone').value.trim(),desc:$('qDesc').value.trim()||its[0].desc,items:its,markup:0,
+    return{id:jvNextId(D.quotations,'QUO-'),client:client,phone:$('qPhone').value.trim(),desc:$('qDesc').value.trim()||its[0].desc,items:its,markup:0,
       total:its.reduce(function(s,i){return s+i.qty*i.price},0),valid:$('qValid').value,notes:$('qNotes').value.trim(),date:new Date().toLocaleDateString(),status:'sent',voice:$('qSay').value.trim()}}
   var lastSaved=null;
   window.qSave=function(msg){var q=build();if(!q)return null;
@@ -9662,34 +9665,43 @@ var _first=true;firebase.auth().onAuthStateChanged(function(u){if(_first){_first
   /* 1. The old 30-minute inactivity timer signed the user out. Push it out of reach (about 24 days, the browser maximum). */
   window.SESSION_MS = 2147000000;
   /* 2. On every start, wait for Firebase to restore the saved session, then go straight to the app. */
+  function lift(){ try{ document.documentElement.classList.remove('jv-boot'); }catch(e){} }
+  /* remember that this phone was signed in, so the next start shows a splash instead of the welcome screen */
+  (function(){
+    var _u = window.unlockApp;
+    if (typeof _u === 'function') window.unlockApp = function(){ try{ localStorage.setItem('jv_hint','1'); }catch(e){} return _u.apply(this, arguments); };
+    var _l = window.doLogout;
+    if (typeof _l === 'function') window.doLogout = function(){ try{ localStorage.removeItem('jv_hint'); }catch(e){} lift(); return _l.apply(this, arguments); };
+  })();
   function resume(){
     try{
       var qs = location.search || '';
-      if (qs.indexOf('portal=') >= 0 || qs.indexOf('invoice=') >= 0) return;
+      if (qs.indexOf('portal=') >= 0 || qs.indexOf('invoice=') >= 0) { lift(); return; }
       if (typeof FB_READY === 'undefined' || !FB_READY || !window.firebase || !firebase.auth) {
-        if ((window._jvTries = (window._jvTries || 0) + 1) < 40) setTimeout(resume, 150);
+        if ((window._jvTries = (window._jvTries || 0) + 1) < 40) setTimeout(resume, 150); else lift();
         return;
       }
       var done = false;
       var off = firebase.auth().onAuthStateChanged(function(u){
         if (done) return; done = true;
         try{ off(); }catch(e){}
-        if (!u) return;
+        if (!u) { lift(); return; }
         /* Came back mid sign-up (for example after reading the code in Gmail): show the code screen again, without sending a new code. */
         var pw = (u.providerData || []).some(function(p){ return p && p.providerId === 'password'; });
         if (!u.emailVerified && !u.phoneNumber && pw && typeof jvAskCode === 'function') {
           try{ window.fbUser = u; fbUser = u; }catch(e){}
           window._jvGate = 1;
           jvAskCode(function(){ window._jvGate = 0; unlockApp(); }, 'signup', true);
-          return;
+          lift(); return;
         }
         var ok = u.emailVerified || !!u.phoneNumber;
         var trusted = (typeof jvDeviceTrusted === 'function') ? jvDeviceTrusted(u.uid) : true;
-        if (!ok || !trusted) return;   /* unverified or new device: normal sign-in and code flow */
+        if (!ok || !trusted) { lift(); return; }   /* unverified or new device: normal sign-in and code flow */
         try{ window.fbUser = u; fbUser = u; }catch(e){}
         try{ unlockApp(); }catch(e){}
+        lift();
       });
-    }catch(e){}
+    }catch(e){ lift(); }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', resume); else setTimeout(resume, 0);
 })();
@@ -9728,6 +9740,524 @@ var _first=true;firebase.auth().onAuthStateChanged(function(u){if(_first){_first
       }
     }catch(e){}
     return f.apply(this,arguments)};
+})();
+</script>
+<script id="jv-v9-sync">
+/* JobPay data safety (v9)
+   1. Quotations (and reviews/reminders) are restored when the app reloads. Before, they were lost.
+   2. Cloud sync merges item by item instead of overwriting, so two phones and offline edits do not erase each other.
+   3. More data is backed up to the cloud (timer logs, quotations, notes, inventory, fuel, warranties...).
+   4. A different account on the same phone never sees or uploads the previous account's data.
+   5. New numbers (EST-004 ...) can no longer repeat an existing one. */
+(function(){
+  var KEYS = ['estimates','invoices','jobs','clients','expenses','team','quotations','timeLogs','recurring','voiceNotes','inventory','fuelLogs','warranties','reviews','reminders','todos','activities'];
+  var LOCAL_EXTRA = ['quotations','reviews','reminders','todos'];
+  var MAX_BYTES = 900000;
+
+  /* ---------- helpers ---------- */
+  function cs(v){
+    if (Array.isArray(v)) return '[' + v.map(cs).join(',') + ']';
+    if (v && typeof v === 'object') {
+      return '{' + Object.keys(v).sort().filter(function(k){ return v[k] !== undefined; })
+        .map(function(k){ return JSON.stringify(k) + ':' + cs(v[k]); }).join(',') + '}';
+    }
+    var s = JSON.stringify(v); return s === undefined ? 'null' : s;
+  }
+  function hash(v){
+    var s = cs(v), h1 = 5381, h2 = 52711;
+    for (var i = 0; i < s.length; i++) { var c = s.charCodeAt(i); h1 = ((h1 * 33) ^ c) >>> 0; h2 = ((h2 * 31) + c) >>> 0; }
+    return h1.toString(36) + h2.toString(36) + s.length.toString(36);
+  }
+  function ident(it){
+    if (it && typeof it === 'object' && (typeof it.id === 'string' || typeof it.id === 'number')) return 'i:' + it.id;
+    return 'h:' + hash(it);
+  }
+  function stamp(it){
+    if (!it || typeof it !== 'object') return NaN;
+    var f = [it.updatedAt, it.ts, it.dateISO, it.createdAt, it.created];
+    for (var i = 0; i < f.length; i++) { if (f[i] == null) continue; var t = typeof f[i] === 'number' ? f[i] : Date.parse(f[i]); if (!isNaN(t)) return t; }
+    return NaN;
+  }
+  function renameId(item, taken){
+    var c = JSON.parse(JSON.stringify(item)), id = String(c.id), m = /^(.*?)(\d+)$/.exec(id);
+    if (m) {
+      var n = 0, w = m[2].length;
+      Object.keys(taken).forEach(function(k){ var mm = /^i:(.*?)(\d+)$/.exec(k); if (mm && mm[1] === m[1]) n = Math.max(n, parseInt(mm[2], 10)); });
+      n = Math.max(n, parseInt(m[2], 10)) + 1;
+      var s = String(n); while (s.length < w) s = '0' + s;
+      c.id = m[1] + s;
+    } else c.id = id + '-b';
+    while (taken['i:' + c.id]) c.id += 'x';
+    return c;
+  }
+  window.jvNextId = function(list, prefix){
+    var max = 0, w = 3;
+    (list || []).forEach(function(x){
+      var id = x && x.id; if (typeof id !== 'string' || id.indexOf(prefix) !== 0) return;
+      var n = parseInt(id.slice(prefix.length), 10); if (!isNaN(n)) max = Math.max(max, n);
+    });
+    var s = String(max + 1); while (s.length < w) s = '0' + s;
+    return prefix + s;
+  };
+
+  /* ---------- merge one list (three way: local, cloud, what we both had at the last sync) ---------- */
+  /* Old versions could give two items the same number. Keep both: drop exact copies, renumber the rest. */
+  function normalize(list){
+    list = Array.isArray(list) ? list : [];
+    var all = {}; list.forEach(function(x){ all[ident(x)] = 1; });
+    var seen = {}, out = [];
+    list.forEach(function(it){
+      var k = ident(it);
+      if (!seen[k]) { seen[k] = it; out.push(it); return; }
+      if (hash(it) === hash(seen[k])) return;
+      var r = renameId(it, all); all[ident(r)] = 1; seen[ident(r)] = r; out.push(r);
+    });
+    return out;
+  }
+  function mergeList(L, C, B){
+    L = normalize(L); C = normalize(C);
+    var cm = {}; C.forEach(function(x){ cm[ident(x)] = x; });
+    var out = [], taken = {}, localOnlyNew = 0, cloudNew = 0;
+    L.forEach(function(it){
+      var k = ident(it);
+      var pick = null;
+      if (k in cm) {
+        var c = cm[k], hl = hash(it), hc = hash(c);
+        if (hl === hc) pick = it;
+        else if (B && (k in B)) {
+          if (hl === B[k]) { pick = c; cloudNew++; }
+          else if (hc === B[k]) pick = it;
+          else { var tl = stamp(it), tc = stamp(c); pick = (!isNaN(tc) && (isNaN(tl) || tc > tl)) ? c : it; }
+        } else {
+          /* same number but different content, and neither was synced before: keep both */
+          out.push(c); taken[k] = 1; cloudNew++;
+          pick = renameId(it, (function(){ var t = {}; Object.keys(cm).forEach(function(z){ t[z] = 1; }); Object.keys(taken).forEach(function(z){ t[z] = 1; }); L.forEach(function(z){ t[ident(z)] = 1; }); return t; })());
+          k = ident(pick);
+        }
+      } else {
+        if (B && (k in B)) return;          /* deleted on another phone */
+        pick = it; localOnlyNew++;
+      }
+      out.push(pick); taken[k] = 1;
+    });
+    C.forEach(function(c){
+      var k = ident(c); if (taken[k]) return;
+      if (B && (k in B)) return;            /* deleted on this phone */
+      out.push(c); taken[k] = 1; cloudNew++;
+    });
+    return { list: out, cloudNew: cloudNew, localNew: localOnlyNew };
+  }
+  function mergeProfile(LP, CP, BP){
+    LP = LP && typeof LP === 'object' ? LP : {}; CP = CP && typeof CP === 'object' ? CP : {};
+    var out = {}; Object.keys(CP).forEach(function(k){ out[k] = CP[k]; });
+    Object.keys(LP).forEach(function(k){
+      if (LP[k] === undefined) return;
+      if (!(k in CP)) { out[k] = LP[k]; return; }
+      if (BP && (k in BP) && BP[k] === hash(LP[k])) return;   /* unchanged here: keep the cloud value */
+      if (!BP) return;                                           /* first sync: cloud wins */
+      out[k] = LP[k];
+    });
+    return out;
+  }
+  function mergeAll(local, cdata, base){
+    var res = { lists: {}, cloudNew: 0, localNew: 0 }, cd = cdata || {}, bm = base && base.lists || null;
+    KEYS.forEach(function(k){
+      var m = mergeList(local[k], cd[k], bm ? (bm[k] || {}) : null);
+      if (k === 'activities') m.list = m.list.slice(0, 20);
+      res.lists[k] = m.list; res.cloudNew += m.cloudNew; res.localNew += m.localNew;
+    });
+    res.profile = mergeProfile(local.profile, cd.profile, base && base.profile || null);
+    return res;
+  }
+  function baseOf(res){
+    var b = { lists: {}, profile: {} };
+    KEYS.forEach(function(k){ var m = {}; res.lists[k].forEach(function(it){ m[ident(it)] = hash(it); }); b.lists[k] = m; });
+    Object.keys(res.profile).forEach(function(k){ b.profile[k] = hash(res.profile[k]); });
+    return b;
+  }
+  window.jvMerge = { mergeList: mergeList, mergeAll: mergeAll, mergeProfile: mergeProfile, hash: hash, cs: cs };
+
+  /* ---------- load more arrays when the app starts ---------- */
+  var _load = window.loadState;
+  window.loadState = function(){
+    if (typeof _load === 'function') _load.apply(this, arguments);
+    try {
+      var raw = localStorage.getItem('jv_data'); if (!raw) return;
+      var p = JSON.parse(raw); if (!p || typeof p !== 'object') return;
+      LOCAL_EXTRA.forEach(function(k){ if (Array.isArray(p[k])) D[k] = p[k]; else if (!Array.isArray(D[k])) D[k] = []; });
+    } catch(e) {}
+  };
+  LOCAL_EXTRA.forEach(function(k){ try { if (!Array.isArray(D[k])) D[k] = []; } catch(e) {} });
+  try { window.loadState(); } catch(e) {}
+
+  /* ---------- local bookkeeping ---------- */
+  function readBase(uid){ try { return JSON.parse(localStorage.getItem('jv_base_' + uid) || 'null'); } catch(e){ return null; } }
+  function writeBase(uid, b){ try { localStorage.setItem('jv_base_' + uid, JSON.stringify(b)); } catch(e){} }
+  function signature(){ var o = {}; KEYS.forEach(function(k){ o[k] = D[k]; }); o.profile = D.profile; return hash(o); }
+  function localView(){ var o = {}; KEYS.forEach(function(k){ o[k] = Array.isArray(D[k]) ? D[k] : []; }); o.profile = D.profile || {}; return o; }
+  function clearLocal(){
+    KEYS.forEach(function(k){ D[k] = []; }); D.photos = []; D.profile = {};
+    ['timeLogs','recurring','voiceNotes','inventory','fuelLogs','warranties','reviews','reminders','quotations','todos'].forEach(function(k){ D[k] = []; });
+  }
+  function switchOwner(uid){
+    var owner = null; try { owner = localStorage.getItem('jv_owner'); } catch(e){}
+    if (owner === uid) return false;
+    if (owner) {
+      try { localStorage.setItem('jv_stash_' + owner, localStorage.getItem('jv_data') || ''); } catch(e){}
+      clearLocal();
+      try {
+        var st = localStorage.getItem('jv_stash_' + uid);
+        if (st) { var p = JSON.parse(st); Object.keys(p).forEach(function(k){ if (Array.isArray(p[k]) || k === 'profile') D[k] = p[k]; }); localStorage.removeItem('jv_stash_' + uid); }
+      } catch(e){}
+      saveLocal();
+    }
+    try { localStorage.setItem('jv_owner', uid); } catch(e){}
+    return !!owner;
+  }
+
+  /* ---------- the sync ---------- */
+  var inFlight = false, again = false, warned = false;
+  function refreshScreens(){
+    try { if (typeof updateStats === 'function') updateStats(); } catch(e){}
+    try { if (typeof renderDash === 'function') renderDash(); } catch(e){}
+    try { if (typeof renderQ === 'function') renderQ(); } catch(e){}
+  }
+  function syncNow(){
+    try {
+      if (!FB_READY || !fbUser || !fbDb) return;
+      if (inFlight) { again = true; return; }
+      var uid = fbUser.uid, ref = fbDb.collection('users').doc(uid), switched = switchOwner(uid);
+      if (switched) refreshScreens();
+      inFlight = true;
+      var snap = signature();
+      fbDb.runTransaction(function(tx){
+        return tx.get(ref).then(function(doc){
+          var cdata = doc.exists ? doc.data() : null;
+          var res = mergeAll(localView(), cdata, readBase(uid));
+          var payload = { updatedAt: new Date().toISOString(), deviceId: (typeof getDeviceId === 'function' ? getDeviceId() : ''), profile: res.profile };
+          KEYS.forEach(function(k){ payload[k] = res.lists[k]; });
+          payload = JSON.parse(JSON.stringify(payload));
+          if (JSON.stringify(payload).length > MAX_BYTES) { var e = new Error('too_big'); e.code = 'too_big'; throw e; }
+          tx.set(ref, payload, { merge: true });
+          return res;
+        });
+      }).then(function(res){
+        if (signature() !== snap) { again = true; }   /* edited while syncing: merge again, keep the edit */
+        else {
+          KEYS.forEach(function(k){ D[k] = res.lists[k]; }); D.profile = res.profile;
+          saveLocal(); writeBase(uid, baseOf(res));
+          if (res.cloudNew > 0) { refreshScreens(); if (typeof showToastSync === 'function') showToastSync('Cloud data loaded'); }
+        }
+        try { updateSyncBadge(true); } catch(e){}
+      }).catch(function(err){
+        if (err && err.code === 'too_big') {
+          try { updateSyncBadge(false); } catch(e){}
+          if (!warned && typeof toast === 'function') { warned = true; toast('Your data is too large to back up. Download a backup in Settings.', 'warn'); }
+        } else { try { updateSyncBadge(false); } catch(e){} }
+      }).then(function(){
+        inFlight = false;
+        if (again) { again = false; setTimeout(syncNow, 500); }
+      });
+    } catch(e) { inFlight = false; }
+  }
+  window.syncToCloud = syncNow;
+  window.syncFromCloud = syncNow;
+  window.syncNow = syncNow;
+  document.addEventListener('visibilitychange', function(){ if (document.visibilityState === 'hidden') syncNow(); });
+  window.addEventListener('online', function(){ setTimeout(syncNow, 800); });
+  window.addEventListener('pagehide', function(){ syncNow(); });
+})();
+</script>
+<script id="jv-v10-todo">
+/* JobPay To-do & Notes with reminders (v10)
+   - Write what you must do, with an optional date, time, client phone and address.
+   - Saved on the phone (works offline) and backed up with the rest of the data.
+   - While the app is open: coin-win sound, a banner with Call / Navigate / Done / Snooze, and a notification.
+   - Morning brief once a day after 7am (changeable). */
+(function(){
+  var SOUND = 'sounds/coin-win.mp3';
+  function $(id){ return document.getElementById(id); }
+  function esc(x){ return String(x == null ? '' : x).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function list(){ if (!Array.isArray(D.todos)) D.todos = []; return D.todos; }
+  function find(id){ var a = list(); for (var i = 0; i < a.length; i++) if (a[i].id === id) return a[i]; return null; }
+  function stamp(t){ t.updatedAt = new Date().toISOString(); }
+  function persist(){ try { saveState(); } catch(e){ try { saveLocal(); } catch(e2){} } }
+  function dueMs(t){ if (!t.due) return NaN; var d = new Date(t.due); return d.getTime(); }
+  function sameDay(a, b){ return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate(); }
+  function settings(){ try { return Object.assign({ brief: true, hour: 7, sound: true }, JSON.parse(localStorage.getItem('jv_td_set') || '{}')); } catch(e){ return { brief: true, hour: 7, sound: true }; } }
+  function setSettings(s){ try { localStorage.setItem('jv_td_set', JSON.stringify(s)); } catch(e){} }
+  function fmtDue(t){
+    var ms = dueMs(t); if (isNaN(ms)) return 'No date';
+    var d = new Date(ms), n = new Date(), tm = d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    var tomorrow = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1);
+    if (sameDay(d, n)) return 'Today ' + tm;
+    if (sameDay(d, tomorrow)) return 'Tomorrow ' + tm;
+    return d.toLocaleDateString([], { day: 'numeric', month: 'short' }) + ' ' + tm;
+  }
+  function toLocalInput(d){
+    function p(x){ return (x < 10 ? '0' : '') + x; }
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + 'T' + p(d.getHours()) + ':' + p(d.getMinutes());
+  }
+
+  /* ---------- screen ---------- */
+  function ensureSection(){
+    if ($('todos')) return $('todos');
+    var ref = $('estimates'); if (!ref || !ref.parentNode) return null;
+    var s = document.createElement('section'); s.id = 'todos'; s.className = 'section'; ref.parentNode.appendChild(s); return s;
+  }
+  var CSS = '#todos .td-card{background:var(--surf);border:1px solid var(--bor);border-radius:14px;padding:14px;margin-bottom:12px}' +
+    '#todos .td-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}' +
+    '#todos .td-in{width:100%;background:var(--surf2,#1a1d27);border:1px solid var(--bor);color:var(--text);border-radius:10px;padding:11px;font:inherit;font-size:.95rem;box-sizing:border-box}' +
+    '#todos .td-chip{border:1px solid var(--bor);background:none;color:var(--text);border-radius:999px;padding:6px 11px;font:inherit;font-size:.78rem;cursor:pointer}' +
+    '#todos .td-h{font-size:.72rem;letter-spacing:.08em;color:var(--muted);margin:16px 0 8px;font-weight:700}' +
+    '#todos .td-it{background:var(--surf);border:1px solid var(--bor);border-radius:12px;padding:12px;margin-bottom:8px}' +
+    '#todos .td-it.od{border-color:#ef4444}#todos .td-it.dn{opacity:.55}' +
+    '#todos .td-t{font-weight:600;font-size:.96rem}#todos .td-m{font-size:.76rem;color:var(--muted);margin-top:3px}' +
+    '#todos .td-b{border:1px solid var(--bor);background:none;color:var(--text);border-radius:9px;padding:7px 10px;font:inherit;font-size:.78rem;cursor:pointer}' +
+    '#todos .td-b.go{background:#f97316;border-color:#f97316;color:#111;font-weight:700}' +
+    '#tdCard{position:fixed;left:10px;right:10px;top:10px;z-index:2147483000;background:#16181f;color:#fff;border:1px solid #f97316;border-radius:14px;padding:14px;box-shadow:0 10px 40px rgba(0,0,0,.55);font-family:inherit}' +
+    '#tdCard b{display:block;font-size:.98rem;margin-bottom:2px}#tdCard span{font-size:.82rem;opacity:.75}' +
+    '#tdCard .r{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}' +
+    '#tdCard button{border:1px solid #444;background:#222632;color:#fff;border-radius:9px;padding:8px 11px;font:inherit;font-size:.8rem;cursor:pointer}#tdCard button.g{background:#f97316;border-color:#f97316;color:#111;font-weight:700}' +
+    '.jv-today{margin:10px 0;background:var(--surf);border:1px solid var(--bor);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer}' +
+    '.jv-today b{font-size:.9rem}.jv-today span{display:block;font-size:.78rem;opacity:.7;margin-top:2px}.jv-today.od{border-color:#ef4444}';
+  (function(){ var s = document.createElement('style'); s.id = 'jv-todo-css'; s.textContent = CSS; document.head.appendChild(s); })();
+
+  function renderTodos(){
+    var s = ensureSection(); if (!s) return;
+    var st = settings();
+    if (!$('tdText')) {
+      var perm = ('Notification' in window) ? Notification.permission : 'denied';
+      s.innerHTML =
+        '<div class="page-hdr"><div><div class="page-title">To-do &amp; Notes</div><div class="page-sub">Write it down. JobPay will remind you so you never miss a job.</div></div></div>' +
+        '<div class="td-card">' +
+          '<input class="td-in" id="tdText" maxlength="140" placeholder="What must you do? e.g. Fix Mrs Ade\'s AC" autocomplete="off">' +
+          '<div class="td-row"><input class="td-in" id="tdDue" type="datetime-local" style="flex:1;min-width:190px"></div>' +
+          '<div class="td-row"><button class="td-chip" onclick="tdQuick(1)">In 1 hour</button><button class="td-chip" onclick="tdQuick(2)">Today 5pm</button><button class="td-chip" onclick="tdQuick(3)">Tomorrow 8am</button><button class="td-chip" onclick="tdQuick(0)">No date</button></div>' +
+          '<div class="td-row"><input class="td-in" id="tdPhone" type="tel" inputmode="tel" maxlength="20" placeholder="Client phone (optional, for the Call button)" style="flex:1;min-width:190px"></div>' +
+          '<div class="td-row"><input class="td-in" id="tdAddr" maxlength="120" placeholder="Address (optional, for the Navigate button)" style="flex:1;min-width:190px"></div>' +
+          '<div class="td-row"><button class="td-b go" onclick="tdAdd()" style="padding:10px 18px">Add</button></div>' +
+        '</div>' +
+        '<div class="td-card" id="tdSet"></div>' +
+        '<div id="tdList"></div>';
+    }
+    var perm2 = ('Notification' in window) ? Notification.permission : 'denied';
+    $('tdSet').innerHTML =
+      '<div style="font-weight:700;margin-bottom:8px">🔔 Reminders</div>' +
+      (perm2 === 'granted' ? '<div class="td-m" style="color:#22c55e">Notifications are on.</div>' :
+        '<button class="td-b go" onclick="tdEnableNotif()">Turn on notifications</button><div class="td-m">Needed so JobPay can alert you. ' + (perm2 === 'denied' ? 'They are blocked in your browser settings.' : '') + '</div>') +
+      '<div class="td-row"><label class="td-m" style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="tdBrief" ' + (st.brief ? 'checked' : '') + ' onchange="tdSet()"> Morning brief after</label>' +
+      '<select id="tdHour" class="td-in" style="width:auto" onchange="tdSet()">' + [5,6,7,8,9].map(function(h){ return '<option value="' + h + '"' + (st.hour === h ? ' selected' : '') + '>' + h + ':00 am</option>'; }).join('') + '</select>' +
+      '<label class="td-m" style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="tdSnd" ' + (st.sound ? 'checked' : '') + ' onchange="tdSet()"> Sound</label></div>' +
+      '<div class="td-m" style="margin-top:8px">Alerts show while JobPay is open or running in the background.</div>';
+
+    var now = Date.now(), all = list().slice();
+    var od = [], today = [], later = [], nodate = [], done = [];
+    all.forEach(function(t){
+      if (t.done) { done.push(t); return; }
+      var ms = dueMs(t);
+      if (isNaN(ms)) nodate.push(t);
+      else if (ms < now && !sameDay(new Date(ms), new Date())) od.push(t);
+      else if (sameDay(new Date(ms), new Date())) today.push(t);
+      else later.push(t);
+    });
+    function byDue(a, b){ return dueMs(a) - dueMs(b); }
+    od.sort(byDue); today.sort(byDue); later.sort(byDue);
+    function item(t){
+      var ms = dueMs(t), over = !t.done && !isNaN(ms) && ms < now;
+      var b = '';
+      if (!t.done) {
+        b += '<button class="td-b go" onclick="tdDone(\'' + t.id + '\')">✓ Done</button>';
+        b += '<button class="td-b" onclick="tdSnooze(\'' + t.id + '\',60)">⏰ Snooze 1h</button>';
+        if (t.phone) b += '<button class="td-b" onclick="tdCall(\'' + t.id + '\')">📞 Call</button>';
+        if (t.addr) b += '<button class="td-b" onclick="tdNav(\'' + t.id + '\')">🧭 Navigate</button>';
+      } else b += '<button class="td-b" onclick="tdUndo(\'' + t.id + '\')">↩ Undo</button>';
+      b += '<button class="td-b" onclick="tdDel(\'' + t.id + '\')">🗑</button>';
+      return '<div class="td-it' + (over ? ' od' : '') + (t.done ? ' dn' : '') + '"><div class="td-t">' + esc(t.text) + '</div><div class="td-m">' + esc(fmtDue(t)) + (t.phone ? ' · ' + esc(t.phone) : '') + (t.addr ? ' · ' + esc(t.addr) : '') + '</div><div class="td-row">' + b + '</div></div>';
+    }
+    function block(title, a){ return a.length ? '<div class="td-h">' + title + ' (' + a.length + ')</div>' + a.map(item).join('') : ''; }
+    var h = block('OVERDUE', od) + block('TODAY', today) + block('COMING UP', later) + block('NO DATE', nodate);
+    if (done.length) h += block('DONE', done.slice(0, 15));
+    if (!all.length) h = '<div class="td-m" style="text-align:center;padding:30px 10px">Nothing yet. Add your first job note above.</div>';
+    $('tdList').innerHTML = h;
+  }
+  window.renderTodos = renderTodos;
+
+  window.tdQuick = function(k){
+    var d = new Date(), el = $('tdDue'); if (!el) return;
+    if (k === 0) { el.value = ''; return; }
+    if (k === 1) d = new Date(Date.now() + 3600000);
+    if (k === 2) { d.setHours(17, 0, 0, 0); if (d.getTime() < Date.now()) d = new Date(Date.now() + 3600000); }
+    if (k === 3) { d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1, 8, 0, 0); }
+    el.value = toLocalInput(d);
+  };
+  window.tdAdd = function(){
+    var text = ($('tdText').value || '').trim();
+    if (!text) { try { toast('Write what you must do first.', 'warn'); } catch(e){} return; }
+    var t = { id: 'TD' + Date.now() + Math.floor(Math.random() * 100), text: text, due: $('tdDue').value || '', phone: ($('tdPhone').value || '').trim(), addr: ($('tdAddr').value || '').trim(), done: false, snoozeUntil: 0, notifiedFor: '', created: new Date().toISOString() };
+    stamp(t); list().unshift(t); persist();
+    $('tdText').value = ''; $('tdDue').value = ''; $('tdPhone').value = ''; $('tdAddr').value = '';
+    try { toast('Saved. We will remind you.', 'success'); } catch(e){}
+    renderTodos(); homeCard();
+    if ('Notification' in window && Notification.permission === 'default') { try { toast('Tip: turn on notifications below to get reminders.', 'info'); } catch(e){} }
+  };
+  window.tdDone = function(id){ var t = find(id); if (!t) return; t.done = true; stamp(t); persist(); hideCard(); renderTodos(); homeCard(); };
+  window.tdUndo = function(id){ var t = find(id); if (!t) return; t.done = false; t.notifiedFor = ''; stamp(t); persist(); renderTodos(); homeCard(); };
+  window.tdSnooze = function(id, mins){ var t = find(id); if (!t) return; t.snoozeUntil = Date.now() + (mins || 60) * 60000; stamp(t); persist(); hideCard(); renderTodos(); homeCard(); try { toast('Snoozed for ' + (mins || 60) + ' minutes', 'success'); } catch(e){} };
+  window.tdDel = function(id){ if (!confirm('Delete this note?')) return; var a = list(); for (var i = 0; i < a.length; i++) if (a[i].id === id) { a.splice(i, 1); break; } persist(); hideCard(); renderTodos(); homeCard(); };
+  window.tdCall = function(id){ var t = find(id); if (t && t.phone) window.location.href = 'tel:' + t.phone.replace(/[^\d+]/g, ''); };
+  window.tdNav = function(id){ var t = find(id); if (t && t.addr) window.open('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(t.addr), '_blank'); };
+  window.tdSet = function(){ var s = { brief: !!$('tdBrief').checked, hour: parseInt($('tdHour').value, 10) || 7, sound: !!$('tdSnd').checked }; setSettings(s); };
+  window.tdEnableNotif = function(){
+    if (!('Notification' in window)) { try { toast('This browser does not support notifications.', 'warn'); } catch(e){} return; }
+    Notification.requestPermission().then(function(r){ renderTodos(); try { toast(r === 'granted' ? 'Notifications are on' : 'Notifications not allowed', r === 'granted' ? 'success' : 'warn'); } catch(e){} });
+  };
+
+  /* ---------- alerts ---------- */
+  function playSound(){
+    if (!settings().sound) return;
+    try { var a = new Audio(SOUND); a.volume = 0.9; var p = a.play(); if (p && p.catch) p.catch(function(){}); } catch(e){}
+    try { if (navigator.vibrate) navigator.vibrate([180, 90, 180]); } catch(e){}
+  }
+  function hideCard(){ var c = $('tdCard'); if (c) c.remove(); }
+  function showCard(title, body, t){
+    hideCard();
+    var c = document.createElement('div'); c.id = 'tdCard';
+    var btn = '';
+    if (t) {
+      btn += '<button class="g" onclick="tdDone(\'' + t.id + '\')">✓ Done</button><button onclick="tdSnooze(\'' + t.id + '\',60)">⏰ Snooze 1h</button>';
+      if (t.phone) btn += '<button onclick="tdCall(\'' + t.id + '\')">📞 Call</button>';
+      if (t.addr) btn += '<button onclick="tdNav(\'' + t.id + '\')">🧭 Navigate</button>';
+    } else btn += '<button class="g" onclick="go(\'todos\');document.getElementById(\'tdCard\').remove()">Open</button>';
+    btn += '<button onclick="document.getElementById(\'tdCard\').remove()">Close</button>';
+    c.innerHTML = '<b>' + esc(title) + '</b><span>' + esc(body) + '</span><div class="r">' + btn + '</div>';
+    document.body.appendChild(c);
+    clearTimeout(showCard._t); showCard._t = setTimeout(hideCard, 25000);
+  }
+  function actionsFor(t){
+    var a = [{ action: 'done', title: '✓ Done' }, { action: 'snooze', title: '⏰ Snooze 1h' }];
+    if (t && t.phone) a.push({ action: 'call', title: '📞 Call' });
+    if (t && t.addr) a.push({ action: 'nav', title: '🧭 Navigate' });
+    var max = (window.Notification && Notification.maxActions) || 2;
+    return a.slice(0, max);
+  }
+  function systemNotify(title, body, t){
+    if (!('Notification' in window) || Notification.permission !== 'granted') return;
+    var opts = { body: body, icon: 'icon-192.png', badge: 'favicon-32.png', tag: t ? t.id : 'jv-brief', renotify: true, vibrate: [180, 90, 180], data: { id: t ? t.id : '', phone: t ? t.phone : '', addr: t ? t.addr : '' } };
+    if (t) opts.actions = actionsFor(t);
+    try {
+      var plain = function(){ try { new Notification(title, { body: body, icon: 'icon-192.png' }); } catch(e){} };
+      if (navigator.serviceWorker && navigator.serviceWorker.ready) {
+        var done = false, timer = setTimeout(function(){ if (!done) { done = true; plain(); } }, 1500);
+        navigator.serviceWorker.ready.then(function(reg){ if (done) return; done = true; clearTimeout(timer); reg.showNotification(title, opts); }).catch(function(){ if (done) return; done = true; clearTimeout(timer); plain(); });
+      } else plain();
+    } catch(e){}
+  }
+  function fire(t){
+    var title = '⏰ ' + t.text, body = (fmtDue(t)) + (t.addr ? ' · ' + t.addr : '');
+    playSound();
+    if (document.visibilityState === 'visible') showCard(title, body, t);
+    systemNotify(title, body, t);
+  }
+  function checkDue(){
+    try {
+      if (!window.D || !$('appShell') || $('appShell').style.display === 'none') return;
+      var now = Date.now(), due = [];
+      list().forEach(function(t){
+        if (t.done) return;
+        var ms = dueMs(t); if (isNaN(ms) || ms > now) return;
+        if (t.snoozeUntil && t.snoozeUntil > now) return;
+        var key = t.due + '|' + (t.snoozeUntil || 0);
+        if (t.notifiedFor === key) return;
+        t.notifiedFor = key; due.push(t);
+      });
+      if (!due.length) return;
+      persist();
+      if (due.length <= 2) due.forEach(fire);
+      else { playSound(); showCard('⏰ ' + due.length + ' reminders are due', due.slice(0, 3).map(function(x){ return x.text; }).join(' · '), null); systemNotify('⏰ ' + due.length + ' reminders are due', due.slice(0, 3).map(function(x){ return x.text; }).join(' · '), null); }
+      homeCard();
+      var s = $('todos'); if (s && s.classList.contains('active')) renderTodos();
+    } catch(e){}
+  }
+  function briefText(){
+    var now = new Date(), today = new Date(now.getFullYear(), now.getMonth(), now.getDate()), iso = toLocalInput(today).slice(0, 10);
+    var tds = list().filter(function(t){ if (t.done) return false; var ms = dueMs(t); return !isNaN(ms) && (ms < today.getTime() + 86400000); }).length;
+    var jobs = (D.jobs || []).filter(function(j){ return j.start === iso && j.status !== 'completed'; }).length;
+    var inv = (D.invoices || []).filter(function(i){ if (i.status === 'paid') return false; if (i.status === 'overdue') return true; var d = Date.parse(i.due); return !isNaN(d) && d < today.getTime(); });
+    var owed = inv.reduce(function(s, i){ return s + (+i.total || 0); }, 0);
+    var parts = [];
+    if (tds) parts.push(tds + ' to-do' + (tds > 1 ? 's' : ''));
+    if (jobs) parts.push(jobs + ' job' + (jobs > 1 ? 's' : ''));
+    if (inv.length) parts.push(inv.length + ' overdue invoice' + (inv.length > 1 ? 's' : '') + ' (' + ((typeof CUR === 'function' ? CUR() : '₦')) + owed.toLocaleString() + ')');
+    return parts.length ? 'Today: ' + parts.join(' · ') : '';
+  }
+  function maybeBrief(){
+    try {
+      var st = settings(); if (!st.brief || !window.D || !$('appShell') || $('appShell').style.display === 'none') return;
+      var n = new Date(); if (n.getHours() < st.hour) return;
+      if ($('tdCard')) return;   /* a reminder is on screen: show the brief a little later */
+      var key = n.getFullYear() + '-' + n.getMonth() + '-' + n.getDate();
+      if (localStorage.getItem('jv_brief_date') === key) return;
+      localStorage.setItem('jv_brief_date', key);
+      var txt = briefText(); if (!txt) return;
+      playSound(); showCard('☀️ Good morning', txt, null); systemNotify('☀️ Good morning', txt, null);
+    } catch(e){}
+  }
+  window.jvBriefText = briefText;
+
+  /* ---------- card on the home screen ---------- */
+  function homeCard(){
+    try {
+      var root = $('jvHome'); if (!root) return;
+      var ex = root.querySelector('.jv-today'), now = Date.now();
+      var open = list().filter(function(t){ return !t.done; });
+      var over = open.filter(function(t){ var ms = dueMs(t); return !isNaN(ms) && ms < now; });
+      var todayN = open.filter(function(t){ var ms = dueMs(t); return !isNaN(ms) && ms >= now && sameDay(new Date(ms), new Date()); });
+      var next = open.filter(function(t){ return !isNaN(dueMs(t)) && dueMs(t) >= now; }).sort(function(a, b){ return dueMs(a) - dueMs(b); })[0];
+      var title, sub, cls = '';
+      if (!list().length) { title = '📝 To-do &amp; Notes'; sub = 'Write what you must do. We remind you.'; }
+      else if (over.length) { title = '⚠️ ' + over.length + ' overdue'; sub = esc(over[0].text); cls = ' od'; }
+      else if (todayN.length) { title = '📝 ' + todayN.length + ' to do today'; sub = next ? 'Next: ' + esc(next.text) + ' · ' + esc(fmtDue(next)) : ''; }
+      else if (next) { title = '📝 Next up'; sub = esc(next.text) + ' · ' + esc(fmtDue(next)); }
+      else { title = '📝 All clear'; sub = open.length ? open.length + ' note' + (open.length > 1 ? 's' : '') + ' without a date' : 'Nothing waiting'; }
+      var html = '<div><b>' + title + '</b><span>' + sub + '</span></div><div style="margin-left:auto;opacity:.5">›</div>';
+      if (!ex) {
+        ex = document.createElement('div'); ex.className = 'jv-today' + cls; ex.onclick = function(){ go('todos'); };
+        var anchor = root.querySelector('.hm-beta') || root.querySelector('.jv-hello');
+        if (!anchor) return;
+        anchor.parentNode.insertBefore(ex, anchor.nextSibling);
+      }
+      if (ex.getAttribute('data-h') !== html + cls) { ex.className = 'jv-today' + cls; ex.innerHTML = html; ex.setAttribute('data-h', html + cls); }
+    } catch(e){}
+  }
+
+  /* ---------- notification buttons coming back to the app ---------- */
+  function handle(act, id){
+    var t = find(id);
+    if (act === 'open') { go('todos'); return; }
+    if (!t) { go('todos'); return; }
+    if (act === 'done') window.tdDone(id);
+    else if (act === 'snooze') window.tdSnooze(id, 60);
+    else { go('todos'); }
+  }
+  try {
+    if (navigator.serviceWorker) navigator.serviceWorker.addEventListener('message', function(e){ var d = e.data || {}; if (d.type === 'jv-todo') handle(d.act, d.id); });
+  } catch(e){}
+  function fromUrl(){
+    try {
+      var q = new URLSearchParams(location.search), id = q.get('todo'), act = q.get('act'); if (!id && !act) return;
+      if (!window.D || !$('appShell') || $('appShell').style.display === 'none') return false;
+      handle(act || 'open', id); history.replaceState(null, '', location.pathname); return true;
+    } catch(e){ return true; }
+  }
+
+  ensureSection();
+  var _go = window.go;
+  window.go = function(id){ ensureSection(); _go.apply(this, arguments); if (id === 'todos') renderTodos(); };
+  setInterval(function(){ homeCard(); checkDue(); }, 15000);
+  setInterval(maybeBrief, 60000);
+  document.addEventListener('visibilitychange', function(){ if (document.visibilityState === 'visible') { checkDue(); maybeBrief(); homeCard(); } });
+  [2500, 6000, 12000].forEach(function(ms){ setTimeout(function(){ homeCard(); checkDue(); maybeBrief(); fromUrl(); }, ms); });
 })();
 </script>
 </body>

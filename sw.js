@@ -3,8 +3,8 @@
    - Libraries and fonts (Firebase SDK, icons, PDF, fonts): saved after the first load,
      served instantly from the phone afterwards, refreshed quietly in the background.
    - Live data calls (Firestore, login, payments): never touched. */
-const CACHE = 'jobpay-v4';
-const PRECACHE = ['javavault.html', 'manifest.json', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'favicon-32.png'];
+const CACHE = 'jobpay-v5';
+const PRECACHE = ['javavault.html', 'manifest.json', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'favicon-32.png', 'sounds/coin-win.mp3'];
 const LIBS = [
   'www.gstatic.com/firebasejs/',
   'cdnjs.cloudflare.com/',
@@ -59,5 +59,27 @@ self.addEventListener('fetch', e => {
   }
   if (LIBS.some(h => url.indexOf(h) !== -1)) {
     e.respondWith(staleWhileRevalidate(req));
+  }
+});
+
+
+/* Buttons on reminder notifications (Call, Navigate, Done, Snooze 1h) */
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  const d = e.notification.data || {};
+  const act = e.action || 'open';
+  const appUrl = 'javavault.html?todo=' + encodeURIComponent(d.id || '') + '&act=' + encodeURIComponent(act);
+  const openApp = () => self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(list => {
+    for (const c of list) {
+      if ('focus' in c) { c.postMessage({ type: 'jv-todo', id: d.id, act }); return c.focus(); }
+    }
+    return self.clients.openWindow(appUrl);
+  });
+  if (act === 'call' && d.phone) {
+    e.waitUntil(self.clients.openWindow('tel:' + String(d.phone).replace(/[^\d+]/g, '')).catch(openApp));
+  } else if (act === 'nav' && d.addr) {
+    e.waitUntil(self.clients.openWindow('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(d.addr)).catch(openApp));
+  } else {
+    e.waitUntil(openApp());
   }
 });
