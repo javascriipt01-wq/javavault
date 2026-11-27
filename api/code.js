@@ -1,11 +1,11 @@
-// JobPay email codes: sign-up verification and forgot-password.
+// Kazio email codes: sign-up verification and forgot-password.
 // Vercel serverless function, no extra packages. Needs these Vercel environment variables:
 //   BREVO_API_KEY, FB_CLIENT_EMAIL, FB_PRIVATE_KEY, FB_PROJECT_ID  (and optional EMAIL_PROVIDER=resend + RESEND_API_KEY + EMAIL_FROM)
 // Codes are stored only as a hash in Firestore (collection authCodes), expire in 10 minutes and allow 5 wrong tries.
 const crypto = require('crypto');
 const FIREBASE_API_KEY = 'AIzaSyBewXRyo8wB3sDHGCCLjwO6Qb_SZMWdt9o'; // public web key, used only to check a logged-in user
 const PROJECT = process.env.FB_PROJECT_ID || 'javavault-29cbb';
-const SENDER = { name: 'JobPay', email: process.env.BREVO_SENDER || 'javascriipt01@gmail.com' };
+const SENDER = { name: 'Kazio', email: process.env.BREVO_SENDER || 'javascriipt01@gmail.com' };
 const TTL = 10 * 60 * 1000, WAIT = 60 * 1000, MAX_TRIES = 5;
 
 
@@ -48,7 +48,7 @@ async function itCall(path, body) {
 async function userByEmail(email) { const j = await itCall('/accounts:lookup', { email: [email] }); return (j.users && j.users[0]) || null; }
 async function userByToken(idToken) {
   const r = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=' + FIREBASE_API_KEY, { method: 'POST',
-    headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ idToken }) });
+    headers: { 'Content-Type': 'application/json', 'Referer': 'https://javavault.vercel.app/' }, body: JSON.stringify({ idToken }) });
   if (!r.ok) return null; const j = await r.json(); return (j.users && j.users[0]) || null;
 }
 
@@ -71,7 +71,7 @@ async function delDoc(id) { await fetch(FS + id, { method: 'DELETE', headers: { 
 async function sendMail(to, subject, text, html) {
   if (process.env.EMAIL_PROVIDER === 'resend' && process.env.RESEND_API_KEY) {
     const r = await fetch('https://api.resend.com/emails', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + process.env.RESEND_API_KEY },
-      body: JSON.stringify({ from: process.env.EMAIL_FROM || 'JobPay <onboarding@resend.dev>', to: [to], subject, text, html }) });
+      body: JSON.stringify({ from: process.env.EMAIL_FROM || 'Kazio <onboarding@resend.dev>', to: [to], subject, text, html }) });
     if (!r.ok) throw new Error('email failed'); return;
   }
   const r = await fetch('https://api.brevo.com/v3/smtp/email', { method: 'POST', headers: { 'Content-Type': 'application/json', 'api-key': process.env.BREVO_API_KEY },
@@ -80,8 +80,8 @@ async function sendMail(to, subject, text, html) {
 }
 function mailBody(code, purpose) {
   const what = purpose === 'reset' ? 'reset your password' : (purpose === 'device' ? 'sign in on a new phone or browser' : 'verify your email');
-  const text = 'Your JobPay code is ' + code + '. Use it to ' + what + '. It expires in 10 minutes. If you did not ask for this, ignore this email.';
-  const html = '<div style="font-family:Arial,sans-serif;max-width:420px;margin:auto;padding:24px"><h2 style="margin:0 0 8px">JobPay</h2>' +
+  const text = 'Your Kazio code is ' + code + '. Use it to ' + what + '. It expires in 10 minutes. If you did not ask for this, ignore this email.';
+  const html = '<div style="font-family:Arial,sans-serif;max-width:420px;margin:auto;padding:24px"><h2 style="margin:0 0 8px">Kazio</h2>' +
     '<p style="color:#444">Use this code to ' + what + ':</p><div style="font-size:34px;font-weight:700;letter-spacing:8px;margin:16px 0">' + code + '</div>' +
     '<p style="color:#777;font-size:13px">It expires in 10 minutes. If you did not ask for this, you can ignore this email.</p></div>';
   return { text, html };
@@ -111,12 +111,12 @@ module.exports = async (req, res) => {
 
     if (action === 'send') {
       if (cur && now - cur.sent < WAIT) return res.status(429).json({ error: 'Wait a minute before asking for another code.', wait: Math.ceil((WAIT - (now - cur.sent)) / 1000) });
-      if (purpose === 'reset') { user = await userByEmail(email); if (!user) return res.status(200).json({ ok: true }); } // same answer whether or not the account exists
+      if (purpose === 'reset') { user = await userByEmail(email); if (!user) return res.status(200).json({ ok: true, exists: false }); } // tells the app there is no account for this email (a small app: clear help matters more; sending is still rate limited)
       else if (purpose === 'signup' && user.emailVerified) return res.status(200).json({ ok: true, verified: true });
       const code = String(crypto.randomInt(100000, 1000000));
       await setDoc(id, { h: hashCode(code, id), exp: now + TTL, tries: 0, sent: now });
       const m = mailBody(code, purpose);
-      await sendMail(email, 'Your JobPay code: ' + code, m.text, m.html);
+      await sendMail(email, 'Your Kazio code: ' + code, m.text, m.html);
       return res.status(200).json({ ok: true });
     }
 
