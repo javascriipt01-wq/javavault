@@ -1,9 +1,9 @@
-// JobPay email sender: Vercel serverless function using Resend.
+// Kazio email sender: Vercel serverless function using Resend.
 // Needs the environment variable RESEND_API_KEY (set in Vercel). Never put the key in the app.
 // Free plan without a domain: sender must be onboarding@resend.dev and mail only reaches the Resend account owner.
-// When you verify a domain in Resend, set EMAIL_FROM in Vercel, e.g. "JobPay <hello@yourdomain.com>".
+// When you verify a domain in Resend, set EMAIL_FROM in Vercel, e.g. "Kazio <hello@yourdomain.com>".
 const FIREBASE_API_KEY = 'AIzaSyBewXRyo8wB3sDHGCCLjwO6Qb_SZMWdt9o'; // public web key, used only to check the user's login
-const FROM = process.env.EMAIL_FROM || 'JobPay <onboarding@resend.dev>';
+const FROM = process.env.EMAIL_FROM || 'Kazio <onboarding@resend.dev>';
 
 
 // Simple per-instance rate limit (resets when the server restarts; stops casual abuse).
@@ -19,7 +19,7 @@ const clientIp = req => String((req.headers['x-forwarded-for'] || '')).split(','
 
 async function getUser(idToken) {
   const r = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=' + FIREBASE_API_KEY, {
-    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ idToken })
+    method: 'POST', headers: { 'Content-Type': 'application/json', 'Referer': 'https://javavault.vercel.app/' }, body: JSON.stringify({ idToken })
   });
   if (!r.ok) return null;
   const j = await r.json();
